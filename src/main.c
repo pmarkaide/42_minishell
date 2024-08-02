@@ -19,12 +19,12 @@ int	main(int argc, char **argv)
 	ft_bzero(&macro, sizeof(t_macro));
 	// signal_catcher();
 	// macro.instruction = ft_readline(stdin);
-	if(argc < 2)
+	if (argc < 2)
 	{
 		ft_putstr_fd("Error: Invalid number of arguments\n", 2);
 		exit(1);
 	}
-	macro.instruction= syntax_error_check(argv[1]);
+	macro.instruction = syntax_error_check(argv[1]);
 	// tokenizer(&macro, macro.instruction);
 	// parsing(&macro);
 	// execution(&macro);

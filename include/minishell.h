@@ -30,26 +30,26 @@ typedef enum e_type
 	APPEND,
 	SEMICOLON,
 	NEWLINE
-}			t_type;
+}					t_type;
 
 typedef struct s_token
 {
-	t_type	type;
-	char	*value;
+	t_type			type;
+	char			*value;
 	struct s_token	*next;
-}			t_token;
+}					t_token;
 
 typedef struct s_macro
 {
-	char	**envp;
-	char	**env;
-	char	**path;
-	char	**history;
-	char	*instruction;
-	t_token	**tokens;
-	char	***commands;
-}			t_macro;
+	char			**envp;
+	char			**env;
+	char			**path;
+	char			**history;
+	char			*instruction;
+	t_token			**tokens;
+	char			***commands;
+}					t_macro;
 
-char	*syntax_error_check(char *instruction);
+char				*syntax_error_check(char *instruction);
 
 #endif /* MINISHELL_H */
