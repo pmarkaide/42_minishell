@@ -6,14 +6,15 @@
 #    By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/01 15:11:43 by pmarkaid          #+#    #+#              #
-#    Updated: 2024/08/01 15:12:36 by pmarkaid         ###   ########.fr        #
+#    Updated: 2024/08/02 15:55:22 by pmarkaid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 SRCS_FILES = \
-	main.c 
+	main.c \
+	presyntax.c
 
 SRC_DIR = src/
 SRCS = $(addprefix $(SRC_DIR), $(SRCS_FILES))
