@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/02 16:02:06 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/03 22:25:05 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ typedef enum e_type
 	OUTRED,
 	HERE_DOC,
 	APPEND,
-	SEMICOLON,
 	NEWLINE
 }					t_type;
 
@@ -50,6 +49,15 @@ typedef struct s_macro
 	char			***commands;
 }					t_macro;
 
+/* presyntax*/
 char				*syntax_error_check(char *instruction);
+
+/* tokenizer */
+void				tokenizer(t_macro *macro);
+
+/* list_utils */
+void				ft_lstadd_back(t_token **lst, t_token *new);
+t_token				*ft_lstlast(t_token *lst);
+
 
 #endif /* MINISHELL_H */
