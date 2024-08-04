@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/03 22:25:05 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/04 12:48:08 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ typedef struct s_macro
 	char			**path;
 	char			**history;
 	char			*instruction;
-	t_token			**tokens;
+	t_token			*tokens;
 	char			***commands;
 }					t_macro;
 
@@ -56,8 +56,11 @@ char				*syntax_error_check(char *instruction);
 void				tokenizer(t_macro *macro);
 
 /* list_utils */
-void				ft_lstadd_back(t_token **lst, t_token *new);
-t_token				*ft_lstlast(t_token *lst);
+t_token				*init_token(void);
+void				token_add_back(t_token **tokens, t_token *new);
+t_token				*last_token(t_token *token);
+void				free_tokens(t_token **tokens);
+void				print_tokens(t_token *tokens);
 
 
 #endif /* MINISHELL_H */
