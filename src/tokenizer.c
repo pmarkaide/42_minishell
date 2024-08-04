@@ -20,12 +20,12 @@
 
 // }
 
-static t_token *identify_redirection_tokens(char *lexeme)
+static t_token	*identify_redirection_tokens(char *lexeme)
 {
-	t_token *token;
+	t_token	*token;
 
 	token = init_token();
-	if(!token)
+	if (!token)
 		return (NULL);
 	if (ft_strncmp(lexeme, ">", 1) == 0)
 		token->type = OUTRED;
@@ -35,50 +35,50 @@ static t_token *identify_redirection_tokens(char *lexeme)
 		token->type = APPEND;
 	else if (ft_strncmp(lexeme, "<<", 2) == 0)
 		token->type = HERE_DOC;
-	else if(ft_strncmp(lexeme, "|", 1) == 0)
+	else if (ft_strncmp(lexeme, "|", 1) == 0)
 		token->type = PIPE;
 	else
 		token->type = STRING;
-	if(token->type != PIPE && token->type != STRING)
+	if (token->type != PIPE && token->type != STRING)
 		token->value = ft_strdup(lexeme + 1);
 	else
 		token->value = ft_strdup(lexeme);
 	return (token);
 }
 
-t_token *identify_tokens(char **lexemes)
+t_token	*identify_tokens(char **lexemes)
 {
-  t_token *tokens;
-  t_token *token;
-  int i;
+	t_token	*tokens;
+	t_token	*token;
+	int		i;
 
-  i = 0;
-  tokens = NULL;
-  while(lexemes[i])
-  {
-    token = identify_redirection_tokens(lexemes[i]);
-	if(!token)
-      return(NULL);
-    token_add_back(&tokens, token);
-	i++;
-  }
-  //identify_string_tokens(tokens);
-  return (tokens);
+	i = 0;
+	tokens = NULL;
+	while (lexemes[i])
+	{
+		token = identify_redirection_tokens(lexemes[i]);
+		if (!token)
+			return (NULL);
+		token_add_back(&tokens, token);
+		i++;
+	}
+	// identify_string_tokens(tokens);
+	return (tokens);
 }
 
-static char  *clean_instruction(char *instruction)
+static char	*clean_instruction(char *instruction)
 {
-	char *clean;
-	char *ptr;
-	int i;
+	char	*clean;
+	char	*ptr;
+	int		i;
 
 	clean = malloc(sizeof(char) * ft_strlen(instruction) + 1);
 	ptr = instruction;
 	i = 0;
 	while (*ptr)
 	{
-		if(*ptr == ' ' && (*(ptr - 1) == '<' || *(ptr - 1) == '>'))
-				ptr++;
+		if (*ptr == ' ' && (*(ptr - 1) == '<' || *(ptr - 1) == '>'))
+			ptr++;
 		clean[i] = *ptr;
 		i++;
 		ptr++;
@@ -87,10 +87,10 @@ static char  *clean_instruction(char *instruction)
 	return (clean);
 }
 
-void tokenizer(t_macro *macro)
+void	tokenizer(t_macro *macro)
 {
-	char **lexemes;
-	
+	char	**lexemes;
+
 	macro->instruction = clean_instruction(macro->instruction);
 	lexemes = ft_split(macro->instruction, ' ');
 	macro->tokens = identify_tokens(lexemes);
@@ -103,5 +103,4 @@ void tokenizer(t_macro *macro)
 	// 	i++;
 	// }
 	free(lexemes);
-	
 }

@@ -12,16 +12,16 @@
 
 #include "minishell.h"
 
-t_macro *init_macro(void)
+t_macro	*init_macro(void)
 {
-	t_macro *macro;
+	t_macro	*macro;
 
 	macro = malloc(sizeof(t_macro));
 	if (!macro)
-		{
-			ft_putstr_fd("Error: Malloc failed creating macro structure\n", 2);
-			exit(1);
-		}
+	{
+		ft_putstr_fd("Error: Malloc failed creating macro structure\n", 2);
+		exit(1);
+	}
 	ft_bzero(macro, sizeof(t_macro));
 	return (macro);
 }
@@ -45,6 +45,6 @@ int	main(int argc, char **argv)
 	// free_instruction(&macro);
 	// ft_readline(&macro);
 	// free_macro(&macro);
-	//ft_printf("%s\n", macro.instruction);
+	// ft_printf("%s\n", macro.instruction);
 	exit(0);
 }

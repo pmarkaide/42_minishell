@@ -62,5 +62,4 @@ t_token				*last_token(t_token *token);
 void				free_tokens(t_token **tokens);
 void				print_tokens(t_token *tokens);
 
-
 #endif /* MINISHELL_H */
