@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 21:24:44 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/05 14:25:06 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/05 15:40:15 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ static void identify_string_tokens(t_token *tokens)
 	first = 0;
 	while(tokens)
 	{
-		ft_printf("Before: Token type: %d\n", tokens->type);
 		if(tokens->type == STRING && first == 0)
 		{
 			if(is_builtin(tokens))
@@ -32,7 +31,6 @@ static void identify_string_tokens(t_token *tokens)
 			tokens->type = ARG;
 		if(tokens->type == PIPE)
 			first = 0;
-		ft_printf("After: Token type: %d\n", tokens->type);
 		tokens = tokens->next;
 	}
 }

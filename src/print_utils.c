@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 13:02:41 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/04 13:03:01 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/05 15:38:23 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,12 @@ char	*enum_to_char(t_type type)
 		return ("HERE_DOC");
 	else if (type == APPEND)
 		return ("APPEND");
-	else if (type == NEWLINE)
-		return ("NEWLINE");
+	else if (type == ARG)
+		return ("ARG");
+	else if (type == BUILTIN)
+		return ("BUILTIN");
+	else
+		return ("UNKNOWN");
 	return (NULL);
 }
 
