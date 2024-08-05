@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/05 14:10:56 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/05 14:22:36 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ typedef enum e_type
 	OUTRED,
 	HERE_DOC,
 	APPEND,
-	NEWLINE
+	BUILTIN,
+	ARG
 }					t_type;
 
 typedef struct s_token
@@ -58,7 +59,8 @@ void				tokenizer(t_macro *macro);
 
 /* tokenizer_utils */
 bool				is_inside_single_quotes(const char *str, int index);
-char	*expand_envirs(char *clean, char *instruction);
+char				*expand_envirs(char *clean, char *instruction);
+bool				is_builtin(t_token *token);
 
 /* list_utils */
 t_token				*init_token(void);
