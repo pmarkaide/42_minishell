@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/04 12:48:08 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/05 11:56:59 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,9 @@
 # include "../lib/libft/libft.h" /* libft library */
 # include <fcntl.h>              /* for open */
 # include <limits.h>             /* for LONG_MAX, LONG_MIN */
-# include <stdlib.h>             /* for malloc, free, exit */
+# include <stdlib.h>             /* for malloc, free, exit, getenv */
 # include <unistd.h>             /* for read, write */
+# include <stdbool.h>			 /* for true and false*/
 
 typedef enum e_type
 {
@@ -61,5 +62,10 @@ void				token_add_back(t_token **tokens, t_token *new);
 t_token				*last_token(t_token *token);
 void				free_tokens(t_token **tokens);
 void				print_tokens(t_token *tokens);
+
+
+/* tests */
+char				*get_envir_value(const char *str, int *len);
+size_t				expanded_envir_len(char *instruction);
 
 #endif /* MINISHELL_H */
