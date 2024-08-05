@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 10:42:50 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/05 11:41:51 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/05 14:09:44 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,14 +55,14 @@ size_t	expanded_envir_len(char *instruction)
 	int		i;
 	char	*ptr;
 	char	*envir_value;
-    int     envir_name_len;
+	int		envir_name_len;
 
 	len = 0;
 	i = 0;
 	ptr = instruction;
 	while (ptr[i])
 	{
-		 if (ptr[i] == '$' && !is_inside_single_quotes(ptr, i))
+		if (ptr[i] == '$' && !is_inside_single_quotes(ptr, i))
 		{
 			envir_value = get_envir_value(&ptr[i + 1], &envir_name_len);
 			if (envir_value)
@@ -76,4 +76,33 @@ size_t	expanded_envir_len(char *instruction)
 		}
 	}
 	return (len);
+}
+
+char	*expand_envirs(char *clean, char *instruction)
+{
+	char	*ptr;
+	int		i;
+	int		len;
+	char	*envir_value;
+
+	ptr = instruction;
+	i = 0;
+	while (*ptr)
+	{
+		if (*ptr != '$')
+			clean[i++] = *ptr++;
+		else
+		{
+			ptr++;
+			envir_value = get_envir_value(ptr, &len);
+			if (envir_value)
+			{
+				ft_strlcpy(&clean[i], envir_value, len + 1);
+				i += len;
+				free(envir_value);
+			}
+			ptr += len;
+		}
+	}
+	return (clean);
 }

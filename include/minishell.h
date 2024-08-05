@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/05 11:56:59 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/05 14:10:56 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,10 @@ char				*syntax_error_check(char *instruction);
 
 /* tokenizer */
 void				tokenizer(t_macro *macro);
+
+/* tokenizer_utils */
+bool				is_inside_single_quotes(const char *str, int index);
+char	*expand_envirs(char *clean, char *instruction);
 
 /* list_utils */
 t_token				*init_token(void);

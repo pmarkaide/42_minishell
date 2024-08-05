@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 21:24:44 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/05 12:22:38 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/05 14:09:25 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,37 +86,17 @@ static char	*clean_instruction(char *instruction)
 	return (clean);
 }
 
-
-
-static char	*expand_envir(char *instruction)
+static char	*get_expanded_instruction(char *instruction)
 {
 	char	*clean;
-	char	*ptr;
 	size_t	total_len;
-	int		i;
-	int		len;
-	char	*envir_value;
 
 	total_len = expanded_envir_len(instruction) + ft_strlen(instruction);
 	clean = malloc(sizeof(char) * total_len + 1);
-	ptr = instruction;
-	i = 0;
-	while (*ptr)
-	{
-		if (*ptr != '$')
-			clean[i++] = *ptr++;
-		else
-		{
-			ptr++;
-			envir_value = get_envir_value(ptr, &len);
-			if (envir_value)
-			{
-				ft_strlcpy(&clean[i], envir_value, len + 1);
-				i += len;
-			}
-			ptr += len;
-		}
-	}
+	if (!clean)
+		return (NULL);
+	clean = expand_envirs(clean, instruction);
+	clean[total_len] = '\0';
 	return (clean);
 }
 
@@ -124,7 +104,7 @@ void	tokenizer(t_macro *macro)
 {
 	char	**lexemes;
 
-	macro->instruction = expand_envir(macro->instruction);
+	macro->instruction = get_expanded_instruction(macro->instruction);
 	macro->instruction = clean_instruction(macro->instruction);
 	lexemes = ft_split(macro->instruction, ' ');
 	macro->tokens = identify_tokens(lexemes);
