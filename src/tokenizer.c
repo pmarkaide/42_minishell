@@ -114,6 +114,7 @@ static char	*get_expanded_instruction(char *instruction)
 	if (!clean)
 		return (NULL);
 	clean = expand_envirs(clean, instruction);
+	clean[total_len] = '\0';
 	return (clean);
 }
 
