@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/05 14:22:36 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/08 01:31:32 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,26 @@
 # define MINISHELL_H
 
 # include "../lib/libft/libft.h" /* libft library */
-# include <fcntl.h>              /* for open */
 # include <limits.h>             /* for LONG_MAX, LONG_MIN */
-# include <stdbool.h>            /* for true and false*/
-# include <stdlib.h>             /* for malloc, free, exit, getenv */
-# include <unistd.h>             /* for read, write */
+# include <stdbool.h>			 /* for true and false*/
+# include <stdio.h>      // printf, perror
+# include <stdlib.h>     // malloc, free, exit, getenv
+# include <unistd.h>     // read, write, access, open, close, fork, getcwd, chdir, unlink, execve, dup, dup2, pipe, isatty, ttyname, ttyslot
+# include <fcntl.h>      // open
+# include <sys/types.h>  // fork, wait, waitpid, wait3, wait4, stat, lstat, fstat
+# include <sys/wait.h>   // wait, waitpid, wait3, wait4
+# include <sys/stat.h>   // stat, lstat, fstat
+# include <signal.h>     // signal, sigaction, sigemptyset, sigaddset, kill
+# include <dirent.h>     // opendir, readdir, closedir
+# include <string.h>     // strerror
+# include <termios.h>    // tcsetattr, tcgetattr
+# include <curses.h>     // tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
+# include <term.h>       // tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
+# include <sys/ioctl.h>  // ioctl
+# include <readline/readline.h>  // readline, rl_clear_history, rl_on_new_line, rl_replace_line, rl_redisplay
+# include <readline/history.h>  // add_history
+
+
 
 typedef enum e_type
 {
@@ -33,6 +48,17 @@ typedef enum e_type
 	ARG
 }					t_type;
 
+typedef enum e_builtin
+{
+	M_ECHO = 0,
+	M_CD = 1,
+	M_PWD = 2,
+	M_EXPORT = 3,
+	M_UNSET = 4,
+	M_ENV	= 5,
+	M_EXIT = 6
+}	t_builtin;
+
 typedef struct s_token
 {
 	t_type			type;
@@ -44,11 +70,12 @@ typedef struct s_macro
 {
 	char			**envp;
 	char			**env;
-	char			**path;
+	char			*path;
 	char			**history;
 	char			*instruction;
 	t_token			*tokens;
 	char			***commands;
+	pid_t			pid;
 }					t_macro;
 
 /* presyntax*/
@@ -69,8 +96,32 @@ t_token				*last_token(t_token *token);
 void				free_tokens(t_token **tokens);
 void				print_tokens(t_token *tokens);
 
+
 /* tests */
 char				*get_envir_value(const char *str, int *len);
 size_t				expanded_envir_len(char *instruction);
+
+
+/* others */
+pid_t				grab_pid(void);
+void				ft_signal_handler(int signum);
+void			    test_builtins(t_macro *macro);
+void    			ft_pwd(void);
+void    			ft_echo(char *line);
+void    			ft_echo_n(char *line);
+void			    ft_env(char **envp);
+void				ft_export(t_macro *macro);
+void				ft_exit(t_macro *macro);
+void				ft_cd(char *line);
+char    			*char_pwd(void);
+char    			**copy_env(char **envp);
+void				ft_free_matrix(char ***m);
+int					ft_matrixlen(char **m);
+char				**ft_add_row(char **in, char *newstr);
+void				ft_export_do(t_macro *macro, char *name, char *value);
+int					ft_strchr_i(const char *s, int c);
+char				**ft_replace_matrix_row(char ***big, char **small, int n);
+void				ft_unset(t_macro *macro);
+int					var_in_env(char *argv, char **env, int ij[2]);
 
 #endif /* MINISHELL_H */

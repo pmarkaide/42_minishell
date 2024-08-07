@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+         #
+#    By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/01 15:11:43 by pmarkaid          #+#    #+#              #
-#    Updated: 2024/08/05 11:54:01 by pmarkaid         ###   ########.fr        #
+#    Updated: 2024/08/07 09:11:19 by dbejar-s         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,13 @@ SRCS_FILES = \
 	list_utils.c \
 	print_utils.c \
 	tokenizer_utils.c \
-	free.c
+	free.c	\
+	signals.c	\
+	pid_handler.c	\
+	testing_func.c	\
+	builtins.c	\
+	main_utils.c	\
+	env.c
 
 SRC_DIR = src/
 SRCS = $(addprefix $(SRC_DIR), $(SRCS_FILES))
@@ -30,6 +36,9 @@ INCLUDE = -I ./include/
 LIBFT_DIR = lib/libft/
 LIBFT = $(LIBFT_DIR)libft.a
 LIBFT_INCLUDE = -I $(LIBFT_DIR)
+
+# External Libraries
+LIBS = -lreadline
 
 TEST_SRCS = $(wildcard tests/*.c)
 TEST_OBJS = $(TEST_SRCS:.c=.o)
@@ -47,7 +56,7 @@ makelibft:
 	$(CC) $(CFLAGS) $(LIBFT_INCLUDE) $(INCLUDE) -c $< -o $@
 
 $(NAME): $(OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT_INCLUDE) $(INCLUDE) $(LIBFT) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT_INCLUDE) $(INCLUDE) $(LIBFT) -o $(NAME) $(LIBS)
 
 tests: makelibft $(TEST_OBJS) $(filter-out $(SRC_DIR)main.o, $(OBJS))
 	$(CC) $(CFLAGS) $(TEST_OBJS) $(filter-out $(SRC_DIR)main.o, $(OBJS)) $(LIBFT_INCLUDE) $(INCLUDE) $(LIBFT) -o $(TEST_NAME)

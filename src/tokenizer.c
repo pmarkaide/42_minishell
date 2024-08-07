@@ -6,30 +6,30 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 21:24:44 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/07 11:59:37 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/08 01:28:36 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	identify_string_tokens(t_token *tokens)
+static void identify_string_tokens(t_token *tokens)
 {
-	int	first;
+	int first;
 
 	first = 0;
-	while (tokens)
+	while(tokens)
 	{
-		if (tokens->type == STRING && first == 0)
+		if(tokens->type == STRING && first == 0)
 		{
-			if (is_builtin(tokens))
+			if(is_builtin(tokens))
 				tokens->type = BUILTIN;
 			else
 				tokens->type = CMD;
 			first = 1;
 		}
-		else if (tokens->type == STRING && first == 1)
+		else if(tokens->type == STRING && first == 1)
 			tokens->type = ARG;
-		if (tokens->type == PIPE)
+		if(tokens->type == PIPE)
 			first = 0;
 		tokens = tokens->next;
 	}
@@ -110,7 +110,8 @@ static char	*get_expanded_instruction(char *instruction)
 	size_t	total_len;
 
 	total_len = expanded_envir_len(instruction) + ft_strlen(instruction);
-	clean = malloc(sizeof(char) * total_len + 1);
+	clean = calloc(1, sizeof(char) * total_len + 1);
+	//clean = malloc(sizeof(char) * total_len + 1); Esto mw mete basura a final del string
 	if (!clean)
 		return (NULL);
 	clean = expand_envirs(clean, instruction);
@@ -126,6 +127,7 @@ void	tokenizer(t_macro *macro)
 	macro->instruction = clean_instruction(macro->instruction);
 	lexemes = ft_split(macro->instruction, ' ');
 	macro->tokens = identify_tokens(lexemes);
+	printf("****DESGLOSE DE TOKENS****\n");
 	print_tokens(macro->tokens);
 	free(lexemes);
 }
