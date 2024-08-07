@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   presyntax.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 15:12:06 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/02 16:38:11 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/07 12:00:46 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,17 @@ char	invalid_char_check(char *instruction)
 			c = ';';
 		if (*ptr == '|' && *(ptr + 1) == '|')
 			c = '|';
+		if ((*ptr == '>' && *(ptr + 1) == '>') || (*ptr == '<' && *(ptr + 1) == '<'))
+        {
+            ptr++;
+            if (*(ptr + 1) == ' ')
+            {
+                if (!ft_isalnum(*(ptr + 2)))
+                    c = *(ptr + 2);
+            }
+            else if (!ft_isalnum(*(ptr + 1)))
+                c = *(ptr + 1);
+        }
 		if (*ptr == '>' || *ptr == '<')
 		{
 			if (*(ptr + 1) == ' ')

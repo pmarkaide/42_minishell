@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 21:24:44 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/05 15:40:15 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/07 11:59:37 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,19 +42,21 @@ static t_token	*identify_redirection_tokens(char *lexeme)
 	token = init_token();
 	if (!token)
 		return (NULL);
-	if (ft_strncmp(lexeme, ">", 1) == 0)
-		token->type = OUTRED;
-	else if (ft_strncmp(lexeme, "<", 1) == 0)
-		token->type = INRED;
-	else if (ft_strncmp(lexeme, ">>", 2) == 0)
+	if (ft_strncmp(lexeme, ">>", 2) == 0)
 		token->type = APPEND;
 	else if (ft_strncmp(lexeme, "<<", 2) == 0)
 		token->type = HERE_DOC;
+	else if (ft_strncmp(lexeme, ">", 1) == 0)
+		token->type = OUTRED;
+	else if (ft_strncmp(lexeme, "<", 1) == 0)
+		token->type = INRED;
 	else if (ft_strncmp(lexeme, "|", 1) == 0)
 		token->type = PIPE;
 	else
 		token->type = STRING;
-	if (token->type != PIPE && token->type != STRING)
+	if (token->type == APPEND || token->type == HERE_DOC)
+		token->value = ft_strdup(lexeme + 2);
+	else if (token->type != PIPE && token->type != STRING)
 		token->value = ft_strdup(lexeme + 1);
 	else
 		token->value = ft_strdup(lexeme);
