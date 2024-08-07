@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-bool is_builtin(t_token *token)
+bool	is_builtin(t_token *token)
 {
 	if (ft_strcmp(token->value, "echo") == 0)
 		return (true);
@@ -30,7 +30,6 @@ bool is_builtin(t_token *token)
 		return (true);
 	return (false);
 }
-
 
 bool	is_inside_single_quotes(const char *str, int index)
 {

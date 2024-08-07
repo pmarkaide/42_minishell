@@ -12,24 +12,24 @@
 
 #include "minishell.h"
 
-static void identify_string_tokens(t_token *tokens)
+static void	identify_string_tokens(t_token *tokens)
 {
-	int first;
+	int	first;
 
 	first = 0;
-	while(tokens)
+	while (tokens)
 	{
-		if(tokens->type == STRING && first == 0)
+		if (tokens->type == STRING && first == 0)
 		{
-			if(is_builtin(tokens))
+			if (is_builtin(tokens))
 				tokens->type = BUILTIN;
 			else
 				tokens->type = CMD;
 			first = 1;
 		}
-		else if(tokens->type == STRING && first == 1)
+		else if (tokens->type == STRING && first == 1)
 			tokens->type = ARG;
-		if(tokens->type == PIPE)
+		if (tokens->type == PIPE)
 			first = 0;
 		tokens = tokens->next;
 	}

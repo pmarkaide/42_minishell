@@ -16,9 +16,9 @@
 # include "../lib/libft/libft.h" /* libft library */
 # include <fcntl.h>              /* for open */
 # include <limits.h>             /* for LONG_MAX, LONG_MIN */
+# include <stdbool.h>            /* for true and false*/
 # include <stdlib.h>             /* for malloc, free, exit, getenv */
 # include <unistd.h>             /* for read, write */
-# include <stdbool.h>			 /* for true and false*/
 
 typedef enum e_type
 {
@@ -68,7 +68,6 @@ void				token_add_back(t_token **tokens, t_token *new);
 t_token				*last_token(t_token *token);
 void				free_tokens(t_token **tokens);
 void				print_tokens(t_token *tokens);
-
 
 /* tests */
 char				*get_envir_value(const char *str, int *len);
