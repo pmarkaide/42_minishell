@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 15:12:06 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/07 21:22:47 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/08 09:06:39 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ char	invalid_char_check(char *instruction)
 	{
 		if (*ptr == ';')
 			c = ';';
+		if (*ptr == '&')
+			c = '&';
 		if (*ptr == '|' && *(ptr + 1) == '|')
 			c = '|';
 		if (*ptr == '>' || *ptr == '<')
