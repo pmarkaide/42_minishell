@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/08 21:02:19 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/08 23:04:38 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,20 @@
 # define MINISHELL_H
 
 # include "../lib/libft/libft.h" /* libft library */
-# include <fcntl.h>              /* for open */
 # include <limits.h>             /* for LONG_MAX, LONG_MIN */
 # include <stdbool.h>            /* for true and false*/
 # include <stdlib.h>             /* for malloc, free, exit, getenv */
-# include <unistd.h>             /* for read, write */
+# include <errno.h>              /* for errno */
+# include <fcntl.h>              /* for open, O_DIRECTORY */
+# include <sys/wait.h>           /* for waitpid, wait, */
+# include <unistd.h>             /* for file r/w, dup2, execve, fork, pipe */
+
+# define NO_FILE 1
+# define PERMISSION_DENIED 126
+# define COMMAND_NOT_FOUND 127
+# define SEGFAULT 139
+# define IS_DIRECTORY -1
+# define EXEC_NOT_FOUND -2
 
 typedef enum e_type
 {
@@ -58,6 +67,11 @@ typedef struct s_macro
 	char			*instruction;
 	t_token			*tokens;
 	t_cmd			*cmds;
+	size_t			num_cmds;
+	size_t			pipe_fd[2];
+	size_t			in_fd;
+	size_t			out_fd;
+	pid_t			*pid;
 }					t_macro;
 
 /* presyntax*/
