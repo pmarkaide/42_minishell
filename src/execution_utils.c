@@ -1,44 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free.c                                             :+:      :+:    :+:   */
+/*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/04 13:02:09 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/09 20:11:48 by pmarkaid         ###   ########.fr       */
+/*   Created: 2024/08/09 20:03:14 by pmarkaid          #+#    #+#             */
+/*   Updated: 2024/08/09 20:12:05 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_tokens(t_token **tokens)
+char **build_cmd_args_array(t_token *cmd_args)
 {
-	t_token	*tmp;
+	char **cmd_array;
+	t_token *tmp;
+	int i;
 
-	while (*tokens)
-	{
-		tmp = *tokens;
-		*tokens = (*tokens)->next;
-		free(tmp->value);
-		free(tmp);
-	}
-	*tokens = NULL;
-}
-
-void	free_array(char ***array)
-{
-	size_t	i;
-
-	if (*array == NULL)
-		return ;
+	tmp = cmd_args;
+	cmd_array = (char **)malloc(sizeof(char *) * (tokens_size(cmd_args) + 1));
+	if (!cmd_array)
+		return (NULL);
 	i = 0;
-	while ((*array)[i] != NULL)
+	tmp = cmd_args;
+	while (tmp)
 	{
-		free((*array)[i]);
-		(*array)[i] = NULL;
+		cmd_array[i] = ft_strdup(tmp->value);
+		if (!cmd_array[i])
+		{
+			free_array(&cmd_array);
+			return (NULL);
+		}
 		i++;
+		tmp = tmp->next;
 	}
-	free(*array);
-	*array = NULL;
+	cmd_array[i] = NULL;
+	return (cmd_array);
 }

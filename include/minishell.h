@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/09 14:25:43 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/09 20:31:31 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "../lib/libft/libft.h" /* libft library */
 # include <limits.h>             /* for LONG_MAX, LONG_MIN */
+# include <errno.h>              /* for errno */
 # include <stdbool.h>			 /* for true and false*/
 # include <stdio.h>      // printf, perror
 # include <stdlib.h>     // malloc, free, exit, getenv
@@ -32,6 +33,13 @@
 # include <sys/ioctl.h>  // ioctl
 # include <readline/readline.h>  // readline, rl_clear_history, rl_on_new_line, rl_replace_line, rl_redisplay
 # include <readline/history.h>  // add_history
+
+# define NO_FILE 1
+# define PERMISSION_DENIED 126
+# define COMMAND_NOT_FOUND 127
+# define SEGFAULT 139
+# define IS_DIRECTORY -1
+# define EXEC_NOT_FOUND -2
 
 typedef enum e_type
 {
@@ -66,7 +74,7 @@ typedef struct s_token
 
 typedef struct s_cmd
 {
-	size_t			n;
+	int			n;
 	t_type			type;
 	t_token			*cmd_arg;
 	t_token			*redir;
@@ -83,6 +91,11 @@ typedef struct s_macro
 	t_token			*tokens;
 	pid_t			pid;
 	t_cmd			*cmds;
+	int				num_cmds;
+	int				pipe_fd[2];
+	int				in_fd;
+	int				out_fd;
+	pid_t			*pid;
 }					t_macro;
 
 /* presyntax*/
@@ -108,13 +121,34 @@ void				cmd_add_back(t_cmd **cmds, t_cmd *new);
 t_cmd				*last_cmd(t_cmd *cmd);
 void				print_cmds(t_cmd *cmds);
 char				*enum_to_char(t_type type);
+bool				is_last_of_type(t_token *tokens, t_type type);
+int					tokens_size(t_token *tokens);
+
 
 /* parsing */
 t_cmd				*parsing(t_token *tokens);
 
+/* execution */
+int					execution(t_macro *macro);
+
+/* execution utils */
+char				**build_cmd_args_array(t_token *cmd_args);
+
+/* validation */
+int			open_infile(char *infile);
+int			open_infile(char *outfile);
+void		close_open_fds(t_macro *macro);
+void		dup2_or_exit(t_macro *macro, int oldfd, int newfd);
+void		dup_file_descriptors(t_macro *macro, t_cmd *cmd, int read_end);
+
+
 /* tests */
 char				*get_envir_value(const char *str, int *len);
 size_t				expanded_envir_len(char *instruction);
+
+/* free */
+void	free_array(char ***array);
+void	free_tokens(t_token **tokens);
 
 /* others */
 void				ft_signal_handler(int signum);
