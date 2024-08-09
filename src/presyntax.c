@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   presyntax.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 15:12:06 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/08 09:06:39 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/09 14:17:08 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ char	unclosed_quote_check(char *instruction)
 	return (0);
 }
 
-char	*syntax_error_check(char *instruction)
+int	syntax_error_check(char *instruction)
 {
 	char	c;
 
@@ -82,7 +82,8 @@ char	*syntax_error_check(char *instruction)
 		ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
 		ft_putchar_fd(c, 2);
 		ft_putstr_fd("'\n", 2);
-		exit(258);
+		return (1);
+		//exit(258);
 	}
 	c = unclosed_quote_check(instruction);
 	if (c != 0)
@@ -91,7 +92,8 @@ char	*syntax_error_check(char *instruction)
 			2);
 		ft_putchar_fd(c, 2);
 		ft_putstr_fd("'\n", 2);
-		exit(258);
+		return (1);		
+		//exit(258);
 	}
-	return (instruction);
+	return (0);
 }
