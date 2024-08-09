@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 14:49:38 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/09 14:18:02 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/09 21:55:15 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,27 +56,25 @@ int	main(int argc, char **argv, char **envp)
 		path = ft_strjoin("minishell> ", path, NULL);
 		path = ft_strjoin(path, " $ ", NULL);
 		line = readline(path);
-		if (line == NULL || *line == EOF)
-		{
-			printf("Ctrl+D exits");
-			break;
-		}
-		if (line[0] != '\0')
-			add_history(line);
+		// if (line == NULL || *line == EOF)
+		// {
+		// 	printf("Ctrl+D exits");
+		// 	break;
+		// }
+		// if (line[0] != '\0')
+		// 	add_history(line);
 		//FALTA FUNCION AQUI PARA AÑADIR HISTORIAL EN macro->history
-		//macro->instruction = syntax_error_check(line);
 		if (syntax_error_check(line))
 		{
-			//ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
 			free(line);
 			continue ;
 		}
+		// syntax_error_check(line);
 		macro->instruction = line;
 		tokenizer(macro);
 		test_builtins(macro);
-		free(line);
-		// parsing(&macro);
-		// execution(&macro);
+		parsing(macro->tokens);
+		execution(macro);
 		// free_instruction(&macro);
 		// ft_readline(&macro);
 		// free_macro(&macro);

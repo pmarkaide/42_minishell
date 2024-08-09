@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/09 20:31:31 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/09 21:02:27 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ typedef struct s_token
 
 typedef struct s_cmd
 {
-	int			n;
+	int				n;
 	t_type			type;
 	t_token			*cmd_arg;
 	t_token			*redir;
@@ -89,7 +89,6 @@ typedef struct s_macro
 	char			**history;
 	char			*instruction;
 	t_token			*tokens;
-	pid_t			pid;
 	t_cmd			*cmds;
 	int				num_cmds;
 	int				pipe_fd[2];

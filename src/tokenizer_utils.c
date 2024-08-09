@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 10:42:50 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/08 16:44:35 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/09 21:54:03 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,9 @@ size_t	expanded_envir_len(char *instruction)
 	char	*envir_value;
 	int		envir_name_len;
 
+	if (!instruction)
+		return (0);
+
 	len = 0;
 	i = 0;
 	ptr = instruction;
@@ -96,6 +99,8 @@ size_t	expanded_envir_len(char *instruction)
 	{
 		if (ptr[i] == '$' && !is_inside_single_quotes(ptr, i))
 		{
+			 if (ptr[i + 1] == '\0')
+                break;
 			envir_value = get_envir_value(&ptr[i + 1], &envir_name_len);
 			if (envir_value)
 				len += ft_strlen(envir_value);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 21:24:44 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/09 14:31:15 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/09 21:53:37 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,8 @@ static char	*get_expanded_instruction(char *instruction)
 	char	*clean;
 	size_t	total_len;
 
+	if (!instruction)
+		return (NULL);
 	total_len = expanded_envir_len(instruction) + ft_strlen(instruction);
 	clean = calloc(1, sizeof(char) * total_len + 1);
 	//clean = malloc(sizeof(char) * total_len + 1); Esto mw mete basura a final del string

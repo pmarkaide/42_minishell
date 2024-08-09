@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:23:53 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/09 20:10:06 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/09 21:45:34 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,13 @@ static void	execute_child_process(t_macro *macro, int index, int read_end)
 	dup_file_descriptors(macro, cmd, read_end);
 	//eval_executable(macro, macro->cmds[i][0]);
 	cmd_array = build_cmd_args_array(cmd->cmd_arg); // handle NULL return
-	if (execve(cmd_array[1], cmd_array, macro->envp) == -1)
-	{
+	//if (execve(cmd_array[1], cmd_array, macro->envp) == -1)
+	//{
 		//free_data(macro);
-		exit(EXIT_FAILURE);
-	}
-	exit(0);
+		//exit(EXIT_FAILURE);
+	//}
+	//exit(0);
+	ft_print_char_array(cmd_array);
 }
 
 static int	execute_cmds(t_macro *macro, int read_end)
