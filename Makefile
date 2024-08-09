@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+         #
+#    By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/01 15:11:43 by pmarkaid          #+#    #+#              #
-#    Updated: 2024/08/08 20:44:51 by pmarkaid         ###   ########.fr        #
+#    Updated: 2024/08/09 14:28:58 by dbejar-s         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,13 @@ SRCS_FILES = \
 	print_utils.c \
 	tokenizer_utils.c \
 	free.c \
-	parsing.c
+	parsing.c	\
+	builtins.c	\
+	env.c 	\
+	main_utils.c 	\
+	signals.c 	\
+	testing_func.c 	\
+	
 
 SRC_DIR = src/
 SRCS = $(addprefix $(SRC_DIR), $(SRCS_FILES))
@@ -39,19 +45,22 @@ TEST_NAME = tests_runner
 CC = cc
 CFLAGS = -Wall -Werror -Wextra -g
 
+# External Libraries
+LIBS = -lreadline
+
 all: makelibft $(NAME)
 
 makelibft:
 	make -C $(LIBFT_DIR)
 
 %.o: %.c
-	$(CC) $(CFLAGS) $(LIBFT_INCLUDE) $(INCLUDE) -c $< -o $@
+	$(CC) $(CFLAGS) $(LIBS) $(LIBFT_INCLUDE) $(INCLUDE) -c $< -o $@
 
 $(NAME): $(OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT_INCLUDE) $(INCLUDE) $(LIBFT) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT_INCLUDE) $(INCLUDE) $(LIBFT) -o $(NAME) $(LIBS)
 
 tests: makelibft $(TEST_OBJS) $(filter-out $(SRC_DIR)main.o, $(OBJS))
-	$(CC) $(CFLAGS) $(TEST_OBJS) $(filter-out $(SRC_DIR)main.o, $(OBJS)) $(LIBFT_INCLUDE) $(INCLUDE) $(LIBFT) -o $(TEST_NAME)
+	$(CC) $(CFLAGS) $(LIBS) $(TEST_OBJS) $(filter-out $(SRC_DIR)main.o, $(OBJS)) $(LIBFT_INCLUDE) $(INCLUDE) $(LIBFT) -o $(TEST_NAME)
 	./$(TEST_NAME)
 
 clean:
