@@ -6,11 +6,24 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 10:42:50 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/05 14:22:07 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/08 16:44:35 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+bool	is_redir(t_token *token)
+{
+	if (token->type == INRED)
+		return (true);
+	else if (token->type == OUTRED)
+		return (true);
+	else if (token->type == HERE_DOC)
+		return (true);
+	else if (token->type == APPEND)
+		return (true);
+	return (false);
+}
 
 bool	is_builtin(t_token *token)
 {
