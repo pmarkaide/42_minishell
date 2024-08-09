@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 09:53:20 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/08 21:14:40 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/09 22:24:25 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,22 +70,20 @@ static t_token	*parse_cmd_arg_tokens(t_token *tokens)
 	return (cmd_arg);
 }
 
-static t_cmd	*parse_tokens(t_token *tokens)
+static t_cmd	*parse_tokens(t_token *tokens, int *n)
 {
 	t_cmd	*cmds;
 	t_cmd	*cmd;
 	t_token	*tmp;
-	size_t	n;
 
 	cmds = NULL;
 	tmp = tokens;
-	n = 1;
 	while (tmp)
 	{
 		cmd = init_cmd();
 		if (!cmd)
 			return (NULL);
-		cmd->n = n++;
+		cmd->n = (*n)++;;
 		cmd->redir = parse_redir_tokens(tmp);
 		cmd->cmd_arg = parse_cmd_arg_tokens(tmp);
 		cmd->type = cmd->cmd_arg->type;
@@ -118,17 +116,24 @@ static char	parsing_error_check(t_token *tokens)
 	}
 	return (c);
 }
-t_cmd	*parsing(t_token *tokens)
+t_cmd	*parsing(t_macro *macro)
 {
 	char	c;
+	int 	n;
 	t_cmd	*cmds;
 
+	n = 0;
 	cmds = NULL;
-	c = parsing_error_check(tokens);
+	c = parsing_error_check(macro->tokens);
 	if (c != 0)
 		return (NULL);
 	else
-		cmds = parse_tokens(tokens);
-	print_cmds(cmds);
-	return (cmds);
+		cmds = parse_tokens(macro->tokens, &n);
+	if(!cmds)
+		return(NULL);
+	else
+	{
+		macro->num_cmds = n;
+		return(cmds);
+	}
 }

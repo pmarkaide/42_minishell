@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 13:02:41 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/08 21:08:09 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/09 22:43:29 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,12 @@ char	*enum_to_char(t_type type)
 
 void	print_tokens(t_token *tokens)
 {
+	if(!tokens)
+	{
+		ft_printf("No tokens to print\n");
+		return;
+	}
+	ft_printf("Starting to print tokens\n");
 	while (tokens)
 	{
 		ft_printf("%s: %s\n", enum_to_char(tokens->type), tokens->value);

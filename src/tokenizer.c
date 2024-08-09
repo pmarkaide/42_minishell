@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 21:24:44 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/09 21:53:37 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/09 21:59:38 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,6 @@ void	tokenizer(t_macro *macro)
 	macro->instruction = clean_instruction(macro->instruction);
 	lexemes = ft_split(macro->instruction, ' ');
 	macro->tokens = identify_tokens(lexemes);
-	print_tokens(macro->tokens);
+	//print_tokens(macro->tokens);
 	free(lexemes);
 }

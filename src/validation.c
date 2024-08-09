@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:35:57 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/09 20:28:10 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/10 00:05:54 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,22 +118,30 @@ void dup_file_descriptors(t_macro *macro, t_cmd *cmd, int read_end)
 	int fd;
 
 	fd = open_last_outfile(cmd->redir);
-	if (fd >= 0)
+	if (fd >= 1)
 	{
-		dup2(fd, STDOUT_FILENO);
-		close(fd);
+        if (dup2(fd, STDOUT_FILENO) < 0)
+            perror("dup2 stdout");
+        close(fd);
 	}
 	else if (cmd->n < macro->num_cmds)
-		dup2(macro->pipe_fd[1], STDOUT_FILENO);
+    {
+        if (dup2(macro->pipe_fd[1], STDOUT_FILENO) < 0)
+            perror("dup2 pipe write");
+    }
 	close(macro->pipe_fd[1]);
 	fd = open_last_infile(cmd->redir);
 	if (fd >= 0)
 	{
-		dup2(fd, STDIN_FILENO);
-		close(fd);
+       if (dup2(fd, STDIN_FILENO) < 0)
+            perror("dup2 stdin");
+        close(fd);
 	}
 	else if(cmd->n > 1)
-		dup2(read_end, STDIN_FILENO);
+    {
+        if (dup2(read_end, STDIN_FILENO) < 0)
+            perror("dup2 pipe read");
+    }
 	close(macro->pipe_fd[0]);
 }
 
