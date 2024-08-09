@@ -6,7 +6,7 @@
 #    By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/01 15:11:43 by pmarkaid          #+#    #+#              #
-#    Updated: 2024/08/08 20:44:51 by pmarkaid         ###   ########.fr        #
+#    Updated: 2024/08/09 13:56:52 by pmarkaid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,9 @@ SRCS_FILES = \
 	print_utils.c \
 	tokenizer_utils.c \
 	free.c \
-	parsing.c
+	parsing.c \
+	validation.c \
+	execution.c
 
 SRC_DIR = src/
 SRCS = $(addprefix $(SRC_DIR), $(SRCS_FILES))

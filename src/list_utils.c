@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 21:43:43 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/08 14:46:03 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/09 15:58:33 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,16 @@ t_cmd	*last_cmd(t_cmd *cmd)
 	while (cmd->next)
 		cmd = cmd->next;
 	return (cmd);
+}
+
+bool is_last_of_type(t_token *tokens, t_type type)
+{
+    t_token *tmp = tokens->next;
+    while (tmp)
+    {
+        if (tmp->type == type)
+            return false;
+        tmp = tmp->next;
+    }
+    return true;
 }

@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:23:53 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/08 23:08:48 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/09 15:32:43 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,16 +42,26 @@ static int	wait_processes(pid_t *pid, int cmds)
 	return (exit_code);
 }
 
-static void	execute_child_process(t_macro *macro, int i, int read_end)
+static void	execute_child_process(t_macro *macro, int index, int read_end)
 {
-	dup_file_descriptors(macro, i, read_end);
-	eval_executable(macro, macro->cmds[i][0]);
-	if (execve(macro->executable, macro->cmds[i], macro->envp) == -1)
-	{
-		free_data(macro);
-		exit(EXIT_FAILURE);
-	}
-	exit(0);
+	int i;
+	t_cmd *cmd;
+
+	cmd = macro->cmds;
+	i = 0;
+	while (cmd != NULL && i < index)
+    {
+        cmd = cmd->next;
+        i++;
+    }
+	dup_file_descriptors(macro, cmd);
+	//eval_executable(macro, macro->cmds[i][0]);
+	// if (execve(macro->executable, macro->cmds[i], macro->envp) == -1)
+	// {
+	// 	free_data(macro);
+	// 	exit(EXIT_FAILURE);
+	// }
+	// exit(0);
 }
 
 static int	execute_cmds(t_macro *macro, int read_end)

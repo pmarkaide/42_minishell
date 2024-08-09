@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/08 23:04:38 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/09 15:59:05 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,10 @@ typedef struct s_macro
 	char			*instruction;
 	t_token			*tokens;
 	t_cmd			*cmds;
-	size_t			num_cmds;
-	size_t			pipe_fd[2];
-	size_t			in_fd;
-	size_t			out_fd;
+	int				num_cmds;
+	int				pipe_fd[2];
+	int				in_fd;
+	int				out_fd;
 	pid_t			*pid;
 }					t_macro;
 
@@ -97,9 +97,22 @@ void				cmd_add_back(t_cmd **cmds, t_cmd *new);
 t_cmd				*last_cmd(t_cmd *cmd);
 void				print_cmds(t_cmd *cmds);
 char				*enum_to_char(t_type type);
+bool				is_last_of_type(t_token *tokens, t_type type);
+
 
 /* parsing */
 t_cmd				*parsing(t_token *tokens);
+
+/* execution */
+int					execution(t_macro *macro);
+
+/* validation */
+int			open_infile(char *infile);
+int			open_infile(char *outfile);
+void		close_open_fds(t_macro *macro);
+void		dup2_or_exit(t_macro *macro, int oldfd, int newfd);
+void		dup_file_descriptors(t_macro *macro, t_cmd *cmd);
+
 
 /* tests */
 char				*get_envir_value(const char *str, int *len);
