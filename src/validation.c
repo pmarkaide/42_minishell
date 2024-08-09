@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:35:57 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/09 16:00:42 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/09 20:28:10 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,7 @@ int open_last_infile(t_token *redir)
     int fd;
 
     tmp = redir;
-    fd = -1;
-
+    fd = 0;
     while (tmp)
     {
         if (tmp->type == INRED)
@@ -60,8 +59,9 @@ int open_last_infile(t_token *redir)
                 break;
             if (!is_last_of_type(tmp, INRED))
             {
-                close(fd);
-                fd = -1;
+				if(fd != 0)
+                	close(fd);
+                fd = 0;
             }
         }
         tmp = tmp->next;
@@ -113,20 +113,27 @@ void	close_open_fds(t_macro *macro)
 // 		free_data_and_exit(macro, "dup2 error", -1);
 // }
 
-void dup_file_descriptors(t_macro *macro, t_cmd *cmd)
+void dup_file_descriptors(t_macro *macro, t_cmd *cmd, int read_end)
 {
-    int fd;
+	int fd;
 
-    fd = open_last_outfile(cmd->redir);
-    if (fd >= 0)
-        dup2(fd, STDOUT_FILENO);
-    else
-        dup2(macro->pipe_fd[1], STDOUT_FILENO);
-
-    fd = open_last_infile(cmd->redir);
-    if (fd >= 0)
-        dup2(fd, STDIN_FILENO);
-    else
-        dup2(macro->pipe_fd[0], STDIN_FILENO);
+	fd = open_last_outfile(cmd->redir);
+	if (fd >= 0)
+	{
+		dup2(fd, STDOUT_FILENO);
+		close(fd);
+	}
+	else if (cmd->n < macro->num_cmds)
+		dup2(macro->pipe_fd[1], STDOUT_FILENO);
+	close(macro->pipe_fd[1]);
+	fd = open_last_infile(cmd->redir);
+	if (fd >= 0)
+	{
+		dup2(fd, STDIN_FILENO);
+		close(fd);
+	}
+	else if(cmd->n > 1)
+		dup2(read_end, STDIN_FILENO);
+	close(macro->pipe_fd[0]);
 }
 
