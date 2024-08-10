@@ -39,10 +39,10 @@ char	*enum_to_char(t_type type)
 
 void	print_tokens(t_token *tokens)
 {
-	if(!tokens)
+	if (!tokens)
 	{
 		ft_printf("No tokens to print\n");
-		return;
+		return ;
 	}
 	ft_printf("Starting to print tokens\n");
 	while (tokens)

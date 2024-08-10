@@ -53,18 +53,17 @@ void	ft_export_do(t_macro *macro, char *name, char *value)
 {
 	int		ij[2];
 	int		pos;
-    char    *cmd;
+	char	*cmd;
 
-    cmd = ft_strjoin(name, "=", 0);
-    cmd = ft_strjoin(cmd, value, 0);
-    ij[0] = 1;
-    pos = var_in_env(cmd, macro->env, ij);
-    if (pos == 1)
-    {
-        free(macro->env[ij[1]]);
-        macro->env[ij[1]] = ft_strdup(cmd);
-    }
-    if (pos != 1)
-        macro->env = ft_add_row(macro->env, cmd);
+	cmd = ft_strjoin(name, "=", 0);
+	cmd = ft_strjoin(cmd, value, 0);
+	ij[0] = 1;
+	pos = var_in_env(cmd, macro->env, ij);
+	if (pos == 1)
+	{
+		free(macro->env[ij[1]]);
+		macro->env[ij[1]] = ft_strdup(cmd);
+	}
+	if (pos != 1)
+		macro->env = ft_add_row(macro->env, cmd);
 }
-

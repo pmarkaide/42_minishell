@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 21:24:44 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/09 21:59:38 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/10 13:04:34 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,6 @@ static char	*get_expanded_instruction(char *instruction)
 		return (NULL);
 	total_len = expanded_envir_len(instruction) + ft_strlen(instruction);
 	clean = calloc(1, sizeof(char) * total_len + 1);
-	//clean = malloc(sizeof(char) * total_len + 1); Esto mw mete basura a final del string
 	if (!clean)
 		return (NULL);
 	clean = expand_envirs(clean, instruction);
@@ -129,6 +128,6 @@ void	tokenizer(t_macro *macro)
 	macro->instruction = clean_instruction(macro->instruction);
 	lexemes = ft_split(macro->instruction, ' ');
 	macro->tokens = identify_tokens(lexemes);
-	//print_tokens(macro->tokens);
+	// print_tokens(macro->tokens);
 	free(lexemes);
 }

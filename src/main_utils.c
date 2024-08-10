@@ -94,7 +94,7 @@ int	ft_matrixlen(char **matrix)
 	return (i);
 }
 
-char    **copy_env(char **envp)
+char	**copy_env(char **envp)
 {
 	char	**result;
 	int		n_rows;
@@ -116,5 +116,5 @@ char    **copy_env(char **envp)
 		i++;
 	}
 	result[i] = NULL;
-	return (result);  
+	return (result);
 }

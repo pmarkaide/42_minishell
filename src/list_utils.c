@@ -72,16 +72,18 @@ t_cmd	*last_cmd(t_cmd *cmd)
 	return (cmd);
 }
 
-bool is_last_of_type(t_token *tokens, t_type type)
+bool	is_last_of_type(t_token *tokens, t_type type)
 {
-    t_token *tmp = tokens->next;
-    while (tmp)
-    {
-        if (tmp->type == type)
-            return false;
-        tmp = tmp->next;
-    }
-    return true;
+	t_token	*tmp;
+
+	tmp = tokens->next;
+	while (tmp)
+	{
+		if (tmp->type == type)
+			return (false);
+		tmp = tmp->next;
+	}
+	return (true);
 }
 
 int	tokens_size(t_token *tokens)
@@ -96,4 +98,3 @@ int	tokens_size(t_token *tokens)
 	}
 	return ((int)i);
 }
-

@@ -45,7 +45,6 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	signal(SIGINT, ft_signal_handler);
 	signal(SIGQUIT, SIG_IGN);
-
 	while (1)
 	{
 		path = getcwd(NULL, 0);
@@ -59,11 +58,11 @@ int	main(int argc, char **argv, char **envp)
 		if (line == NULL || *line == EOF)
 		{
 			printf("Ctrl+D exits");
-			break;
+			break ;
 		}
 		if (line[0] != '\0')
 			add_history(line);
-		//FALTA FUNCION AQUI PARA AÑADIR HISTORIAL EN macro->history
+		// FALTA FUNCION AQUI PARA AÑADIR HISTORIAL EN macro->history
 		if (syntax_error_check(line))
 		{
 			free(line);

@@ -12,11 +12,11 @@
 
 #include "minishell.h"
 
-char **build_cmd_args_array(t_token *cmd_args)
+char	**build_cmd_args_array(t_token *cmd_args)
 {
-	char **cmd_array;
-	t_token *tmp;
-	int i;
+	char	**cmd_array;
+	t_token	*tmp;
+	int		i;
 
 	tmp = cmd_args;
 	cmd_array = (char **)malloc(sizeof(char *) * (tokens_size(cmd_args) + 1));

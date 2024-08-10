@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:35:57 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/10 00:05:54 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/10 13:05:41 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,134 +14,146 @@
 
 int	open_infile(char *infile)
 {
+	int	fd;
+
 	// if (macro->here_doc == 1)
 	// 	here_doc(macro);
-	int fd;
 	fd = open(infile, O_RDONLY);
-	// if (errno == ENOENT)
-	// 	free_data_and_exit(macro, macro->infile, NO_FILE);
-	// if (errno == EACCES)
-	// 	free_data_and_exit(macro, macro->infile, PERMISSION_DENIED);
-	// if (errno == IS_DIRECTORY)
-	// 	free_data_and_exit(macro, macro->infile, IS_DIRECTORY);
-	return(fd);
+	if (errno == ENOENT)
+		return (-1);
+	if (errno == EACCES)
+		return (-1);
+	if (errno == IS_DIRECTORY)
+		return (-1);
+	return (fd);
 }
 
 int	open_outfile(char *outfile)
 {
+	int	fd;
+
 	// if (macro->here_doc == 1)
-	// 	macro->out_fd = open(macro->outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	//  macro->out_fd = open(macro->outfile, O_WRONLY | O_CREAT | O_APPEND,0644);
 	// else
-	int fd;
 	fd = open(outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	// if (errno == ENOENT)
-	// 	free_data_and_exit(macro, macro->outfile, NO_FILE);
-	// if (errno == EACCES)
-	// 	free_data_and_exit(macro, macro->outfile, PERMISSION_DENIED);
-	// if (errno == IS_DIRECTORY)
-	// 	free_data_and_exit(macro, macro->infile, IS_DIRECTORY);
-	return(fd);
+	if (errno == ENOENT)
+		return (-1);
+	if (errno == EACCES)
+		return (-1);
+	if (errno == IS_DIRECTORY)
+		return (-1);
+	return (fd);
 }
 
-int open_last_infile(t_token *redir)
+int	open_last_infile(t_token *redir)
 {
-    t_token *tmp;
-    int fd;
+	t_token	*tmp;
+	int		fd;
 
-    tmp = redir;
-    fd = 0;
-    while (tmp)
-    {
-        if (tmp->type == INRED)
-        {
-            fd = open_infile(tmp->value);
-            if (fd == -1)
-                break;
-            if (!is_last_of_type(tmp, INRED))
-            {
-				if(fd != 0)
-                	close(fd);
-                fd = 0;
-            }
-        }
-        tmp = tmp->next;
-    }
-    return fd;
+	tmp = redir;
+	fd = -1;
+	while (tmp)
+	{
+		if (tmp->type == INRED)
+		{
+			fd = open_infile(tmp->value);
+			if (fd == -1)
+				break ;
+			if (!is_last_of_type(tmp, INRED))
+			{
+				if (fd != 0)
+					close(fd);
+				fd = 0;
+			}
+		}
+		tmp = tmp->next;
+	}
+	return (fd);
 }
 
-int open_last_outfile(t_token *redir)
+int	open_last_outfile(t_token *redir)
 {
-    t_token *tmp;
-    int fd;
+	t_token	*tmp;
+	int		fd;
 
-    tmp = redir;
-    fd = -1;
-
-    while (tmp)
-    {
-        if (tmp->type == OUTRED)
-        {
-            fd = open_outfile(tmp->value);
-            if (fd == -1)
-                break;
-            if (!is_last_of_type(tmp, OUTRED))
-            {
-                close(fd);
-                fd = -1;
-            }
-        }
-        tmp = tmp->next;
-    }
-    return fd;
+	tmp = redir;
+	fd = -1;
+	while (tmp)
+	{
+		if (tmp->type == OUTRED)
+		{
+			fd = open_outfile(tmp->value);
+			if (fd == -1)
+				break ;
+			if (!is_last_of_type(tmp, OUTRED))
+			{
+				close(fd);
+				fd = -1;
+			}
+		}
+		tmp = tmp->next;
+	}
+	return (fd);
 }
 
-void	close_open_fds(t_macro *macro)
+void	dup_stdout(t_macro *macro, t_cmd *cmd)
 {
-	if (macro->pipe_fd[0] != -1)
-		close(macro->pipe_fd[0]);
-	if (macro->pipe_fd[1] != -1)
-		close(macro->pipe_fd[1]);
-	if (macro->in_fd != -1)
-		close(macro->in_fd);
-	if (macro->out_fd != -1)
-		close(macro->out_fd);
-}
-
-// void	dup2_or_exit(t_macro *macro, int oldfd, int newfd)
-// {
-// 	if (dup2(oldfd, newfd) < 0)
-// 		free_data_and_exit(macro, "dup2 error", -1);
-// }
-
-void dup_file_descriptors(t_macro *macro, t_cmd *cmd, int read_end)
-{
-	int fd;
+	int	fd;
 
 	fd = open_last_outfile(cmd->redir);
+	if (fd == -1)
+		return ;
 	if (fd >= 1)
 	{
-        if (dup2(fd, STDOUT_FILENO) < 0)
-            perror("dup2 stdout");
-        close(fd);
+		if (dup2(fd, STDOUT_FILENO) < 0)
+		{
+			perror("dup2 stdout");
+			close(fd);
+			return ;
+		}
+		close(fd);
 	}
 	else if (cmd->n < macro->num_cmds)
-    {
-        if (dup2(macro->pipe_fd[1], STDOUT_FILENO) < 0)
-            perror("dup2 pipe write");
-    }
+	{
+		if (dup2(macro->pipe_fd[1], STDOUT_FILENO) < 0)
+		{
+			perror("dup2 pipe write");
+			return ;
+		}
+	}
 	close(macro->pipe_fd[1]);
+}
+
+void	dup_stdin(t_macro *macro, t_cmd *cmd, int read_end)
+{
+	int	fd;
+
 	fd = open_last_infile(cmd->redir);
+	if (fd == -1)
+		return ;
 	if (fd >= 0)
 	{
-       if (dup2(fd, STDIN_FILENO) < 0)
-            perror("dup2 stdin");
-        close(fd);
+		if (dup2(fd, STDIN_FILENO) < 0)
+		{
+			perror("dup2 stdin");
+			close(fd);
+			return ;
+		}
+		close(fd);
 	}
-	else if(cmd->n > 1)
-    {
-        if (dup2(read_end, STDIN_FILENO) < 0)
-            perror("dup2 pipe read");
-    }
+	else if (cmd->n > 1)
+	{
+		if (dup2(read_end, STDIN_FILENO) < 0)
+		{
+			perror("dup2 pipe read");
+			return ;
+		}
+	}
 	close(macro->pipe_fd[0]);
 }
 
+void	dup_file_descriptors(t_macro *macro, t_cmd *cmd, int read_end)
+{
+	dup_stdout(macro, cmd);
+	dup_stdin(macro, cmd, read_end);
+}
