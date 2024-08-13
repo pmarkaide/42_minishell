@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:35:57 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/13 23:26:55 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/13 23:48:28 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,18 @@ int	validate_executable(t_macro *macro, t_cmd *cmd)
 	char	*full_path;
 	int		exit_code;
 
+	full_path == NULL;
 	if (ft_strchr("./", cmd->cmd_arg->value[0]) == NULL)
+	{
 		full_path = search_for_executable(macro, cmd);
-	if (!full_path)
-		return (-1);
-	free(cmd->cmd_arg->value);
-	cmd->cmd_arg->value = full_path;
+		if (!full_path)
+			return (-1);
+		else
+		{
+			free(cmd->cmd_arg->value);
+			cmd->cmd_arg->value = full_path;
+		}
+	}
 	exit_code = validate_access(cmd->cmd_arg->value);
 	return (exit_code);
 }
