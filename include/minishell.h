@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/13 22:58:18 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/13 23:31:14 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,25 @@
 # define MINISHELL_H
 
 # include "../lib/libft/libft.h" /* libft library */
-# include <curses.h>             // tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
+# include <curses.h>             // tgetent, tgetflag, tgetnum, tgetstr, tgoto,tputs
 # include <dirent.h>             // opendir, readdir, closedir
 # include <errno.h>              /* for errno */
 # include <fcntl.h>              // open
 # include <limits.h>             /* for LONG_MAX, LONG_MIN */
 # include <readline/history.h>   // add_history
-# include <readline/readline.h>  // readline, rl_clear_history, rl_on_new_line, rl_replace_line, rl_redisplay
-# include <signal.h>             // signal, sigaction, sigemptyset, sigaddset, kill
+# include <readline/readline.h>  // readline, rl_clear_history, rl_on_new_line,rl_replace_line, rl_redisplay
+# include <signal.h>             // signal, sigaction, sigemptyset, sigaddset,kill
 # include <stdbool.h>            /* for true and false*/
 # include <stdio.h>              // printf, perror
 # include <stdlib.h>             // malloc, free, exit, getenv
 # include <string.h>             // strerror
 # include <sys/ioctl.h>          // ioctl
 # include <sys/stat.h>           // stat, lstat, fstat
-# include <sys/types.h>          // fork, wait, waitpid, wait3, wait4, stat, lstat, fstat
+# include <sys/types.h>          // fork, wait, waitpid, wait3, wait4, stat,lstat, fstat
 # include <sys/wait.h>           // wait, waitpid, wait3, wait4
-# include <term.h>               // tgetent, tgetflag, tgetnum, tgetstr, tgoto,tputs
+# include <term.h>               // tgetent, tgetflag, tgetnum, tgetstr,tgoto,tputs
 # include <termios.h>            // tcsetattr, tcgetattr
-# include <unistd.h>             // read, write, access, open, close, fork,getcwd, chdir, unlink, execve, dup, dup2, pipe, isatty, ttyname, ttyslot
+# include <unistd.h>             // read, write, access, open, close,fork,getcwd, chdir, unlink, execve, dup, dup2, pipe, isatty, ttyname,ttyslot
 
 # define NO_FILE 1
 # define PERMISSION_DENIED 126
@@ -134,9 +134,15 @@ int					execution(t_macro *macro);
 char				**build_cmd_args_array(t_token *cmd_args);
 
 /* validation */
-int					open_file(t_token *token);
-void				dup_file_descriptors(t_macro *macro, t_cmd *cmd, int read_end);
 int					validate_executable(t_macro *macro, t_cmd *cmd);
+
+/* validation utils */
+bool				is_directory(const char *path);
+char				**parse_paths(char **env);
+char				*get_executable_path(t_macro *macro, char **paths, char *executable);
+
+/* dup */
+void				dup_file_descriptors(t_macro *macro, t_cmd *cmd, int read_end);
 
 /* tests */
 char				*get_envir_value(const char *str, int *len);
