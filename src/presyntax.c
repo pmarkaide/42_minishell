@@ -83,7 +83,7 @@ int	syntax_error_check(char *instruction)
 		ft_putchar_fd(c, 2);
 		ft_putstr_fd("'\n", 2);
 		return (1);
-		//exit(258);
+		// exit(258);
 	}
 	c = unclosed_quote_check(instruction);
 	if (c != 0)
@@ -92,8 +92,8 @@ int	syntax_error_check(char *instruction)
 			2);
 		ft_putchar_fd(c, 2);
 		ft_putstr_fd("'\n", 2);
-		return (1);		
-		//exit(258);
+		return (1);
+		// exit(258);
 	}
 	return (0);
 }

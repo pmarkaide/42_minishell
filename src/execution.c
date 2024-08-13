@@ -6,18 +6,11 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:23:53 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/10 00:39:19 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/10 13:09:48 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	error_msg(char *msg, int exit_code)
-{
-	ft_putstr_fd("pipex: ", 2);
-	ft_putstr_fd(msg, 2);
-	return (exit_code);
-}
 
 static int	get_exit_code(int status)
 {
@@ -51,28 +44,27 @@ static int	wait_processes(pid_t *pid, int cmds)
 
 static void	execute_child_process(t_macro *macro, int index, int read_end)
 {
-	int i;
-	t_cmd *cmd;
-	char **cmd_array;
+	int		i;
+	t_cmd	*cmd;
+	char	**cmd_array;
 
 	cmd = macro->cmds;
 	i = 0;
 	while (cmd != NULL && i < index)
-    {
-        cmd = cmd->next;
-        i++;
-    }
-	cmd_array = build_cmd_args_array(cmd->cmd_arg); // handle NULL return
+	{
+		cmd = cmd->next;
+		i++;
+	}
+	cmd_array = build_cmd_args_array(cmd->cmd_arg); // handle NULL return 
 	dup_file_descriptors(macro, cmd, read_end);
-	//eval_executable(macro, macro->cmds[i][0]);
+	// eval_executable(macro, macro->cmds[i][0]);
 	if (execve(cmd_array[0], cmd_array, macro->env) == -1)
 	{
-		ft_putstr_fd("execve failed\n",2);
+		ft_putstr_fd("execve failed\n", 2);
 		// free_data(macro);
 		// exit(EXIT_FAILURE);
 	}
-	exit(0);
-	
+	exit(1);
 }
 
 static int	execute_cmds(t_macro *macro, int read_end)
@@ -103,19 +95,17 @@ static int	execute_cmds(t_macro *macro, int read_end)
 	return (i);
 }
 
-int execution(t_macro *macro)
+int	execution(t_macro *macro)
 {
-    int exit_code;
-    int read_end;
-    int num_cmds_executed;
-    pid_t pid;
+	int		exit_code;
+	int		read_end;
+	int		num_cmds_executed;
+	pid_t	pid;
 
 	read_end = 0;
 	macro->pid = malloc(sizeof(pid_t) * macro->num_cmds);
 	num_cmds_executed = execute_cmds(macro, read_end);
 	exit_code = wait_processes(macro->pid, num_cmds_executed);
-    //close(read_end);
-    //close_open_fds(macro);
-    free(macro->pid);
-    return (exit_code);
+	free(macro->pid);
+	return (exit_code);
 }
