@@ -6,13 +6,13 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 09:53:20 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/10 12:17:55 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/13 14:23:47 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_token	*parse_redir_tokens(t_token *tokens)
+static t_token	*parse_redir_tokens(t_token *tokens, char *redir_type)
 {
 	t_token	*tmp;
 	t_token	*token;
@@ -22,7 +22,7 @@ static t_token	*parse_redir_tokens(t_token *tokens)
 	redir = NULL;
 	while (tmp && tmp->type != PIPE)
 	{
-		if (is_redir(tmp))
+		if (is_redir(tmp, redir_type))
 		{
 			token = init_token();
 			if (!token)
@@ -84,10 +84,10 @@ static t_cmd	*parse_tokens(t_token *tokens, int *n)
 		if (!cmd)
 			return (NULL);
 		cmd->n = (*n)++;
-		;
-		cmd->redir = parse_redir_tokens(tmp);
 		cmd->cmd_arg = parse_cmd_arg_tokens(tmp);
 		cmd->type = cmd->cmd_arg->type;
+		cmd->in_redir = parse_redir_tokens(tmp, "input");
+		cmd->out_redir = parse_redir_tokens(tmp, "output");
 		cmd_add_back(&cmds, cmd);
 		while (tmp && tmp->type != PIPE)
 			tmp = tmp->next;

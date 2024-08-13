@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 13:02:41 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/09 22:43:29 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/13 13:59:15 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,15 @@ void	print_cmds(t_cmd *cmds)
 			ft_printf("\t\t%s: %s\n", enum_to_char(tmp->type), tmp->value);
 			tmp = tmp->next;
 		}
-		tmp = cmds->redir;
-		ft_printf("\tREDIR\n");
+		tmp = cmds->in_redir;
+		ft_printf("\tIN_REDIR\n");
+		while (tmp)
+		{
+			ft_printf("\t\t%s: %s\n", enum_to_char(tmp->type), tmp->value);
+			tmp = tmp->next;
+		}
+		tmp = cmds->out_redir;
+		ft_printf("\tOUT_REDIR\n");
 		while (tmp)
 		{
 			ft_printf("\t\t%s: %s\n", enum_to_char(tmp->type), tmp->value);
