@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 23:24:13 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/14 11:15:09 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/14 12:31:38 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ static int	open_last_redir_file(t_token *redir)
 {
 	t_token	*tmp;
 	int		fd;
-	t_type	type;
 
 	tmp = redir;
 	fd = -1;

@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:23:53 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/13 23:09:07 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/14 12:31:08 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,6 @@ int	execution(t_macro *macro)
 	int		exit_code;
 	int		read_end;
 	int		num_cmds_executed;
-	pid_t	pid;
 
 	read_end = 0;
 	macro->pid = malloc(sizeof(pid_t) * macro->num_cmds);

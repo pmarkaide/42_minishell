@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/14 11:19:29 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/14 12:30:38 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ int					validate_executable(t_macro *macro, t_cmd *cmd);
 /* validation utils */
 bool				is_directory(const char *path);
 char				**parse_paths(char **env);
-char				*get_executable_path(t_macro *macro, char **paths, char *executable);
+char				*get_executable_path(char **paths, char *executable);
 
 /* dup */
 void				dup_file_descriptors(t_macro *macro, t_cmd *cmd, int read_end);

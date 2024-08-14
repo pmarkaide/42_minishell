@@ -6,7 +6,7 @@
 #    By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/01 15:11:43 by pmarkaid          #+#    #+#              #
-#    Updated: 2024/08/13 23:28:18 by pmarkaid         ###   ########.fr        #
+#    Updated: 2024/08/14 12:34:42 by pmarkaid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ SRCS_FILES = \
 	tokenizer_utils.c \
 	free.c \
 	parsing.c	\
+	parsing_utils.c \
 	builtins.c	\
 	env.c 	\
 	main_utils.c 	\
@@ -47,8 +48,9 @@ TEST_SRCS = $(wildcard tests/*.c)
 TEST_OBJS = $(TEST_SRCS:.c=.o)
 TEST_NAME = tests_runner
 
-CC = cc
-CFLAGS =  -g
+CC = cc 
+CFLAGS = -Wall -Werror -Wextra -g
+DEBUG_FLAGS = -g
 
 # External Libraries
 LIBS = -lreadline
@@ -67,6 +69,9 @@ $(NAME): $(OBJS) $(LIBFT)
 tests: makelibft $(TEST_OBJS) $(filter-out $(SRC_DIR)main.o, $(OBJS))
 	$(CC) $(CFLAGS) $(LIBS) $(TEST_OBJS) $(filter-out $(SRC_DIR)main.o, $(OBJS)) $(LIBFT_INCLUDE) $(INCLUDE) $(LIBFT) -o $(TEST_NAME)
 	./$(TEST_NAME)
+
+debug: makelibft $(OBJS) $(LIBFT)
+	$(CC) $(DEBUG_FLAGS) $(CFLAGS) $(OBJS) $(LIBFT_INCLUDE) $(INCLUDE) $(LIBFT) -o $(NAME) $(LIBS)
 
 clean:
 	make -C $(LIBFT_DIR) clean

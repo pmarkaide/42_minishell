@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 23:25:19 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/13 23:26:30 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/14 12:30:17 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ char	**parse_paths(char **env)
 	return (NULL);
 }
 
-char	*get_executable_path(t_macro *macro, char **paths, char *executable)
+char	*get_executable_path(char **paths, char *executable)
 {
 	int		i;
 	char	*full_path;
