@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 10:42:44 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/14 11:20:04 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/14 13:25:36 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,9 @@ static int	read_here_doc(t_token *token)
 	while (1)
 	{
         line = readline("> ");
-		if (!line)
+		if (!line || ft_strcmp(line, token->value) == 0)
         {
 			close(pipe_fd[1]);
-			return(error_msg("readline\n", -1));
-        }
-		if (ft_strcmp(line, token->value) == 0)
-		{
             free(line);
             break;
         }
@@ -55,13 +51,8 @@ void handle_here_doc(t_cmd *cmds)
 			if(token->type == HERE_DOC)
 			{
 				fd = read_here_doc(token);
-				if(token->next != NULL)
-					close(fd);
-				else
-				{
-					free(token->value);
-					token->value = ft_itoa(fd);
-				}
+				free(token->value);
+				token->value = ft_itoa(fd);
 			}
 			token = token->next;
 		}

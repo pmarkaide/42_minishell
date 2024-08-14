@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 23:24:13 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/14 12:31:38 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/14 13:28:23 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,6 @@ static int	open_file(t_token *token)
 {
 	int	fd;
 
-	// if (macro->here_doc == 1)
-	// macro->out_fd = open(macro->outfile,O_WRONLY | O_CREAT | O_APPEND,0644);
-	// else
 	if (token->type == INRED)
 		fd = open(token->value, O_RDONLY);
 	else if (token->type == OUTRED)
@@ -91,7 +88,6 @@ static void	dup_stdin(t_macro *macro, t_cmd *cmd, int read_end)
 {
 	int	fd;
 
-	// add here_doc fd here if the only one
 	fd = open_last_redir_file(cmd->in_redir);
 	if (fd >= 1)
 	{
