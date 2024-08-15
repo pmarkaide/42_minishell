@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 09:11:22 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/08 01:31:32 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/15 08:54:27 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,26 @@ int	ft_strchr_i(const char *s, int c)
 	if (c_unsigned == '\0')
 		return (i);
 	return (-1);
+}
+
+int	ft_strchr_last(const char *s, int c)
+{
+	unsigned char	c_unsigned;
+	int				i;
+	int				j;
+
+	i = 0;
+	j = 0;
+	if (!s)
+		return (-1);
+	c_unsigned = (unsigned char)c;
+	while (s[i] != '\0')
+	{
+		if (s[i] == c_unsigned)
+			j = i;
+		i++;
+	}
+	return (j);
 }
 
 int	var_in_env(char *argv, char **env, int ij[2])
@@ -66,4 +86,21 @@ void	ft_export_do(t_macro *macro, char *name, char *value)
 	}
 	if (pos != 1)
 		macro->env = ft_add_row(macro->env, cmd);
+}
+
+char	*ft_getenv(char *var, char **env)
+{
+	int	i;
+	int	m;
+
+	i = 0;
+	m = 0;
+	while (!ft_strchr(var, '=') && env && env[i])
+	{
+		m = ft_strchr_i(env[i], '=');
+		if (!ft_strncmp(env[i], var, m))
+			return (ft_substr(env[i], m + 1, ft_strlen(env[i])));
+		i++;
+	}
+	return (NULL);
 }

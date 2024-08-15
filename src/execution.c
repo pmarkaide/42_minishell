@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:23:53 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/14 12:31:08 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/15 09:41:46 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ static void	execute_child_process(t_macro *macro, int index, int read_end)
 	t_cmd	*cmd;
 	char	**cmd_array;
 	int 	exit_code;
+	char	*builtin;
+
 
 	cmd = macro->cmds;
 	i = 0;
@@ -57,11 +59,27 @@ static void	execute_child_process(t_macro *macro, int index, int read_end)
 		i++;
 	} 
 	dup_file_descriptors(macro, cmd, read_end);
-	exit_code = validate_executable(macro, cmd);
-	if(!exit_code == 0)
-		return;		
+	//printf("\n*************cmd->cmd_arg->value %s\n\n", cmd->cmd_arg->value);
+	//printf("\n*************check builtin %d\n\n", check_builtin(cmd->cmd_arg->value));
+	if (!check_builtin(cmd->cmd_arg->value))
+	{
+		//printf("entras aqui?\n");	
+		exit_code = validate_executable(macro, cmd);
+		if(!exit_code == 0)
+			return;
+	}
+	//printf("llegas aqui?\n");	
 	cmd_array = build_cmd_args_array(cmd->cmd_arg); // handle NULL return
-	if (execve(cmd_array[0], cmd_array, macro->env) == -1)
+	//printf("\n*************cmd_array[0] %s\n\n", cmd_array[0]);
+	builtin = remove_path(cmd_array[0]);
+	//printf("\n*************builtin %s\n\n", builtin);
+	if (check_builtin(builtin))
+	{
+		//printf("\n#############builtin %s\n\n", builtin);
+		if (exec_builtin(builtin, cmd_array, macro) == -1)
+			ft_putstr_fd("builtin failed\n", 2);
+	}
+	else if (execve(cmd_array[0], cmd_array, macro->env) == -1)
 		ft_putstr_fd("execve failed\n", 2);
 	exit(1);
 }

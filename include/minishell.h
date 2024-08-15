@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/14 12:30:38 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/15 09:29:01 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ void				tokenizer(t_macro *macro);
 
 /* tokenizer_utils */
 bool				is_inside_single_quotes(const char *str, int index);
-char				*expand_envirs(char *clean, char *instruction);
+char				*expand_envirs(char *clean, char *instruction, t_macro *macro);
 bool				is_builtin(t_token *token);
 bool				is_redir(t_token *token, char *redir_type);
 
@@ -148,8 +148,8 @@ char				*get_executable_path(char **paths, char *executable);
 void				dup_file_descriptors(t_macro *macro, t_cmd *cmd, int read_end);
 
 /* tests */
-char				*get_envir_value(const char *str, int *len);
-size_t				expanded_envir_len(char *instruction);
+char				*get_envir_value(const char *str, int *len, t_macro *macro);
+size_t				expanded_envir_len(char *instruction, t_macro *macro);
 
 /* free */
 void				free_array(char ***array);
@@ -175,6 +175,15 @@ int					ft_strchr_i(const char *s, int c);
 char				**ft_replace_matrix_row(char ***big, char **small, int n);
 void				ft_unset(t_macro *macro);
 int					var_in_env(char *argv, char **env, int ij[2]);
+int					exec_builtin(char *cmd, char **args, t_macro *macro);
+bool				check_builtin(char *real_cmd);
+char				*grab_env(char *var, char **env, int n);
+char				**fix_env(char *var, char *value, char **env, int n);
+int					ft_strchr_last(const char *s, int c);
+char				*remove_path(char *cmd);
+t_macro				*init_macro(char **envp, char **argv);
+t_macro				*start_env(t_macro *macro, char **argv);
+char				*ft_getenv(char *var, char **env);
 
 /* error */
 int					error_msg(char *msg, int exit_code);
