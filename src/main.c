@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 14:49:38 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/15 09:04:34 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/15 22:13:42 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,8 @@ int	main(int argc, char **argv, char **envp)
 		{
 			perror("Error getting current directory");
 		}
-		path = ft_strjoin("minishell> ", path, NULL);
-		path = ft_strjoin(path, " $ ", NULL);
+		path = ft_strjoin(path, " @ minishell>$ ", NULL);
+		//path = ft_strjoin(path, " $ ", NULL);
 		line = readline(path);
 		if (line == NULL || *line == EOF)
 		{
