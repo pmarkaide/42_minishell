@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:23:53 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/10 13:09:48 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/13 23:09:07 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ static void	execute_child_process(t_macro *macro, int index, int read_end)
 	int		i;
 	t_cmd	*cmd;
 	char	**cmd_array;
+	int 	exit_code;
 
 	cmd = macro->cmds;
 	i = 0;
@@ -54,16 +55,14 @@ static void	execute_child_process(t_macro *macro, int index, int read_end)
 	{
 		cmd = cmd->next;
 		i++;
-	}
-	cmd_array = build_cmd_args_array(cmd->cmd_arg); // handle NULL return 
+	} 
 	dup_file_descriptors(macro, cmd, read_end);
-	// eval_executable(macro, macro->cmds[i][0]);
+	exit_code = validate_executable(macro, cmd);
+	if(!exit_code == 0)
+		return;		
+	cmd_array = build_cmd_args_array(cmd->cmd_arg); // handle NULL return
 	if (execve(cmd_array[0], cmd_array, macro->env) == -1)
-	{
 		ft_putstr_fd("execve failed\n", 2);
-		// free_data(macro);
-		// exit(EXIT_FAILURE);
-	}
 	exit(1);
 }
 
