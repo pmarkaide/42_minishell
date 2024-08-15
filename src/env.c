@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 09:11:22 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/15 08:54:27 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/15 12:21:46 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,26 +30,6 @@ int	ft_strchr_i(const char *s, int c)
 	if (c_unsigned == '\0')
 		return (i);
 	return (-1);
-}
-
-int	ft_strchr_last(const char *s, int c)
-{
-	unsigned char	c_unsigned;
-	int				i;
-	int				j;
-
-	i = 0;
-	j = 0;
-	if (!s)
-		return (-1);
-	c_unsigned = (unsigned char)c;
-	while (s[i] != '\0')
-	{
-		if (s[i] == c_unsigned)
-			j = i;
-		i++;
-	}
-	return (j);
 }
 
 int	var_in_env(char *argv, char **env, int ij[2])

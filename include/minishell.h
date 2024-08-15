@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/15 09:29:01 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/15 12:28:09 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,6 @@ typedef struct s_macro
 	t_cmd			*cmds;
 	int				num_cmds;
 	int				pipe_fd[2];
-	int				in_fd;
-	int				out_fd;
 	pid_t			*pid;
 }					t_macro;
 
@@ -135,6 +133,8 @@ int					execution(t_macro *macro);
 
 /* execution utils */
 char				**build_cmd_args_array(t_token *cmd_args);
+int	get_exit_code(int status);
+int	wait_processes(pid_t *pid, int cmds);
 
 /* validation */
 int					validate_executable(t_macro *macro, t_cmd *cmd);
@@ -175,7 +175,7 @@ int					ft_strchr_i(const char *s, int c);
 char				**ft_replace_matrix_row(char ***big, char **small, int n);
 void				ft_unset(t_macro *macro);
 int					var_in_env(char *argv, char **env, int ij[2]);
-int					exec_builtin(char *cmd, char **args, t_macro *macro);
+int					select_and_run_builtin(char *cmd, char **args, t_macro *macro);
 bool				check_builtin(char *real_cmd);
 char				*grab_env(char *var, char **env, int n);
 char				**fix_env(char *var, char *value, char **env, int n);
