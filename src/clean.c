@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 15:39:10 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/16 00:06:34 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/16 01:08:35 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,69 +44,84 @@ static char	*clean_instruction(char *instruction)
 	return (clean);
 }
 
-char	*build_expanded_instruction(char *clean, char *instruction, t_macro *macro)
+int expand_variable(char *clean, int j, char *instruction, int i, t_macro *macro)
 {
-	int		i;
-	char	*envir_value;
-	char	*envir_name;
+    char *envir_name;
+    char *envir_value;
 
-	i = 0;
-	while (*instruction)
-	{
-		if (*instruction != '$')
-			clean[i++] = *instruction++;
-		else
-		{
-			instruction++;
-			envir_name = get_envir_name(instruction);
-			envir_value = get_envir_value(instruction, macro);
-			if (envir_name && envir_value)
-			{
-				ft_strlcpy(&clean[i], envir_value, ft_strlen(envir_value) + 1);
-				i += ft_strlen(envir_value);
-				free(envir_value);
-				instruction += ft_strlen(envir_name);
-			}
-		}
-	}
-	clean[i] = '\0';
-	return (clean);
+    envir_name = get_envir_name(&instruction[i]);
+    envir_value = get_envir_value(envir_name, macro);
+    if (envir_name && envir_value)
+    {
+        ft_strlcpy(&clean[j], envir_value, ft_strlen(envir_value) + 1);
+        j += ft_strlen(envir_value);
+        i += ft_strlen(envir_name);
+        free(envir_value);
+        free(envir_name);
+    }
+    return (i);
 }
 
-size_t	expanded_instruction_len(char *instruction, t_macro *macro)
+char *build_expanded_instruction(char *clean, char *instruction, t_macro *macro)
 {
-	size_t	len;
-	int		i;
-	char	*envir_value;
+    int i;
+    int j;
 
-	len = 0;
-	i = 0;
-	while (instruction[i])
-	{
-		if (instruction[i] == '$' && envir_must_be_expanded(instruction, i))
-		{
-			i++;
-			envir_value = get_envir_value(&instruction[i], macro);
-			if (envir_value)
-				len += ft_strlen(envir_value);
-		}
-		else
-		{
-			len++;
-			i++;
-		}
-	}
-	return (len);
+    i = 0;
+    j = 0;
+    while (instruction[i])
+    {
+        if (instruction[i] == '$' && envir_must_be_expanded(instruction, i))
+        {
+            i++;
+            i = expand_variable(clean, j, instruction, i, macro);
+            j += ft_strlen(&clean[j]);
+        }
+        else
+            clean[j++] = instruction[i++];
+    }
+    clean[j] = '\0';
+    return (clean);
+}
+
+size_t expanded_envir_len(char *instruction, t_macro *macro)
+{
+    size_t envir_len;
+    int i;
+    char *envir_name;
+    char *envir_value;
+
+    envir_len = 0;
+    i = 0;
+    while (instruction[i])
+    {
+        if (instruction[i] == '$' && envir_must_be_expanded(instruction, i))
+        {
+            i++;
+            envir_name = get_envir_name(&instruction[i]);
+            if (envir_name)
+            {
+                envir_value = get_envir_value(envir_name, macro);
+                if (envir_value)
+                    envir_len += ft_strlen(envir_value);
+                i += ft_strlen(envir_name);
+                free(envir_name);
+            }
+        }
+        else
+            i++;
+    }
+    return envir_len;
 }
 
 static char	*get_expanded_instruction(char *instruction, t_macro *macro)
 {
 	char	*clean;
-	int		env_len;
+	size_t envir_len;
 	size_t	total_len;
 
-	env_len = expanded_instruction_len(instruction, macro);
-	total_len = env_len + ft_strlen(instruction);
+	envir_len = expanded_envir_len(instruction, macro);
+	total_len =  envir_len + ft_strlen(instruction);
 	clean = calloc(1, sizeof(char) * total_len + 1);
 	if (!clean)
 		return (NULL);
