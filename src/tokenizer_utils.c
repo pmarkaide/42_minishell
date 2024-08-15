@@ -6,23 +6,26 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 10:42:50 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/09 21:54:03 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/13 14:30:48 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-bool	is_redir(t_token *token)
+bool is_redir(t_token *token, char *redir_type)
 {
-	if (token->type == INRED)
-		return (true);
-	else if (token->type == OUTRED)
-		return (true);
-	else if (token->type == HERE_DOC)
-		return (true);
-	else if (token->type == APPEND)
-		return (true);
-	return (false);
+    if (!token || !redir_type)
+        return false;
+    if (ft_strcmp(redir_type, "input") == 0)
+	{
+        if (token->type == INRED || token->type == HERE_DOC)
+            return true;
+    } else if (ft_strcmp(redir_type, "output") == 0)
+	{
+        if (token->type == OUTRED || token->type == APPEND)
+            return true;
+    }
+    return false;
 }
 
 bool	is_builtin(t_token *token)

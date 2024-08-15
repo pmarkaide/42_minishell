@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/10 13:07:56 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/13 13:58:15 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,8 @@ typedef struct s_cmd
 	int				n;
 	t_type			type;
 	t_token			*cmd_arg;
-	t_token			*redir;
+	t_token			*in_redir;
+	t_token			*out_redir;
 	struct s_cmd	*next;
 }					t_cmd;
 
@@ -107,7 +108,7 @@ void				tokenizer(t_macro *macro);
 bool				is_inside_single_quotes(const char *str, int index);
 char				*expand_envirs(char *clean, char *instruction);
 bool				is_builtin(t_token *token);
-bool				is_redir(t_token *token);
+bool				is_redir(t_token *token, char *redir_type);
 
 /* list_utils */
 t_token				*init_token(void);
