@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:35:57 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/14 12:33:15 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/15 13:32:58 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,5 +68,7 @@ int	validate_executable(t_macro *macro, t_cmd *cmd)
 		}
 	}
 	exit_code = validate_access(cmd->cmd_arg->value);
-	return (exit_code);
+	if(exit_code != 0)
+		ft_putstr_fd("executable not found\n",2);
+	return(exit_code);
 }

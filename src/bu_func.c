@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bu_func.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 15:55:31 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/15 09:43:27 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/15 13:05:14 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,18 +41,17 @@ void	test_builtins(t_macro *macro)
 
 char *remove_path(char *cmd)
 {
-	int		pos;
-	char	*real_cmd;
+    char *pos;
+    char *real_cmd;
 
-	pos = ft_strchr_last(cmd, '/');
-	//printf("pos: %d\n", pos);
-	if (pos == 0)
-		return (cmd);
-	real_cmd = ft_substr(cmd, pos + 1, ft_strlen(cmd));
-	return (real_cmd);
+    pos = ft_strrchr(cmd, '/');
+    if (pos == NULL)
+        return (cmd);
+    real_cmd = ft_substr(pos + 1, 0, ft_strlen(pos + 1));
+    return (real_cmd);
 }
 
-
+// remove this if not needed
 bool	check_builtin(char *real_cmd)
 {
 	if (ft_strncmp(real_cmd, "echo", 4) == 0)
@@ -246,7 +245,7 @@ int ft_cd2(char **args, t_macro *macro)
 	return (0);
 }
 
-int	exec_builtin(char *cmd, char **args, t_macro *macro)
+int	select_and_run_builtin(char *cmd, char **args, t_macro *macro)
 {
 	//printf("dentro de exec_builtin cmd ##%s\n", cmd);
 	if (ft_strncmp(cmd, "echo", 4) == 0)
