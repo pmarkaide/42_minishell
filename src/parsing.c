@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 09:53:20 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/13 14:23:47 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/14 13:28:10 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,9 +132,7 @@ t_cmd	*parsing(t_macro *macro)
 		cmds = parse_tokens(macro->tokens, &n);
 	if (!cmds)
 		return (NULL);
-	else
-	{
-		macro->num_cmds = n - 1;
-		return (cmds);
-	}
+	macro->num_cmds = n - 1;
+	handle_here_doc(cmds);
+	return (cmds);	
 }

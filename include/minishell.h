@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/13 23:31:14 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/14 12:30:38 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,9 @@ int					tokens_size(t_token *tokens);
 /* parsing */
 t_cmd				*parsing(t_macro *macro);
 
+/* parsing utils */
+void				handle_here_doc(t_cmd *cmds);
+
 /* execution */
 int					execution(t_macro *macro);
 
@@ -139,7 +142,7 @@ int					validate_executable(t_macro *macro, t_cmd *cmd);
 /* validation utils */
 bool				is_directory(const char *path);
 char				**parse_paths(char **env);
-char				*get_executable_path(t_macro *macro, char **paths, char *executable);
+char				*get_executable_path(char **paths, char *executable);
 
 /* dup */
 void				dup_file_descriptors(t_macro *macro, t_cmd *cmd, int read_end);
