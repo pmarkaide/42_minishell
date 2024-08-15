@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/15 12:28:09 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/16 00:09:18 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ void				tokenizer(t_macro *macro);
 
 /* tokenizer_utils */
 bool				is_inside_single_quotes(const char *str, int index);
-char				*expand_envirs(char *clean, char *instruction, t_macro *macro);
+char				*expand_envir(char *clean, char *instruction, t_macro *macro);
 bool				is_builtin(t_token *token);
 bool				is_redir(t_token *token, char *redir_type);
 
@@ -147,9 +147,13 @@ char				*get_executable_path(char **paths, char *executable);
 /* dup */
 void				dup_file_descriptors(t_macro *macro, t_cmd *cmd, int read_end);
 
-/* tests */
-char				*get_envir_value(const char *str, int *len, t_macro *macro);
-size_t				expanded_envir_len(char *instruction, t_macro *macro);
+/* clean */
+void				clean(t_macro *macro);
+
+/* clean utils*/
+char				*get_envir_name(char *str);
+char				*get_envir_value(char *str, t_macro *macro);
+bool				envir_must_be_expanded(char *instruction, int index);
 
 /* free */
 void				free_array(char ***array);

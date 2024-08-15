@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 21:24:44 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/15 09:05:17 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/16 00:04:55 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,49 +83,12 @@ t_token	*identify_tokens(char **lexemes)
 	return (tokens);
 }
 
-static char	*clean_instruction(char *instruction)
-{
-	char	*clean;
-	char	*ptr;
-	int		i;
 
-	clean = malloc(sizeof(char) * ft_strlen(instruction) + 1);
-	ptr = instruction;
-	i = 0;
-	while (*ptr)
-	{
-		if (*ptr == ' ' && (*(ptr - 1) == '<' || *(ptr - 1) == '>'))//Riesgo de Segfault si da la casualidad de que ptr[0] es espacio e intenta leer ptr[-1]
-			ptr++;
-		clean[i] = *ptr;
-		i++;
-		ptr++;
-	}
-	clean[i] = '\0';
-	return (clean);
-}
-
-static char	*get_expanded_instruction(char *instruction, t_macro *macro)
-{
-	char	*clean;
-	size_t	total_len;
-
-	if (!instruction)
-		return (NULL);
-	total_len = expanded_envir_len(instruction, macro) + ft_strlen(instruction);
-	clean = calloc(1, sizeof(char) * total_len + 1);
-	if (!clean)
-		return (NULL);
-	clean = expand_envirs(clean, instruction, macro);
-	clean[total_len] = '\0';
-	return (clean);
-}
 
 void	tokenizer(t_macro *macro)
 {
 	char	**lexemes;
 
-	macro->instruction = get_expanded_instruction(macro->instruction, macro);
-	macro->instruction = clean_instruction(macro->instruction);
 	lexemes = ft_split(macro->instruction, ' ');
 	macro->tokens = identify_tokens(lexemes);
 	//print_tokens(macro->tokens);
