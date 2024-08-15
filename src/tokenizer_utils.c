@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 10:42:50 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/13 14:30:48 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/15 08:51:38 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ bool	is_inside_single_quotes(const char *str, int index)
 	return (inside_single_quotes);
 }
 
-char	*get_envir_value(const char *str, int *len)
+char	*get_envir_value(const char *str, int *len, t_macro *macro)
 {
 	char	*envir_name;
 	char	*envir_value;
@@ -79,12 +79,13 @@ char	*get_envir_value(const char *str, int *len)
 	}
 	else
 		return (NULL);
-	envir_value = getenv(envir_name);
+	//envir_value = getenv(envir_name);//GETENV -->> buscar en la matriz de env!!!
+	envir_value = ft_getenv(envir_name, macro->env);
 	free(envir_name);
 	return (envir_value);
 }
 
-size_t	expanded_envir_len(char *instruction)
+size_t	expanded_envir_len(char *instruction, t_macro *macro)
 {
 	size_t	len;
 	int		i;
@@ -103,7 +104,7 @@ size_t	expanded_envir_len(char *instruction)
 		{
 			if (ptr[i + 1] == '\0')
 				break ;
-			envir_value = get_envir_value(&ptr[i + 1], &envir_name_len);
+			envir_value = get_envir_value(&ptr[i + 1], &envir_name_len, macro);
 			if (envir_value)
 				len += ft_strlen(envir_value);
 			i += envir_name_len + 1;
@@ -117,7 +118,7 @@ size_t	expanded_envir_len(char *instruction)
 	return (len);
 }
 
-char	*expand_envirs(char *clean, char *instruction)
+char	*expand_envirs(char *clean, char *instruction, t_macro *macro)
 {
 	char	*ptr;
 	int		i;
@@ -133,7 +134,7 @@ char	*expand_envirs(char *clean, char *instruction)
 		else
 		{
 			ptr++;
-			envir_value = get_envir_value(ptr, &len);
+			envir_value = get_envir_value(ptr, &len, macro);
 			if (envir_value)
 			{
 				ft_strlcpy(&clean[i], envir_value, len + 1);

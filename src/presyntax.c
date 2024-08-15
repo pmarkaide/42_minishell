@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   presyntax.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 15:12:06 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/09 22:54:43 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/14 14:26:17 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,19 +21,15 @@ char	invalid_char_check(char *instruction)
 	ptr = instruction;
 	while (*ptr)
 	{
-		if (*ptr == ';')
-			c = ';';
-		if (*ptr == '&')
-			c = '&';
-		if (*ptr == '|' && *(ptr + 1) == '|')
-			c = '|';
+		if (*ptr == ';' || *ptr == '&' || (*ptr == '|' && *(ptr + 1) == '|'))
+			c = *ptr;
 		if (*ptr == '>' || *ptr == '<')
 		{
 			if (*(ptr + 1) == '>' || *(ptr + 1) == '<')
 				ptr++;
-			if (*(ptr + 1) == ' ' && !ft_isalnum(*(ptr + 2)))
-				c = *(ptr + 2);
-			else if (!ft_isalnum(*(ptr + 1)))
+			while (*(ptr + 1) == ' ')
+				ptr++;
+			if (!ft_isalnum(*(ptr + 1)))
 				c = *(ptr + 1);
 		}
 		ptr++;
@@ -79,7 +75,7 @@ int	syntax_error_check(char *instruction)
 	c = invalid_char_check(instruction);
 	if (c != 0)
 	{
-		ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
+		ft_putstr_fd("minishell: aquisyntax error near unexpected token `", 2);
 		ft_putchar_fd(c, 2);
 		ft_putstr_fd("'\n", 2);
 		return (1);
