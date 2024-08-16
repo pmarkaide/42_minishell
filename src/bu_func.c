@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 15:55:31 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/16 09:57:08 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/16 10:48:59 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,11 +218,13 @@ static void	export_argless(t_macro *macro)
 static int check_export(char *arg)
 {
 	int	i;
+	int len;
 
 	i = 0;
 	if (arg[i] != '_' && !ft_isalpha(arg[i]))
 		return (0);	
-	while (arg[i] && arg[i] != '=')
+	len = ft_strchr_i(arg, '=');
+	while (arg[i] && arg[i] != '=' && i < len)
 	{
 		if (!ft_isalnum(arg[i]) && arg[i] != '_')
 			return (0);
