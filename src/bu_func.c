@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bu_func.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 15:55:31 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/15 13:05:14 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/15 22:06:45 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,11 +95,16 @@ static int ft_echo2(char **args)
 
 	i = 1;
 	n_flag = 0;
-	if (args[i] && ft_strncmp(args[i], "-n", 2) == 0)
+	while (args[i] && ft_strncmp(args[i], "-n", 2) == 0)
 	{
 		n_flag = 1;
 		i++;
 	}
+	// if (args[i] && ft_strncmp(args[i], "-n", 2) == 0)
+	// {
+	// 	n_flag = 1;
+	// 	i++;
+	// }
 	while (args[i])
 	{
 		ft_putstr_fd(args[i], STDOUT_FILENO);
@@ -119,7 +124,8 @@ static int ft_env2(t_macro *macro)
 	i = 0;
 	while (macro->env[i])
 	{
-		ft_putendl_fd(macro->env[i], STDOUT_FILENO);
+		if (ft_strchr(macro->env[i], '='))
+			ft_putendl_fd(macro->env[i], STDOUT_FILENO);
 		i++;
 	}
 	return (0);
@@ -137,6 +143,7 @@ static int ft_unset2(char **args, t_macro *macro)
 	int	i;
 	int	j;
 	int	len;
+	int len_env;
 
 	i = 1;
 	while (args[i])
@@ -145,7 +152,18 @@ static int ft_unset2(char **args, t_macro *macro)
 		len = ft_strlen(args[i]);
 		while (macro->env[j])
 		{
-			if (ft_strncmp(args[i], macro->env[j], len) == 0 && macro->env[j][len] == '=')
+			len_env = ft_strchr_i(macro->env[j], '=');
+			if (ft_strncmp(args[i], macro->env[j], len_env) == 0 && len == len_env)
+			{
+				free(macro->env[j]);
+				while (macro->env[j])
+				{
+					macro->env[j] = macro->env[j + 1];
+					j++;
+				}
+				break ;
+			}
+			else if (len_env == -1 && ft_strncmp(args[i], macro->env[j], len) == 0)
 			{
 				free(macro->env[j]);
 				while (macro->env[j])
@@ -162,46 +180,137 @@ static int ft_unset2(char **args, t_macro *macro)
 	return (0);
 }
 
-static int ft_export2(char **args, t_macro *macro)
+static void	export_argless(t_macro *macro)
+{
+	int	i;
+	char	*var;
+	char	*value;
+
+	i = 0;
+	while (macro->env[i])
+	{
+		if (ft_strchr(macro->env[i], '='))
+		{
+			var = ft_substr(macro->env[i], 0, ft_strchr_i(macro->env[i], '='));
+			value = ft_substr(macro->env[i], ft_strchr_i(macro->env[i], '=') + 1, ft_strlen(macro->env[i]));
+			ft_putstr_fd("declare -x ", STDOUT_FILENO);
+			ft_putstr_fd(var, STDOUT_FILENO);
+			if (value)
+			{
+				ft_putstr_fd("=\"", STDOUT_FILENO);
+				ft_putstr_fd(value, STDOUT_FILENO);
+				ft_putstr_fd("\"\n", STDOUT_FILENO);
+			}
+			else
+				ft_putchar_fd('\n', STDOUT_FILENO);
+			free(var);
+			free(value);
+		}
+		else
+		{
+			ft_putstr_fd("declare -x ", STDOUT_FILENO);			
+			ft_putendl_fd(macro->env[i], STDOUT_FILENO);
+		}
+		i++;
+	}
+}
+
+static int check_export(char *arg)
+{
+	int	i;
+
+	i = 0;
+	// if (!ft_isalpha(arg[i]) && arg[i] != '_')
+	// 	return (0);
+	// i++;
+	while (arg[i] && arg[i] != '=')
+	{
+		if (!ft_isalnum(arg[i]) && arg[i] != '_')
+			return (0);
+		i++;
+	}
+	// printf("i: %d\n", i);
+	return (1);
+}
+
+static char *remove_quotes(char *str)
 {
 	int	i;
 	int	j;
 	int	len;
-	int argc;
+	char	*clean;
 
 	i = 0;
+	j = 0;
+	len = ft_strlen(str);
+	clean = malloc(sizeof(char) * len + 1);
+	if (!clean)
+		return (NULL);
+	while (str[i])
+	{
+		if (str[i] != '\'' && str[i] != '\"')
+		{
+			clean[j] = str[i];
+			j++;
+		}
+		i++;
+	}
+	clean[j] = '\0';
+	return (clean);
+}
+
+
+static int ft_export2(char **args, t_macro *macro)
+{
+	int	i;
+	int	j;
+	int	len_var;
+	int argc;
+	char *clean_value;
+
 	argc = 0;
 	while (args[argc])
 		argc++;
 	if (argc == 1)
 	{
-		while (macro->env[i])
-		{
-			printf("declare -x %s\n", macro->env[i]);
-			i++;
-		}
+		export_argless(macro);
 		return (0);
 	}
 	i = 1;
 	while (args[i])
 	{
+		// printf("args[i]: %s\n", args[i]);
+		// printf("check_export: %d\n", check_export(args[i]));
+		
+		if(check_export(args[i]) == 0)
+		{
+			ft_putstr_fd("minishell: export: `", STDERR_FILENO);
+			ft_putstr_fd(remove_quotes(args[i]), STDERR_FILENO);
+			ft_putendl_fd("': not a valid identifier", STDERR_FILENO);
+			i++;
+			continue;
+		}
+		clean_value = remove_quotes(args[i]);
 		j = 0;
-		len = ft_strlen(args[i]);
+		//len = ft_strlen(args[i]);
+		len_var = ft_strchr_i(clean_value, '=');
+		//printf("clean_value: %d\n", len_var);
 		while (macro->env[j])
 		{
-			if (ft_strncmp(args[i], macro->env[j], len) == 0 && macro->env[j][len] == '=')
+			if (ft_strncmp(clean_value, macro->env[j], len_var) == 0)// && macro->env[j][len] == '=')
 			{
 				free(macro->env[j]);
-				macro->env[j] = ft_strdup(args[i]);
+				macro->env[j] = ft_strdup(clean_value);
 				break ;
 			}
 			j++;
 		}
 		if (!macro->env[j])
 		{
-			macro->env[j] = ft_strdup(args[i]);
+			macro->env[j] = ft_strdup(clean_value);
 			macro->env[j + 1] = NULL;
 		}
+		free(clean_value);
 		i++;
 	}
 	return (0);
@@ -228,10 +337,10 @@ int ft_cd2(char **args, t_macro *macro)
 		path = home;
 	else
 		path = args[1];
-	printf("path: %s\n", path);
+	//printf("path: %s\n", path);
 	ret = chdir(path);
-	printf("ret: %d\n", ret);
-	printf("cwd %s\n", getcwd(NULL, 0));
+	// printf("ret: %d\n", ret);
+	// printf("cwd %s\n", getcwd(NULL, 0));
 	if (ret == -1)
 	{
 		perror("Error");
@@ -239,9 +348,9 @@ int ft_cd2(char **args, t_macro *macro)
 	}
 	
 	macro->env = fix_env("OLDPWD", grab_env("PWD", macro->env, 3), macro->env, 6);
-	printf("OLDPWD set to %s\n", grab_env("OLDPWD", macro->env, 6));
+	// printf("OLDPWD set to %s\n", grab_env("OLDPWD", macro->env, 6));
 	macro->env = fix_env("PWD", getcwd(NULL, 0), macro->env, 3);
-	printf("PWD set to %s\n", grab_env("PWD", macro->env, 3));
+	// printf("PWD set to %s\n", grab_env("PWD", macro->env, 3));
 	return (0);
 }
 
@@ -252,7 +361,7 @@ int	select_and_run_builtin(char *cmd, char **args, t_macro *macro)
 		return (ft_echo2(args));
 	if (ft_strncmp(cmd, "cd", 2) == 0)
 	{
-		printf("dentro de cd\n");
+		//printf("dentro de cd\n");
 		return (ft_cd2(args, macro));
 	}
 	if (ft_strncmp(cmd, "pwd", 3) == 0)
