@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 15:55:31 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/15 22:06:45 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/16 09:57:08 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,9 +220,8 @@ static int check_export(char *arg)
 	int	i;
 
 	i = 0;
-	// if (!ft_isalpha(arg[i]) && arg[i] != '_')
-	// 	return (0);
-	// i++;
+	if (arg[i] != '_' && !ft_isalpha(arg[i]))
+		return (0);	
 	while (arg[i] && arg[i] != '=')
 	{
 		if (!ft_isalnum(arg[i]) && arg[i] != '_')
@@ -288,7 +287,7 @@ static int ft_export2(char **args, t_macro *macro)
 			ft_putstr_fd(remove_quotes(args[i]), STDERR_FILENO);
 			ft_putendl_fd("': not a valid identifier", STDERR_FILENO);
 			i++;
-			continue;
+			continue;	
 		}
 		clean_value = remove_quotes(args[i]);
 		j = 0;
