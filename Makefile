@@ -6,7 +6,7 @@
 #    By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/01 15:11:43 by pmarkaid          #+#    #+#              #
-#    Updated: 2024/08/14 12:34:42 by pmarkaid         ###   ########.fr        #
+#    Updated: 2024/08/16 00:23:14 by pmarkaid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,9 @@ SRCS_FILES = \
 	execution.c \
 	execution_utils.c \
 	error.c \
-	dup.c
+	dup.c \
+	clean.c \
+	clean_utils.c
 
 SRC_DIR = src/
 SRCS = $(addprefix $(SRC_DIR), $(SRCS_FILES))
