@@ -134,5 +134,5 @@ t_cmd	*parsing(t_macro *macro)
 		return (NULL);
 	macro->num_cmds = n - 1;
 	handle_here_doc(cmds);
-	return (cmds);	
+	return (cmds);
 }

@@ -12,20 +12,21 @@
 
 #include "minishell.h"
 
-bool is_redir(t_token *token, char *redir_type)
+bool	is_redir(t_token *token, char *redir_type)
 {
-    if (!token || !redir_type)
-        return false;
-    if (ft_strcmp(redir_type, "input") == 0)
+	if (!token || !redir_type)
+		return (false);
+	if (ft_strcmp(redir_type, "input") == 0)
 	{
-        if (token->type == INRED || token->type == HERE_DOC)
-            return true;
-    } else if (ft_strcmp(redir_type, "output") == 0)
+		if (token->type == INRED || token->type == HERE_DOC)
+			return (true);
+	}
+	else if (ft_strcmp(redir_type, "output") == 0)
 	{
-        if (token->type == OUTRED || token->type == APPEND)
-            return true;
-    }
-    return false;
+		if (token->type == OUTRED || token->type == APPEND)
+			return (true);
+	}
+	return (false);
 }
 
 bool	is_builtin(t_token *token)
@@ -46,5 +47,3 @@ bool	is_builtin(t_token *token)
 		return (true);
 	return (false);
 }
-
-

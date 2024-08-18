@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 15:39:10 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/18 16:12:12 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/18 16:20:34 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ static char	*clean_instruction(char *instruction)
 	return (clean);
 }
 
-int	expand_variable(char *clean, int j, char *instruction, int i, t_macro *macro)
+int	expand_variable(char *clean, int j, char *instruction, int i,
+		t_macro *macro)
 {
 	char	*envir_name;
 	char	*envir_value;
@@ -132,7 +133,8 @@ static char	*get_expanded_instruction(char *instruction, t_macro *macro)
 	return (clean);
 }
 
-static int	create_and_add_node(char *token_start, size_t length, t_list **tokens)
+static int	create_and_add_node(char *token_start, size_t length,
+		t_list **tokens)
 {
 	char	*token;
 	t_list	*new_node;
@@ -187,7 +189,7 @@ t_list	*split_args_by_quotes(char *input)
 	while (*current_pos)
 	{
 		while (*current_pos && ft_isdelim(*current_pos))
-            current_pos++;
+			current_pos++;
 		if (*current_pos)
 		{
 			if (process_token(&current_pos, &tokens) == -1)

@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 14:49:38 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/18 14:55:02 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/18 16:21:16 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ t_macro	*start_env(t_macro *macro, char **argv)
 	free(num);
 	str = grab_env("PATH", macro->env, 4);
 	if (!str)
-		macro->env = fix_env("PATH", "/usr/local/sbin:/usr/local/bin:/usr/bin:/bin", macro->env, 4);
+		macro->env = fix_env("PATH",
+				"/usr/local/sbin:/usr/local/bin:/usr/bin:/bin", macro->env, 4);
 	free(str);
 	str = grab_env("_", macro->env, 1);
 	if (!str)
@@ -96,14 +97,9 @@ int	main(int argc, char **argv, char **envp)
 			continue ;
 		}
 		macro->instruction = line;
-		t_list *test = split_args_by_quotes(line);
-		ft_print_char_array(ft_lst_to_array(&test));
-		
-		continue;
 		clean(macro);
-		continue;
 		tokenizer(macro);
-		//test_builtins(macro);
+		// test_builtins(macro);
 		macro->cmds = parsing(macro);
 		execution(macro);
 		// free_instruction(&macro);
