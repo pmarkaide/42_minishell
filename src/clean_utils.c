@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 22:56:08 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/18 12:35:54 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/18 15:55:51 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,11 +79,11 @@ bool	is_in_quote(char *str, int index)
 	return (false);
 }
 
-bool envir_must_be_expanded(char *str, int index)
+bool	envir_must_be_expanded(char *str, int index)
 {
-    if (!is_in_quote(str, index))
-        return true;
-    if (is_inside_double_quotes(str, index))
-        return true;
-    return false;
+	if (!is_in_quote(str, index))
+		return (true);
+	if (is_inside_double_quotes(str, index))
+		return (true);
+	return (false);
 }
