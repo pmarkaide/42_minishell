@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 12:08:37 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/02 15:51:36 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/16 09:58:25 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,5 +97,9 @@ char	*ft_strncpy(char *dest, const char *src, size_t n);
 void	remove_extra_spaces(char *str);
 void	white_spaces_into_spaces(char *str);
 int		ft_abs(int n);
+int		ft_isquote(char c);
+char	**ft_split_args(char *str);
+
+
 
 #endif

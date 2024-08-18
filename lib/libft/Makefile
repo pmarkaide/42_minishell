@@ -6,7 +6,7 @@
 #    By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/24 12:10:27 by pmarkaid          #+#    #+#              #
-#    Updated: 2024/08/02 15:51:17 by pmarkaid         ###   ########.fr        #
+#    Updated: 2024/08/16 09:59:19 by pmarkaid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -74,7 +74,9 @@ SRC = \
 	ft_char_array_len.c \
 	ft_abs.c \
 	ft_whitespaces_into_spaces.c \
-	ft_remove_extra_spaces.c
+	ft_remove_extra_spaces.c \
+	ft_isquote.c \
+	ft_split_args.c
 
 INCLUDES = .
 
