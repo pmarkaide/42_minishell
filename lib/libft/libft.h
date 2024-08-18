@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 12:08:37 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/18 12:33:44 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/18 13:08:45 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,5 +103,6 @@ int					ft_isquote(char c);
 t_list				*ft_split_args(char *str, char *delim);
 char				*ft_strtok(char *str, char *delim);
 void				ft_del(void *content);
+char 				**ft_lst_to_array(t_list **lst);
 
 #endif
