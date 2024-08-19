@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 15:39:10 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/18 16:20:34 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/19 15:54:46 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,19 +133,35 @@ static char	*get_expanded_instruction(char *instruction, t_macro *macro)
 	return (clean);
 }
 
-static int	create_and_add_node(char *token_start, size_t length,
-		t_list **tokens)
+static char	*create_and_clean_token(char *start, size_t length)
 {
 	char	*token;
+	char	*clean_token;
+
+	token = ft_strndup(start, length);
+	if (!token)
+		return (NULL);
+	clean_token = ft_remove_edge_quotes(token);
+	free(token);
+	if (!clean_token)
+		return (NULL);
+	token = ft_remove_char(clean_token, '\"');
+	free(clean_token);
+	return (token);
+}
+
+static int	create_and_add_node(char *start, size_t length, t_list **tokens)
+{
+	char	*clean_token;
 	t_list	*new_node;
 
-	token = ft_strndup(token_start, length);
-	if (!token)
+	clean_token = create_and_clean_token(start, length);
+	if (!clean_token)
 		return (-1);
-	new_node = ft_lstnew(token);
+	new_node = ft_lstnew(clean_token);
 	if (!new_node)
 	{
-		free(token);
+		free(clean_token);
 		return (-1);
 	}
 	ft_lstadd_back(tokens, new_node);
