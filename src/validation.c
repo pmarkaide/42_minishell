@@ -68,7 +68,7 @@ int	validate_executable(t_macro *macro, t_cmd *cmd)
 		}
 	}
 	exit_code = validate_access(cmd->cmd_arg->value);
-	if(exit_code != 0)
-		ft_putstr_fd("executable not found\n",2);
-	return(exit_code);
+	if (exit_code != 0)
+		ft_putstr_fd("executable not found\n", 2);
+	return (exit_code);
 }

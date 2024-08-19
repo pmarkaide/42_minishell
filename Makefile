@@ -6,7 +6,7 @@
 #    By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/01 15:11:43 by pmarkaid          #+#    #+#              #
-#    Updated: 2024/08/16 00:23:14 by pmarkaid         ###   ########.fr        #
+#    Updated: 2024/08/18 14:23:37 by pmarkaid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,13 +63,13 @@ makelibft:
 	make -C $(LIBFT_DIR)
 
 %.o: %.c
-	$(CC) $(CFLAGS) $(LIBS) $(LIBFT_INCLUDE) $(INCLUDE) -c $< -o $@
+	$(CC) $(CFLAGS) $(LIBFT_INCLUDE) $(INCLUDE) -c $< -o $@
 
 $(NAME): $(OBJS) $(LIBFT)
 	$(CC) $(CFLAGS) $(OBJS) $(LIBFT_INCLUDE) $(INCLUDE) $(LIBFT) -o $(NAME) $(LIBS)
 
-tests: makelibft $(TEST_OBJS) $(filter-out $(SRC_DIR)main.o, $(OBJS))
-	$(CC) $(CFLAGS) $(LIBS) $(TEST_OBJS) $(filter-out $(SRC_DIR)main.o, $(OBJS)) $(LIBFT_INCLUDE) $(INCLUDE) $(LIBFT) -o $(TEST_NAME)
+tests: makelibft $(TEST_OBJS) $(OBJS)
+	$(CC) $(CFLAGS) $(LIBS) $(TEST_OBJS) $(filter-out src/main.o, $(OBJS)) $(LIBFT_INCLUDE) $(INCLUDE) $(LIBFT) -o $(TEST_NAME)
 	./$(TEST_NAME)
 
 debug: makelibft $(OBJS) $(LIBFT)
