@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 14:49:38 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/18 16:21:16 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/19 10:51:08 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	g_exit;
 
 t_macro	*start_env(t_macro *macro, char **argv)
 {
@@ -69,6 +71,7 @@ int	main(int argc, char **argv, char **envp)
 	char	*line;
 	char	*path;
 
+	g_exit = 0;
 	macro = init_macro(envp, argv);
 	(void)argc;
 	signal(SIGINT, ft_signal_handler);
@@ -85,6 +88,7 @@ int	main(int argc, char **argv, char **envp)
 		line = readline(path);
 		if (line == NULL || *line == EOF)
 		{
+			g_exit = 0;
 			printf("Ctrl+D exits");
 			break ;
 		}
@@ -108,5 +112,5 @@ int	main(int argc, char **argv, char **envp)
 		// ft_printf("%s\n", macro.instruction);
 		free(line);
 	}
-	exit(0);
+	exit(g_exit);
 }

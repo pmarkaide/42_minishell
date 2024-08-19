@@ -3,25 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:23:53 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/15 14:02:26 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/19 11:02:16 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+extern int g_exit;
+
 int	execute_builtin(t_macro *macro, char **cmd_array)
 {
 	char	*builtin;
-	int		exit_code;
 
 	builtin = remove_path(cmd_array[0]);
-	exit_code = select_and_run_builtin(builtin, cmd_array, macro);
-	if (exit_code != 0)
-		ft_putstr_fd("builtin failed\n", 2);
-	return (exit_code);
+	g_exit = select_and_run_builtin(builtin, cmd_array, macro);
+	// if (g_exit != 0)
+	// 	ft_putstr_fd("builtin failed\n", 2);
+	return (g_exit);
 }
 
 static char	**prepare_child_execution(t_macro *macro, t_cmd *cmd)
@@ -41,7 +42,6 @@ static void	execute_child_process(t_macro *macro, int index, int read_end)
 	int		i;
 	t_cmd	*cmd;
 	char	**cmd_array;
-	int		exit_code;
 
 	cmd = macro->cmds;
 	i = 0;
@@ -50,13 +50,13 @@ static void	execute_child_process(t_macro *macro, int index, int read_end)
 	dup_file_descriptors(macro, cmd, read_end);
 	cmd_array = prepare_child_execution(macro, cmd);
 	if (cmd->type == BUILTIN)
-		execute_builtin(macro, cmd_array);
+		g_exit = execute_builtin(macro, cmd_array);
 	else
-		execve(cmd_array[0], cmd_array, macro->env);
-	exit_code = errno;
-	if (exit_code != 0)
+		g_exit = execve(cmd_array[0], cmd_array, macro->env);
+	g_exit = errno;
+	if (g_exit != 0)
 		ft_putstr_fd("execution failed\n", 2);
-	exit(exit_code);
+	exit(g_exit);
 }
 
 static int	execute_cmds(t_macro *macro, int read_end)
@@ -89,7 +89,6 @@ static int	execute_cmds(t_macro *macro, int read_end)
 
 int	execution(t_macro *macro)
 {
-	int		exit_code;
 	int		read_end;
 	int		num_cmds_executed;
 	char	**cmd_array;
@@ -99,7 +98,7 @@ int	execution(t_macro *macro)
 		cmd_array = build_cmd_args_array(macro->cmds->cmd_arg);
 		if (cmd_array == NULL)
 			return (-1);
-		exit_code = execute_builtin(macro, cmd_array); // wait and pid ???
+		g_exit = execute_builtin(macro, cmd_array); // wait and pid ???
 		free_array(&cmd_array);
 	}
 	else
@@ -107,8 +106,8 @@ int	execution(t_macro *macro)
 		read_end = 0;
 		macro->pid = malloc(sizeof(pid_t) * macro->num_cmds);
 		num_cmds_executed = execute_cmds(macro, read_end);
-		exit_code = wait_processes(macro->pid, num_cmds_executed);
+		g_exit = wait_processes(macro->pid, num_cmds_executed);
 		free(macro->pid);
 	}
-	return (exit_code);
+	return (g_exit);
 }
