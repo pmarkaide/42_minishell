@@ -14,50 +14,51 @@
 
 static int	invalid_char_check(char *instruction)
 {
-    int 	i;
+	int	i;
 
-    i = 0;
-    while (instruction[i])
-    {
-        if (!is_in_quote(instruction, i))
-        {
-            if (instruction[i] == ';')
-                return(instruction[i]);
-            if (instruction[i] == '&')
-                return(instruction[i]);
-            if (instruction[i] == '|' && instruction[i + 1] == '|')
-                return(instruction[i]);
-        }
-        i++;
-    }
-    return (0);
+	i = 0;
+	while (instruction[i])
+	{
+		if (!is_in_quote(instruction, i))
+		{
+			if (instruction[i] == ';')
+				return (instruction[i]);
+			if (instruction[i] == '&')
+				return (instruction[i]);
+			if (instruction[i] == '|' && instruction[i + 1] == '|')
+				return (instruction[i]);
+		}
+		i++;
+	}
+	return (0);
 }
 
 static char	valid_file_name(char *instruction)
 {
-    int 	i;
-	char 	next_char;
+	int		i;
+	char	next_char;
 
-    i = 0;
-    while (instruction[i])
-    {
-        if (!is_in_quote(instruction, i))
-        {
-            if (instruction[i] == '>' || instruction[i] == '<')
-            {
+	i = 0;
+	while (instruction[i])
+	{
+		if (!is_in_quote(instruction, i))
+		{
+			if (instruction[i] == '>' || instruction[i] == '<')
+			{
 				if (instruction[i + 1] == '>' || instruction[i + 1] == '<')
 					i++;
 				while (instruction[i + 1] == ' ')
 					i++;
 				if (instruction[i + 1] == '\0')
-					return('\n');
+					return ('\n');
 				next_char = instruction[i + 1];
-				if (!ft_isalnum(next_char) && next_char != '|' && next_char != '$')
-					return(next_char);
-            }
-        }
-        i++;
-    }
+				if (!ft_isalnum(next_char) && next_char != '|'
+					&& next_char != '$')
+					return (next_char);
+			}
+		}
+		i++;
+	}
 	return (0);
 }
 
@@ -78,7 +79,6 @@ static char	unclosed_quote_check(char *instruction)
 			in_single_quote = !in_single_quote;
 		ptr++;
 	}
-
 	if (in_single_quote)
 		return ('\'');
 	if (in_double_quote)
@@ -95,21 +95,21 @@ static int	print_syntax_error(char invalid_char)
 		ft_printf("syntax error near unexpected token `newline'\n");
 	else
 		ft_printf("syntax error near unexpected token `%c'\n", invalid_char);
-	return(1);
+	return (1);
 }
 
 int	syntax_error_check(char *instruction)
 {
-    char	c;
+	char	c;
 
-    c = invalid_char_check(instruction);
-    if (c != 0)
-        return print_syntax_error(c);
-    c = valid_file_name(instruction);
-    if (c != 0)
-        return print_syntax_error(c);
-    c = unclosed_quote_check(instruction);
-    if (c != 0)
-        return print_syntax_error(c);
-    return (0);
+	c = invalid_char_check(instruction);
+	if (c != 0)
+		return (print_syntax_error(c));
+	c = valid_file_name(instruction);
+	if (c != 0)
+		return (print_syntax_error(c));
+	c = unclosed_quote_check(instruction);
+	if (c != 0)
+		return (print_syntax_error(c));
+	return (0);
 }

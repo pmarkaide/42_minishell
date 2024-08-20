@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/20 14:00:48 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/20 14:53:38 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,25 @@
 # define MINISHELL_H
 
 # include "../lib/libft/libft.h" /* libft library */
-# include <curses.h>             // tgetent, tgetflag, tgetnum, tgetstr, tgoto,tputs
+# include <curses.h>             // tgetent, tgetflag, tgetnum, tgetstr,
 # include <dirent.h>             // opendir, readdir, closedir
 # include <errno.h>              /* for errno */
 # include <fcntl.h>              // open
 # include <limits.h>             /* for LONG_MAX, LONG_MIN */
 # include <readline/history.h>   // add_history
-# include <readline/readline.h>  // readline, rl_clear_history, rl_on_new_line,rl_replace_line, rl_redisplay
-# include <signal.h>             // signal, sigaction, sigemptyset, sigaddset,kill
+# include <readline/readline.h>  // readline, rl_clear_history,rl_on_new_line
+# include <signal.h>             // signal, sigaction, sigemptyset,sigaddset
 # include <stdbool.h>            /* for true and false*/
 # include <stdio.h>              // printf, perror
 # include <stdlib.h>             // malloc, free, exit, getenv
 # include <string.h>             // strerror
 # include <sys/ioctl.h>          // ioctl
 # include <sys/stat.h>           // stat, lstat, fstat
-# include <sys/types.h>          // fork, wait, waitpid, wait3, wait4, stat,lstat, fstat
+# include <sys/types.h>          // fork, wait, waitpid, wait3, wait4,stat
 # include <sys/wait.h>           // wait, waitpid, wait3, wait4
-# include <term.h>               // tgetent, tgetflag, tgetnum, tgetstr,tgoto,tputs
+# include <term.h>               // tgetent, tgetflag, tgetnum,tgetstr,tgoto
 # include <termios.h>            // tcsetattr, tcgetattr
-# include <unistd.h>             // read, write, access, open, close,fork,getcwd, chdir, unlink, execve, dup, dup2, pipe, isatty, ttyname,ttyslot
+# include <unistd.h>             // read, write, access, open,close,fork
 
 # define NO_FILE 1
 # define PERMISSION_DENIED 126
@@ -104,7 +104,8 @@ void				tokenizer(t_macro *macro);
 
 /* tokenizer_utils */
 bool				is_inside_single_quotes(const char *str, int index);
-char				*expand_envir(char *clean, char *instruction, t_macro *macro);
+char				*expand_envir(char *clean, char *instruction,
+						t_macro *macro);
 bool				is_builtin(t_token *token);
 bool				is_redir(t_token *token, char *redir_type);
 
@@ -133,8 +134,8 @@ int					execution(t_macro *macro);
 
 /* execution utils */
 char				**build_cmd_args_array(t_token *cmd_args);
-int	get_exit_code(int status);
-int	wait_processes(pid_t *pid, int cmds);
+int					get_exit_code(int status);
+int					wait_processes(pid_t *pid, int cmds);
 
 /* validation */
 int					validate_executable(t_macro *macro, t_cmd *cmd);
@@ -149,7 +150,7 @@ void				dup_file_descriptors(t_macro *macro, t_cmd *cmd, int read_end);
 
 /* clean */
 void				clean(t_macro *macro);
-t_list				*split_args_by_quotes(char* input);
+t_list				*split_args_by_quotes(char *input);
 
 /* clean utils*/
 char				*get_envir_name(char *str);
@@ -185,12 +186,10 @@ int					select_and_run_builtin(char *cmd, char **args, t_macro *macro);
 bool				check_builtin(char *real_cmd);
 char				*grab_env(char *var, char **env, int n);
 char				**fix_env(char *var, char *value, char **env, int n);
-int					ft_strchr_last(const char *s, int c);
 char				*remove_path(char *cmd);
 t_macro				*init_macro(char **envp, char **argv);
 t_macro				*start_env(t_macro *macro, char **argv);
 char				*ft_getenv(char *var, char **env);
-
 
 /* error */
 int					error_msg(char *msg, int exit_code);
