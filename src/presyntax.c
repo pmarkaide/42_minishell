@@ -6,37 +6,59 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 15:12:06 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/15 16:52:13 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/20 15:02:08 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	invalid_char_check(char *instruction)
+static int	invalid_char_check(char *instruction)
 {
-	char	c;
-	char	*ptr;
+	int	i;
 
-	c = 0;
-	ptr = instruction;
-	while (*ptr)
+	i = 0;
+	while (instruction[i])
 	{
-		if (*ptr == ';' || *ptr == '&' || (*ptr == '|' && *(ptr + 1) == '|'))
-			c = *ptr;
-		if (*ptr == '>' || *ptr == '<')
+		if (!is_in_quote(instruction, i))
 		{
-			if (*(ptr + 1) == '>' || *(ptr + 1) == '<')
-				ptr++;
-			while (*(ptr + 1) == ' ')
-				ptr++;
-			if (*(ptr + 1) == '\0')
-				return ('\n');
-			if (!isalnum(*(ptr + 1)) && *(ptr + 1) != '|')
-				c = *(ptr + 1);
+			if (instruction[i] == ';')
+				return (instruction[i]);
+			if (instruction[i] == '&')
+				return (instruction[i]);
+			if (instruction[i] == '|' && instruction[i + 1] == '|')
+				return (instruction[i]);
 		}
-		ptr++;
+		i++;
 	}
-	return (c);
+	return (0);
+}
+
+static char	valid_file_name(char *instruction)
+{
+	int		i;
+	char	next_char;
+
+	i = 0;
+	while (instruction[i])
+	{
+		if (!is_in_quote(instruction, i))
+		{
+			if (instruction[i] == '>' || instruction[i] == '<')
+			{
+				if (instruction[i + 1] == '>' || instruction[i + 1] == '<')
+					i++;
+				while (instruction[i + 1] == ' ')
+					i++;
+				if (instruction[i + 1] == '\0')
+					return ('\n');
+				next_char = instruction[i + 1];
+				if (!ft_isalnum(next_char) && !strchr("$~+-./\'\"", next_char))
+					return (next_char);
+			}
+		}
+		i++;
+	}
+	return (0);
 }
 
 static char	unclosed_quote_check(char *instruction)
@@ -50,19 +72,15 @@ static char	unclosed_quote_check(char *instruction)
 	ptr = instruction;
 	while (*ptr)
 	{
-		if (*ptr == '\'' && in_single_quote == 0)
-			in_single_quote = 1;
-		else if (*ptr == '\'' && in_single_quote == 1)
-			in_single_quote = 0;
-		if (*ptr == '"' && in_double_quote == 0)
-			in_double_quote = 1;
-		else if (*ptr == '"' && in_double_quote == 1)
-			in_double_quote = 0;
+		if (*ptr == '"' && !in_single_quote)
+			in_double_quote = !in_double_quote;
+		else if (*ptr == '\'' && !in_double_quote)
+			in_single_quote = !in_single_quote;
 		ptr++;
 	}
-	if (in_single_quote == 1)
+	if (in_single_quote)
 		return ('\'');
-	if (in_double_quote == 1)
+	if (in_double_quote)
 		return ('\"');
 	return (0);
 }
@@ -83,10 +101,10 @@ int	syntax_error_check(char *instruction)
 {
 	char	c;
 
-	c = 0;
-	remove_extra_spaces(instruction);
-	white_spaces_into_spaces(instruction);
 	c = invalid_char_check(instruction);
+	if (c != 0)
+		return (print_syntax_error(c));
+	c = valid_file_name(instruction);
 	if (c != 0)
 		return (print_syntax_error(c));
 	c = unclosed_quote_check(instruction);
