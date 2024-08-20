@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/18 16:02:05 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/20 08:35:08 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ void				tokenizer(t_macro *macro);
 
 /* tokenizer_utils */
 bool				is_inside_single_quotes(const char *str, int index);
+bool				is_inside_double_quotes(char *str, int index);
 char				*expand_envir(char *clean, char *instruction, t_macro *macro);
 bool				is_builtin(t_token *token);
 bool				is_redir(t_token *token, char *redir_type);
