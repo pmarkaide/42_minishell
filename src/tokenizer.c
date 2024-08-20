@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 21:24:44 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/19 12:25:18 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/20 13:42:29 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,21 +63,19 @@ static t_token	*identify_redirection_tokens(char *lexeme)
 	return (token);
 }
 
-t_token	*identify_tokens(char **lexemes)
+t_token	*identify_tokens(t_list *lexemes)
 {
 	t_token	*tokens;
 	t_token	*token;
-	int		i;
 
-	i = 0;
 	tokens = NULL;
-	while (lexemes[i])
+	while (lexemes)
 	{
-		token = identify_redirection_tokens(lexemes[i]);
+		token = identify_redirection_tokens(lexemes->content);
 		if (!token)
 			return (NULL);
 		token_add_back(&tokens, token);
-		i++;
+		lexemes = lexemes->next;
 	}
 	identify_string_tokens(tokens);
 	return (tokens);
@@ -85,13 +83,9 @@ t_token	*identify_tokens(char **lexemes)
 
 void	tokenizer(t_macro *macro)
 {
-	t_list	*args;
-	char	**lexemes;
+	t_list	*lexemes;
 
-	args = split_args_by_quotes(macro->instruction);
-	lexemes = ft_lst_to_array(&args);
+	lexemes = split_args_by_quotes(macro->instruction);
 	macro->tokens = identify_tokens(lexemes);
-	//print_tokens(macro->tokens);
-	return ;
 	free(lexemes);
 }
