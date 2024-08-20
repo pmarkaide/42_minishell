@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/18 16:02:05 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/20 14:00:48 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,7 @@ t_list				*split_args_by_quotes(char* input);
 char				*get_envir_name(char *str);
 char				*get_envir_value(char *str, t_macro *macro);
 bool				envir_must_be_expanded(char *instruction, int index);
-char*				find_next_token_start(char* current_position);
+bool				is_in_quote(char *str, int index);
 
 /* free */
 void				free_array(char ***array);
