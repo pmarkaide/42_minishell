@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 15:12:06 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/15 16:52:13 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/20 14:08:38 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,6 @@ int	syntax_error_check(char *instruction)
 	char	c;
 
 	c = 0;
-	remove_extra_spaces(instruction);
-	white_spaces_into_spaces(instruction);
 	c = invalid_char_check(instruction);
 	if (c != 0)
 		return (print_syntax_error(c));

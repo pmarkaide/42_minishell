@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 12:08:37 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/19 15:52:48 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/20 14:05:32 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,8 @@ char				*ft_strjoin(char const *s1, char const *s2, char *delim);
 int					ft_str_empty(char *str);
 char				*ft_strncpy(char *dest, const char *src, size_t n);
 
-void				remove_extra_spaces(char *str);
-void				white_spaces_into_spaces(char *str);
+void				ft_remove_extra_spaces(char *str);
+void				ft_white_spaces_into_spaces(char *str);
 int					ft_abs(int n);
 int					ft_isquote(char c);
 t_list				*ft_split_args(char *str, char *delim);
