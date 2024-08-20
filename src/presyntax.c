@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 15:12:06 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/20 14:47:30 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/20 15:02:08 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,7 @@ static char	valid_file_name(char *instruction)
 				if (instruction[i + 1] == '\0')
 					return ('\n');
 				next_char = instruction[i + 1];
-				if (!ft_isalnum(next_char) && next_char != '|'
-					&& next_char != '$')
+				if (!ft_isalnum(next_char) && !strchr("$~+-./\'\"", next_char))
 					return (next_char);
 			}
 		}
