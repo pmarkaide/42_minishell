@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/21 01:56:27 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/21 19:01:04 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ int					syntax_error_check(char *instruction);
 
 /* tokenizer */
 void				tokenizer(t_macro *macro);
+t_list				*split_args_by_quotes(char *ins);
 
 /* tokenizer_utils */
 bool				is_inside_single_quotes(const char *str, int index);
@@ -109,6 +110,7 @@ char				*expand_envir(char *clean, char *instruction,
 						t_macro *macro);
 bool				is_builtin(t_token *token);
 bool				is_redir(t_token *token, char *redir_type);
+void				fix_redirections(char *instruction);
 
 /* list_utils */
 t_token				*init_token(void);
@@ -146,12 +148,11 @@ bool				is_directory(const char *path);
 char				**parse_paths(char **env);
 char				*get_executable_path(char **paths, char *executable);
 
+/* expand */
+char	*get_expanded_instruction(char *instruction, t_macro *macro);
+
 /* dup */
 void				dup_file_descriptors(t_macro *macro, t_cmd *cmd, int read_end);
-
-/* clean */
-void				clean(t_macro *macro);
-t_list				*split_args_by_quotes(char *input);
 
 /* clean utils*/
 char				*get_envir_name(char *str);
