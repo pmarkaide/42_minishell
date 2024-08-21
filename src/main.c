@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 14:49:38 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/19 10:51:08 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/21 02:05:42 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int	main(int argc, char **argv, char **envp)
 		if (line == NULL || *line == EOF)
 		{
 			g_exit = 0;
-			printf("Ctrl+D exits");
+			printf("Ctrl+D exits\n");
 			break ;
 		}
 		if (line[0] != '\0')

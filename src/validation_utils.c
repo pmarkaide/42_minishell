@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   validation_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 23:25:19 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/14 12:30:17 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/21 02:07:45 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+extern int	g_exit;
 
 bool	is_directory(const char *path)
 {
@@ -49,6 +51,7 @@ char	*get_executable_path(char **paths, char *executable)
 {
 	int		i;
 	char	*full_path;
+	char	*msg;
 
 	i = 0;
 	while (paths[i])
@@ -61,6 +64,10 @@ char	*get_executable_path(char **paths, char *executable)
 		free(full_path);
 		i++;
 	}
-	ft_putstr_fd("Executable not found\n", 2);
+	g_exit = 127;
+	msg = ft_strjoin(executable, ": command not found\n", NULL);
+	if (msg == NULL)
+		return (NULL);
+	ft_putstr_fd(msg, 2);
 	return (NULL);
 }

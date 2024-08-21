@@ -6,11 +6,13 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 15:39:10 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/19 15:54:46 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/21 02:00:24 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+extern int	g_exit;
 
 /*
  * Transverse the original instruction

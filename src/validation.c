@@ -3,23 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   validation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:35:57 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/15 13:32:58 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/21 01:54:26 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+extern int	g_exit;
 
 static int	validate_access(char *file)
 {
+	char *msg;
+	
 	if (!access(file, F_OK))
 	{
 		if (!access(file, X_OK))
 		{
 			if (is_directory(file))
-				return (error_msg(file, 126));
+			{
+				msg = ft_strjoin("minishell: ", file, NULL);
+				msg = ft_strjoin(msg, ": Is a directory\n", NULL);
+				ft_putstr_fd(msg, 2);
+				free(msg);
+				return (126);
+				//return (error_msg(file, 126));
+			}
 			return (0);
 		}
 		return (error_msg(file, 126));
@@ -54,21 +64,22 @@ static char	*search_for_executable(t_macro *macro, t_cmd *cmd)
 int	validate_executable(t_macro *macro, t_cmd *cmd)
 {
 	char	*full_path;
-	int		exit_code;
+	//int		exit_code;
 
 	if (ft_strchr("./", cmd->cmd_arg->value[0]) == NULL)
 	{
 		full_path = search_for_executable(macro, cmd);
 		if (!full_path)
-			return (-1);
+			return (1);
 		else
 		{
 			free(cmd->cmd_arg->value);
 			cmd->cmd_arg->value = full_path;
 		}
 	}
-	exit_code = validate_access(cmd->cmd_arg->value);
-	if (exit_code != 0)
-		ft_putstr_fd("executable not found\n", 2);
-	return (exit_code);
+	g_exit = validate_access(cmd->cmd_arg->value);
+	//exit_code = validate_access(cmd->cmd_arg->value);
+	// if (exit_code != 0)
+	// 	ft_putstr_fd("executable not found\n", 2);
+	return (g_exit);
 }

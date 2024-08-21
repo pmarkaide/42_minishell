@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/20 14:53:38 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/21 01:56:27 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ void				tokenizer(t_macro *macro);
 
 /* tokenizer_utils */
 bool				is_inside_single_quotes(const char *str, int index);
+bool				is_inside_double_quotes(char *str, int index);
 char				*expand_envir(char *clean, char *instruction,
 						t_macro *macro);
 bool				is_builtin(t_token *token);
@@ -134,8 +135,8 @@ int					execution(t_macro *macro);
 
 /* execution utils */
 char				**build_cmd_args_array(t_token *cmd_args);
-int					get_exit_code(int status);
-int					wait_processes(pid_t *pid, int cmds);
+// int					get_exit_code(int status);
+// int					wait_processes(pid_t *pid, int cmds);
 
 /* validation */
 int					validate_executable(t_macro *macro, t_cmd *cmd);
