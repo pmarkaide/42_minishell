@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 15:39:10 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/21 02:00:24 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/21 18:49:32 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,27 +23,28 @@ extern int	g_exit;
  * Continue parsing, execution etc.
  */
 
-static char	*clean_instruction(char *instruction)
+void	fix_redirections(char *instruction)
 {
-	char	*clean;
-	char	*ptr;
-	int		i;
+	int	i;
+	int	j;
 
-	clean = malloc(sizeof(char) * ft_strlen(instruction) + 1);
-	ptr = instruction;
 	i = 0;
-	while (*ptr)
+	j = 0;
+	while (instruction[i] != '\0')
 	{
-		// Riesgo de Segfault si da la casualidad de que ptr[0] es espacio e intenta leer ptr[-1]
-		if (*ptr == ' ' && (*(ptr - 1) == '<' || *(ptr - 1) == '>'))
-			ptr++;
-		clean[i] = *ptr;
+		if (instruction[i] == '>' || instruction[i] == '<')
+		{
+			instruction[j++] = instruction[i];
+			i++;
+			while (ft_isspace(instruction[i]))
+				i++;
+			i--;
+		}
+		else
+			instruction[j++] = instruction[i];
 		i++;
-		ptr++;
 	}
-	clean[i] = '\0';
-	free(instruction);
-	return (clean);
+	instruction[j] = '\0';
 }
 
 int	expand_variable(char *clean, int j, char *instruction, int i,
@@ -135,84 +136,126 @@ static char	*get_expanded_instruction(char *instruction, t_macro *macro)
 	return (clean);
 }
 
-static char	*create_and_clean_token(char *start, size_t length)
-{
-	char	*token;
-	char	*clean_token;
+// static char	*create_and_clean_token(char *start, size_t length)
+// {
+// 	char	*token;
+// 	char	*clean_token;
 
-	token = ft_strndup(start, length);
-	if (!token)
-		return (NULL);
-	clean_token = ft_remove_edge_quotes(token);
-	free(token);
-	if (!clean_token)
-		return (NULL);
-	token = ft_remove_char(clean_token, '\"');
-	free(clean_token);
-	return (token);
-}
+// 	token = ft_strndup(start, length);
+// 	if (!token)
+// 		return (NULL);
+// 	clean_token = ft_remove_edge_quotes(token);
+// 	free(token);
+// 	if (!clean_token)
+// 		return (NULL);
+// 	token = ft_remove_char(clean_token, '\"');
+// 	free(clean_token);
+// 	return (token);
+// }
 
 static int	create_and_add_node(char *start, size_t length, t_list **tokens)
 {
-	char	*clean_token;
+	char	*token;
 	t_list	*new_node;
 
-	clean_token = create_and_clean_token(start, length);
-	if (!clean_token)
+	token = ft_strndup(start, length);
+	if (!token)
 		return (-1);
-	new_node = ft_lstnew(clean_token);
+	new_node = ft_lstnew(token);
 	if (!new_node)
 	{
-		free(clean_token);
+		free(token);
 		return (-1);
 	}
 	ft_lstadd_back(tokens, new_node);
 	return (0);
 }
 
-static int	process_token(char **current_pos, t_list **tokens)
+static void	process_quote(char *ins, int *pos, int *len)
 {
-	char	*token_start;
 	char	quote_char;
 
-	token_start = *current_pos;
-	quote_char = '\0';
-	while (**current_pos && (quote_char || !ft_isdelim(**current_pos)))
+	quote_char = ins[*pos];
+	(*pos)++;
+	(*len)++;
+	while (ins[*pos] && ins[*pos] != quote_char)
 	{
-		if (ft_isquote(**current_pos))
-		{
-			if (quote_char == '\0')
-				quote_char = **current_pos;
-			else if (quote_char == **current_pos)
-				quote_char = '\0';
-		}
-		(*current_pos)++;
+		(*len)++;
+		(*pos)++;
 	}
-	if (*current_pos != token_start)
+	if (ins[*pos] == quote_char)
 	{
-		if (create_and_add_node(token_start, *current_pos - token_start,
-				tokens) == -1)
+		(*len)++;
+		(*pos)++;
+	}
+}
+
+static int	process_pipe(char *ins, int *pos, t_list **tokens, char **start,
+		int *len)
+{
+	if (*len > 0)
+	{
+		if (create_and_add_node(*start, *len, tokens) == -1)
+			return (-1);
+	}
+	if (create_and_add_node("|", 1, tokens) == -1)
+		return (-1);
+	(*pos)++;
+	*start = &ins[*pos];
+	*len = 0;
+	return (0);
+}
+
+static void	process_character(int *pos, int *len)
+{
+	(*len)++;
+	(*pos)++;
+}
+
+static int	process_token(char *ins, int *pos, t_list **tokens)
+{
+	char	*start;
+	int		len;
+	int		result;
+
+	start = &ins[*pos];
+	len = 0;
+	result = 0;
+	while (ins[*pos] && !ft_isdelim(ins[*pos]))
+	{
+		if (ft_isquote(ins[*pos]))
+			process_quote(ins, pos, &len);
+		else if (ins[*pos] == '|')
+			result = process_pipe(ins, pos, tokens, &start, &len);
+		else
+			process_character(pos, &len);
+		if (result == -1)
+			return (-1);
+	}
+	if (len > 0)
+	{
+		if (create_and_add_node(start, len, tokens) == -1)
 			return (-1);
 	}
 	return (0);
 }
 
-t_list	*split_args_by_quotes(char *input)
+t_list	*split_args_by_quotes(char *ins)
 {
-	char	*current_pos;
 	t_list	*tokens;
+	int		pos;
 
-	current_pos = input;
 	tokens = NULL;
-	while (*current_pos)
+	pos = 0;
+	while (ins[pos])
 	{
-		while (*current_pos && ft_isdelim(*current_pos))
-			current_pos++;
-		if (*current_pos)
+		while (ins[pos] && ft_isdelim(ins[pos]))
+			pos++;
+		if (ins[pos])
 		{
-			if (process_token(&current_pos, &tokens) == -1)
+			if (process_token(ins, &pos, &tokens) == -1)
 			{
-				ft_lstclear(&tokens, free);
+				ft_lstclear(&tokens, ft_del);
 				return (NULL);
 			}
 		}
@@ -222,6 +265,6 @@ t_list	*split_args_by_quotes(char *input)
 
 void	clean(t_macro *macro)
 {
+	fix_redirections(macro->instruction);
 	macro->instruction = get_expanded_instruction(macro->instruction, macro);
-	macro->instruction = clean_instruction(macro->instruction);
 }
