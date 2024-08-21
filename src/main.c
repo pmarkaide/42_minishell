@@ -89,7 +89,7 @@ int	main(int argc, char **argv, char **envp)
 		if (line == NULL || *line == EOF)
 		{
 			g_exit = 0;
-			printf("Ctrl+D exits");
+			printf("Ctrl+D exits\n");
 			break ;
 		}
 		if (line[0] != '\0')
