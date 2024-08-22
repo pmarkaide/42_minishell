@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 21:24:44 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/20 13:42:29 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/21 18:59:22 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ void	tokenizer(t_macro *macro)
 {
 	t_list	*lexemes;
 
+	fix_redirections(macro->instruction);
 	lexemes = split_args_by_quotes(macro->instruction);
 	macro->tokens = identify_tokens(lexemes);
 	free(lexemes);

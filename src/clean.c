@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 15:39:10 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/21 02:00:24 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/22 10:35:46 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,3 +268,4 @@ void	clean(t_macro *macro)
 	fix_redirections(macro->instruction);
 	macro->instruction = get_expanded_instruction(macro->instruction, macro);
 }
+
