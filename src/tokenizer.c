@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 21:24:44 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/22 13:50:17 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/22 16:04:26 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ t_token	*identify_tokens(t_list *lexemes)
 	return (tokens);
 }
 
-t_token	*build_retokens(t_list *lexemes)
+t_token	*build_retokens(t_list *lexemes, t_type type)
 {
 	t_token	*token;
 	t_token	*retokens;
@@ -92,7 +92,7 @@ t_token	*build_retokens(t_list *lexemes)
 		token = init_token();
 		if (!token)
 			return (NULL);
-		if (retokens == NULL)
+		if (type == CMD)
 			token->type = CMD;
 		else
 			token->type = ARG;
@@ -122,7 +122,7 @@ void	plug_retokens(t_token *token, t_token *retokens, t_macro *macro)
 		last->next = next;
 }
 
-t_token	*retokenize(t_token *token, t_macro *macro)
+t_token	*retokenize(t_token *token, t_macro *macro, t_type type)
 {
 	t_list	*lexemes;
 	t_token	*retokens;
@@ -134,7 +134,7 @@ t_token	*retokenize(t_token *token, t_macro *macro)
 	lexemes = split_args_by_quotes(expanded);
 	if (!lexemes)
 		return (NULL);
-	retokens = build_retokens(lexemes);
+	retokens = build_retokens(lexemes, type);
 	return (retokens);
 }
 
@@ -149,16 +149,17 @@ t_token	*expand_arg_tokens(t_macro *macro)
 	{
 		if (ft_strchr(tokens->value, '$'))
 		{
-			if (tokens->type != CMD)
-			{
-				expanded = get_expanded_instruction(tokens->value, macro);
-				if (!expanded)
-					return (NULL);
+			expanded = get_expanded_instruction(tokens->value, macro);
+			if (!expanded)
+				return (NULL);
+			if(ft_strchr("\"",tokens->value[0]))
 				tokens->value = expanded;
-			}
 			else
 			{
-				retokens = retokenize(tokens, macro);
+				if(tokens->type == CMD)
+					retokens = retokenize(tokens, macro, CMD);
+				else
+					retokens = retokenize(tokens, macro, ARG);
 				if (!retokens)
 					return (NULL);
 				plug_retokens(tokens, retokens, macro);
@@ -186,12 +187,12 @@ void	tokenizer(t_macro *macro)
 		free(lexemes);
 		return ;
 	}
-	ft_printf("Tokens:\n");
-	print_tokens(macro->tokens);
+	// ft_printf("Tokens:\n");
+	// print_tokens(macro->tokens);
 	macro->tokens = expand_arg_tokens(macro);
-	ft_printf("\n\n\n");
-	ft_printf("Expanded Tokens:\n");
-	print_tokens(macro->tokens);
+	// ft_printf("\n\n\n");
+	// ft_printf("Expanded Tokens:\n");
+	// print_tokens(macro->tokens);
 	if (!macro->tokens)
 	{
 		free_tokens(&macro->tokens);
