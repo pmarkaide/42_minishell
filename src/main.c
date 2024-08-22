@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 14:49:38 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/21 02:05:42 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/21 15:08:35 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ int	main(int argc, char **argv, char **envp)
 		// ft_readline(&macro);
 		// free_macro(&macro);
 		// ft_printf("%s\n", macro.instruction);
-		free(line);
+		//free(line);
 	}
 	exit(g_exit);
 }
