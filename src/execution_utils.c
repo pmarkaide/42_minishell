@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 20:03:14 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/22 20:56:25 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/22 21:45:16 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,16 +44,36 @@
 // 	return (exit_code);
 // }
 
-char	**prepare_child_execution(t_macro *macro, t_cmd *cmd)
-{
-	char	**cmd_array;
+#include "minishell.h"
 
-	if (cmd->type == CMD)
-		validate_executable(macro, cmd);
-	cmd_array = build_cmd_args_array(cmd->cmd_arg);
-	if (!cmd_array)
-		exit(errno);
-	return (cmd_array);
+
+char	*clean_quotes(char *str)
+{
+    char	*result;
+    int		i;
+    int		j;
+    bool	double_quote_open;
+    bool	single_quote_open;
+
+    result = (char *)malloc(ft_strlen(str) + 1);
+    if (!result)
+        return (NULL);
+    double_quote_open = false;
+    single_quote_open = false;
+    i = 0;
+    j = 0;
+    while (str[i])
+    {
+        if (str[i] == '\"' && !single_quote_open)
+            double_quote_open = !double_quote_open;
+        else if (str[i] == '\'' && !double_quote_open)
+            single_quote_open = !single_quote_open;
+        else
+            result[j++] = str[i];
+        i++;
+    }
+    result[j] = '\0';
+    return (result);
 }
 
 char	**build_cmd_args_array(t_token *cmd_args)
@@ -71,6 +91,7 @@ char	**build_cmd_args_array(t_token *cmd_args)
 	while (tmp)
 	{
 		cmd_array[i] = ft_strdup(tmp->value);
+		cmd_array[i] = clean_quotes(cmd_array[i]);
 		if (!cmd_array[i])
 		{
 			free_array(&cmd_array);
@@ -82,3 +103,17 @@ char	**build_cmd_args_array(t_token *cmd_args)
 	cmd_array[i] = NULL;
 	return (cmd_array);
 }
+
+
+char	**prepare_child_execution(t_macro *macro, t_cmd *cmd)
+{
+	char	**cmd_array;
+
+	if (cmd->type == CMD)
+		validate_executable(macro, cmd);
+	cmd_array = build_cmd_args_array(cmd->cmd_arg);
+	if (!cmd_array)
+		exit(errno);
+	return (cmd_array);
+}
+
