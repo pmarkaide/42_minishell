@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 21:24:44 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/21 18:59:22 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/22 12:47:30 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,26 @@ t_token	*identify_tokens(t_list *lexemes)
 	return (tokens);
 }
 
+void expand_arg_tokens(t_macro *macro)
+{
+	t_token *tokens;
+	char *expanded;
+	
+	tokens = macro->tokens;
+	while(tokens)
+	{
+		if(tokens->type == !CMD)
+		{
+			if(ft_strchr(tokens->value, '$'))
+			{
+				expanded = get_expanded_instruction(tokens->value, macro);
+				tokens->value = expanded;
+			}
+		}
+		tokens = tokens->next;
+	}
+}
+
 void	tokenizer(t_macro *macro)
 {
 	t_list	*lexemes;
@@ -88,5 +108,12 @@ void	tokenizer(t_macro *macro)
 	fix_redirections(macro->instruction);
 	lexemes = split_args_by_quotes(macro->instruction);
 	macro->tokens = identify_tokens(lexemes);
+	expand_arg_tokens(macro);
+	//expand envirs
+		//expand ARGS
+		//expand_CMD
+			//retokenizar
+			//plug_in tokens
+	
 	free(lexemes);
 }
