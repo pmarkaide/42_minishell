@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 20:03:14 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/21 02:03:59 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/22 20:56:25 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,18 @@
 // 	}
 // 	return (exit_code);
 // }
+
+char	**prepare_child_execution(t_macro *macro, t_cmd *cmd)
+{
+	char	**cmd_array;
+
+	if (cmd->type == CMD)
+		validate_executable(macro, cmd);
+	cmd_array = build_cmd_args_array(cmd->cmd_arg);
+	if (!cmd_array)
+		exit(errno);
+	return (cmd_array);
+}
 
 char	**build_cmd_args_array(t_token *cmd_args)
 {
