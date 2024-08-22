@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:23:53 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/21 02:05:23 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/22 23:36:51 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static char	**prepare_child_execution(t_macro *macro, t_cmd *cmd)
 	return (cmd_array);
 }
 
-static void	execute_child_process(t_macro *macro, int index, int read_end, int pipe_exit[2])	
+static void	execute_child_process(t_macro *macro, int index, int read_end, int pipe_exit[2], int total_cmds)	
 {
 	int		i;
 	t_cmd	*cmd;
@@ -58,8 +58,11 @@ static void	execute_child_process(t_macro *macro, int index, int read_end, int p
 	//printf("g_exit loca0: %d\neres el pid %d\n", g_exit, getpid());
 	// if (g_exit != 0)
 	// 	ft_putstr_fd("execution failed\n", 2);
+	if (index == total_cmds - 1)
+	{
 	write(pipe_exit[1], &g_exit, sizeof(int));
 	close(pipe_exit[1]);
+	}
 	exit(g_exit);
 }
 
@@ -79,7 +82,7 @@ static int	execute_cmds(t_macro *macro, int read_end, int pipe_exit[2])
 			return (error_msg("fork failed", i));
 		}
 		else if (macro->pid[i] == 0)
-			execute_child_process(macro, i, read_end, pipe_exit);
+			execute_child_process(macro, i, read_end, pipe_exit, macro->num_cmds);
 		if (read_end > 0)
 			close(read_end);
 		read_end = macro->pipe_fd[0];
@@ -106,7 +109,7 @@ int	execution(t_macro *macro)
 	char	**cmd_array;
 	int	 	pipe_exit[2];
 	int 	i;
-	int 	status;
+
 
 	if (macro->num_cmds == 1 && macro->cmds->type == BUILTIN)
 	{
@@ -125,12 +128,7 @@ int	execution(t_macro *macro)
 		num_cmds_executed = execute_cmds(macro, read_end, pipe_exit);
 		i = 0;
 		while (i < num_cmds_executed)
-		{
-			waitpid(macro->pid[i++], &status, 0);
-			if (WIFEXITED(status))
-                g_exit = WEXITSTATUS(status);
-		}
-		//wait_processes(macro->pid, num_cmds_executed);
+			g_exit = wait_processes(macro->pid[i++]);
 		if (macro->pid != 0)
 		{
 			close (pipe_exit[1]);

@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 20:03:14 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/21 02:03:59 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/22 23:33:26 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,20 @@
 // 	}
 // 	return (exit_code);
 // }
+
+int	wait_processes(pid_t pid)
+{
+	int	status;
+	int	exit_code;
+
+	exit_code = 0;
+	waitpid(pid, &status, 0);
+	if (WIFEXITED(status))
+		exit_code = WEXITSTATUS(status); 
+	else if (WIFSIGNALED(status))
+		exit_code = 128 + WTERMSIG(status);
+	return (exit_code);
+}
 
 char	**build_cmd_args_array(t_token *cmd_args)
 {
