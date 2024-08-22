@@ -3,16 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   validation_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 23:25:19 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/21 02:07:45 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/22 23:24:08 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 extern int	g_exit;
+
+int	open_file(t_token *token)
+{
+	int	fd;
+
+	if (token->type == INRED)
+		fd = open(token->value, O_RDONLY);
+	else if (token->type == OUTRED)
+		fd = open(token->value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	else if (token->type == APPEND)
+		fd = open(token->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	g_exit = errno;
+    if (fd == -1)
+    {
+        g_exit = errno;
+        perror(token->value);
+		return (-1);
+    }
+	return (fd);
+}
 
 bool	is_directory(const char *path)
 {

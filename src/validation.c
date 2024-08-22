@@ -3,16 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   validation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:35:57 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/21 01:54:26 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/22 23:21:04 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 extern int	g_exit;
+
+int	validate_redirections(t_token *redir)
+{
+    t_token	*tmp;
+    int		fd;
+
+    tmp = redir;
+    while (tmp)
+    {
+        if (is_redir(tmp, "input") || is_redir(tmp, "output"))
+        {
+            if (tmp->type == HERE_DOC)
+                continue;
+            else
+            {
+                fd = open_file(tmp);
+                if (fd == -1)	
+					return (-1);
+                close(fd);
+            }
+        }
+        tmp = tmp->next;
+    }
+    return (0);
+}
 
 static int	validate_access(char *file)
 {

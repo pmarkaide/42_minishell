@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/22 20:56:48 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/22 23:19:22 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@
 # define PERMISSION_DENIED 126
 # define COMMAND_NOT_FOUND 127
 # define SEGFAULT 139
-# define IS_DIRECTORY -1
+# define IS_DIRECTORY 21
 # define EXEC_NOT_FOUND -2
 
 typedef enum e_type
@@ -77,8 +77,7 @@ typedef struct s_cmd
 	int				n;
 	t_type			type;
 	t_token			*cmd_arg;
-	t_token			*in_redir;
-	t_token			*out_redir;
+	t_token			*redir;
 	struct s_cmd	*next;
 }					t_cmd;
 
@@ -146,11 +145,13 @@ char				**prepare_child_execution(t_macro *macro, t_cmd *cmd);
 
 /* validation */
 int					validate_executable(t_macro *macro, t_cmd *cmd);
+int					validate_redirections(t_token *redir);
 
 /* validation utils */
 bool				is_directory(const char *path);
 char				**parse_paths(char **env);
 char				*get_executable_path(char **paths, char *executable);
+int					open_file(t_token *token);
 
 /* expand */
 char				*get_expanded_instruction(char *instruction,
