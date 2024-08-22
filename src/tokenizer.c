@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 21:24:44 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/22 16:04:26 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/22 16:09:57 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ void	plug_retokens(t_token *token, t_token *retokens, t_macro *macro)
 		last->next = next;
 }
 
-t_token	*retokenize(t_token *token, t_macro *macro, t_type type)
+t_token	*retokenize(t_token *token, t_macro *macro)
 {
 	t_list	*lexemes;
 	t_token	*retokens;
@@ -134,7 +134,7 @@ t_token	*retokenize(t_token *token, t_macro *macro, t_type type)
 	lexemes = split_args_by_quotes(expanded);
 	if (!lexemes)
 		return (NULL);
-	retokens = build_retokens(lexemes, type);
+	retokens = build_retokens(lexemes, token->type);
 	return (retokens);
 }
 
@@ -152,14 +152,11 @@ t_token	*expand_arg_tokens(t_macro *macro)
 			expanded = get_expanded_instruction(tokens->value, macro);
 			if (!expanded)
 				return (NULL);
-			if(ft_strchr("\"",tokens->value[0]))
+			if (ft_strchr("\"", tokens->value[0]))
 				tokens->value = expanded;
 			else
 			{
-				if(tokens->type == CMD)
-					retokens = retokenize(tokens, macro, CMD);
-				else
-					retokens = retokenize(tokens, macro, ARG);
+				retokenize(tokens, macro);
 				if (!retokens)
 					return (NULL);
 				plug_retokens(tokens, retokens, macro);
@@ -167,7 +164,7 @@ t_token	*expand_arg_tokens(t_macro *macro)
 		}
 		tokens = tokens->next;
 	}
-	return(macro->tokens);
+	return (macro->tokens);
 }
 
 void	tokenizer(t_macro *macro)
@@ -187,12 +184,7 @@ void	tokenizer(t_macro *macro)
 		free(lexemes);
 		return ;
 	}
-	// ft_printf("Tokens:\n");
-	// print_tokens(macro->tokens);
 	macro->tokens = expand_arg_tokens(macro);
-	// ft_printf("\n\n\n");
-	// ft_printf("Expanded Tokens:\n");
-	// print_tokens(macro->tokens);
 	if (!macro->tokens)
 	{
 		free_tokens(&macro->tokens);
