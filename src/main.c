@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 14:49:38 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/22 10:35:59 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/22 12:24:41 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,8 @@ int	main(int argc, char **argv, char **envp)
 			printf("Ctrl+D exits\n");
 			break ;
 		}
+		if (ft_strcmp(line, "") == 0)
+			continue;
 		if (line[0] != '\0')
 			add_history(line);
 		// FALTA FUNCION AQUI PARA AÑADIR HISTORIAL EN macro->history
