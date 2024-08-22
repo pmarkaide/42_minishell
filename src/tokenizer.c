@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 21:24:44 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/22 16:09:57 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/22 16:26:04 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,10 @@ t_token	*build_retokens(t_list *lexemes, t_type type)
 		if (!token)
 			return (NULL);
 		if (type == CMD)
+		{
 			token->type = CMD;
+			type = ARG;
+		}
 		else
 			token->type = ARG;
 		token->value = lexemes->content;
@@ -156,7 +159,7 @@ t_token	*expand_arg_tokens(t_macro *macro)
 				tokens->value = expanded;
 			else
 			{
-				retokenize(tokens, macro);
+				retokens = retokenize(tokens, macro);
 				if (!retokens)
 					return (NULL);
 				plug_retokens(tokens, retokens, macro);
