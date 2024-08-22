@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 15:55:31 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/21 01:59:16 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/22 15:07:32 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -305,7 +305,9 @@ static int ft_export2(char **args, t_macro *macro)
 	int	len_var;
 	int argc;
 	char *clean_value;
+	int exit_flag;
 
+	exit_flag = 0;
 	argc = 0;
 	while (args[argc])
 		argc++;
@@ -326,7 +328,7 @@ static int ft_export2(char **args, t_macro *macro)
 			ft_putstr_fd(remove_quotes(args[i]), STDERR_FILENO);
 			ft_putendl_fd("': not a valid identifier", STDERR_FILENO);
 			i++;
-			g_exit = 1;
+			exit_flag = 1;
 			continue;	
 		}
 		clean_value = remove_quotes(args[i]);
@@ -352,7 +354,7 @@ static int ft_export2(char **args, t_macro *macro)
 		free(clean_value);
 		i++;
 	}
-	if (g_exit == 1)
+	if (exit_flag == 1)
 		return (1);
 	return (0);
 }
