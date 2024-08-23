@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 10:42:44 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/14 13:25:36 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/23 08:40:38 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	handle_here_doc(t_cmd *cmds)
 	cmd = cmds;
 	while (cmd)
 	{
-		token = cmd->in_redir;
+		token = cmd->redir;
 		while (token)
 		{
 			if (token->type == HERE_DOC)

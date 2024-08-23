@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/23 08:26:44 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/23 08:45:34 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,12 +155,10 @@ char				*get_executable_path(char **paths, char *executable);
 int					open_file(t_token *token);
 
 /* expand */
-char				*get_expanded_instruction(char *instruction,
-						t_macro *macro);
+char				*get_expanded_instruction(char *instruction, t_macro *macro);
 
 /* dup */
-void				dup_file_descriptors(t_macro *macro, t_cmd *cmd,
-						int read_end);
+void				dup_file_descriptors(t_macro *macro, t_cmd *cmd, int read_end);
 
 /* clean utils*/
 char				*get_envir_name(char *str);
