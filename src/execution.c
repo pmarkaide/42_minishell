@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:23:53 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/22 22:17:04 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/22 23:36:51 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,19 @@ int	execute_builtin(t_macro *macro, char **cmd_array)
 	return (g_exit);
 }
 
-static void	execute_child_process(t_macro *macro, int index, int read_end,
-		int pipe_exit[2])
+static char	**prepare_child_execution(t_macro *macro, t_cmd *cmd)
+{
+	char	**cmd_array;
+
+	if (cmd->type == CMD)
+		validate_executable(macro, cmd);
+	cmd_array = build_cmd_args_array(cmd->cmd_arg);
+	if (!cmd_array)
+		exit(errno);
+	return (cmd_array);
+}
+
+static void	execute_child_process(t_macro *macro, int index, int read_end, int pipe_exit[2])	
 {
 	int		i;
 	t_cmd	*cmd;
@@ -47,8 +58,11 @@ static void	execute_child_process(t_macro *macro, int index, int read_end,
 	// printf("g_exit loca0: %d\neres el pid %d\n", g_exit, getpid());
 	// if (g_exit != 0)
 	// 	ft_putstr_fd("execution failed\n", 2);
+	if (index == macro->num_cmds - 1)
+	{
 	write(pipe_exit[1], &g_exit, sizeof(int));
 	close(pipe_exit[1]);
+	}
 	exit(g_exit);
 }
 
@@ -93,9 +107,8 @@ int	execution(t_macro *macro)
 	int		read_end;
 	int		num_cmds_executed;
 	char	**cmd_array;
-	int		pipe_exit[2];
-	int		i;
-	int		status;
+	int	 	pipe_exit[2];
+	int 	i;
 
 	if (macro->num_cmds == 1 && macro->cmds->type == BUILTIN)
 	{
@@ -114,12 +127,8 @@ int	execution(t_macro *macro)
 		num_cmds_executed = execute_cmds(macro, read_end, pipe_exit);
 		i = 0;
 		while (i < num_cmds_executed)
-		{
-			waitpid(macro->pid[i++], &status, 0);
-			if (WIFEXITED(status))
-				g_exit = WEXITSTATUS(status);
-		}
-		// wait_processes(macro->pid, num_cmds_executed);
+			g_exit = wait_processes(macro->pid[i++]);
+
 		if (macro->pid != 0)
 		{
 			close(pipe_exit[1]);
