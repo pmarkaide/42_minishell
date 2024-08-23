@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/23 12:01:02 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/23 13:18:35 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,8 +193,7 @@ int					ft_strchr_i(const char *s, int c);
 char				**ft_replace_matrix_row(char ***big, char **small, int n);
 void				ft_unset(t_macro *macro);
 int					var_in_env(char *argv, char **env, int ij[2]);
-int					select_and_run_builtin(char *cmd, char **args,
-						t_macro *macro);
+int					select_and_run_builtin(char *cmd, char **args, t_macro *macro);
 bool				check_builtin(char *real_cmd);
 char				*grab_env(char *var, char **env, int n);
 char				**fix_env(char *var, char *value, char **env, int n);
