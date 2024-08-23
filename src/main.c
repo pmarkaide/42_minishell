@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 14:49:38 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/22 12:24:41 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/22 22:16:49 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	g_exit;
+int		g_exit;
 
 t_macro	*start_env(t_macro *macro, char **argv)
 {
@@ -84,7 +84,7 @@ int	main(int argc, char **argv, char **envp)
 			perror("Error getting current directory");
 		}
 		path = ft_strjoin(path, " @ minishell>$ ", NULL);
-		//path = ft_strjoin(path, " $ ", NULL);
+		// path = ft_strjoin(path, " $ ", NULL);
 		line = readline(path);
 		if (line == NULL || *line == EOF)
 		{
@@ -93,7 +93,7 @@ int	main(int argc, char **argv, char **envp)
 			break ;
 		}
 		if (ft_strcmp(line, "") == 0)
-			continue;
+			continue ;
 		if (line[0] != '\0')
 			add_history(line);
 		// FALTA FUNCION AQUI PARA AÑADIR HISTORIAL EN macro->history
@@ -103,16 +103,10 @@ int	main(int argc, char **argv, char **envp)
 			continue ;
 		}
 		macro->instruction = line;
-		macro->instruction = get_expanded_instruction(macro->instruction, macro);
 		tokenizer(macro);
-		// test_builtins(macro);
+		//print_tokens(macro->tokens);
 		macro->cmds = parsing(macro);
 		execution(macro);
-		// free_instruction(&macro);
-		// ft_readline(&macro);
-		// free_macro(&macro);
-		// ft_printf("%s\n", macro.instruction);
-		//free(line);
 	}
 	exit(g_exit);
 }

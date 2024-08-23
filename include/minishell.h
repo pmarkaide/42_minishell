@@ -103,6 +103,9 @@ int					syntax_error_check(char *instruction);
 void				tokenizer(t_macro *macro);
 t_list				*split_args_by_quotes(char *ins);
 
+/* tokenizer_expand */
+t_token				*expand_arg_tokens(t_macro *macro);
+
 /* tokenizer_utils */
 bool				is_inside_single_quotes(const char *str, int index);
 bool				is_inside_double_quotes(char *str, int index);
@@ -137,6 +140,7 @@ int					execution(t_macro *macro);
 
 /* execution utils */
 char				**build_cmd_args_array(t_token *cmd_args);
+char				**prepare_child_execution(t_macro *macro, t_cmd *cmd);
 // int					get_exit_code(int status);
 // int					wait_processes(pid_t *pid, int cmds);
 int						wait_processes(pid_t pid);
@@ -150,10 +154,12 @@ char				**parse_paths(char **env);
 char				*get_executable_path(char **paths, char *executable);
 
 /* expand */
-char	*get_expanded_instruction(char *instruction, t_macro *macro);
+char				*get_expanded_instruction(char *instruction,
+						t_macro *macro);
 
 /* dup */
-void				dup_file_descriptors(t_macro *macro, t_cmd *cmd, int read_end);
+void				dup_file_descriptors(t_macro *macro, t_cmd *cmd,
+						int read_end);
 
 /* clean utils*/
 char				*get_envir_name(char *str);
@@ -185,7 +191,8 @@ int					ft_strchr_i(const char *s, int c);
 char				**ft_replace_matrix_row(char ***big, char **small, int n);
 void				ft_unset(t_macro *macro);
 int					var_in_env(char *argv, char **env, int ij[2]);
-int					select_and_run_builtin(char *cmd, char **args, t_macro *macro);
+int					select_and_run_builtin(char *cmd, char **args,
+						t_macro *macro);
 bool				check_builtin(char *real_cmd);
 char				*grab_env(char *var, char **env, int n);
 char				**fix_env(char *var, char *value, char **env, int n);

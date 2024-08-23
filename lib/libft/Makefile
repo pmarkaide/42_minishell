@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+         #
+#    By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/24 12:10:27 by pmarkaid          #+#    #+#              #
-#    Updated: 2024/08/19 15:52:24 by dbejar-s         ###   ########.fr        #
+#    Updated: 2024/08/22 12:26:35 by pmarkaid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -82,7 +82,6 @@ SRC = \
 	ft_lst_to_array.c \
 	ft_isdelim.c \
 	ft_strndup.c \
-	ft_clean_edge_quotes.c \
 	ft_remove_char.c
 
 INCLUDES = .
