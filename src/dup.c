@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 23:24:13 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/22 22:57:06 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/23 12:29:00 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,8 @@ static void	dup_stdout(t_macro *macro, t_cmd *cmd)
 			return ;
 		}
 	}
-	close(macro->pipe_fd[1]);
+	if(macro->pipe_fd[1] != -1)
+		close(macro->pipe_fd[1]);
 }
 
 static void	dup_stdin(t_macro *macro, t_cmd *cmd, int read_end)
@@ -87,13 +88,12 @@ static void	dup_stdin(t_macro *macro, t_cmd *cmd, int read_end)
 			return ;
 		}
 	}
-	close(macro->pipe_fd[0]);
+	if(macro->pipe_fd[0] != -1)
+		close(macro->pipe_fd[0]);
 }
-
-
 
 void	dup_file_descriptors(t_macro *macro, t_cmd *cmd, int read_end)
 {
-	dup_stdout(macro, cmd);
-	dup_stdin(macro, cmd, read_end);
+		dup_stdout(macro, cmd);
+		dup_stdin(macro, cmd, read_end);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/23 08:45:34 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/23 12:01:02 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,9 +141,9 @@ int					execution(t_macro *macro);
 /* execution utils */
 char				**build_cmd_args_array(t_token *cmd_args);
 char				**prepare_child_execution(t_macro *macro, t_cmd *cmd);
-// int					get_exit_code(int status);
-// int					wait_processes(pid_t *pid, int cmds);
-int						wait_processes(pid_t pid);
+int					wait_processes(pid_t pid);
+void 				catch_parent_exit(int *pipe_exit, int *g_exit);
+void 				close_fds(int *pipe_fd, int read_end);
 
 /* validation */
 int					validate_executable(t_macro *macro, t_cmd *cmd);

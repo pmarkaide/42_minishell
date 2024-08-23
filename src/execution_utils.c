@@ -6,11 +6,34 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 20:03:14 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/23 08:21:45 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/23 12:00:47 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void close_fds(int *pipe_fd, int read_end)
+{
+    if (pipe_fd[0] != -1)
+    {
+        close(pipe_fd[0]);
+        pipe_fd[0] = -1;
+    }
+    if (pipe_fd[1] != -1)
+    {
+        close(pipe_fd[1]);
+        pipe_fd[1] = -1;
+    }
+	if (read_end > 0)
+        close(read_end);
+}
+
+void catch_parent_exit(int *pipe_exit, int *g_exit)
+{
+    close(pipe_exit[1]);
+    read(pipe_exit[0], g_exit, sizeof(int));
+    close(pipe_exit[0]);
+}
 
 int	wait_processes(pid_t pid)
 {
