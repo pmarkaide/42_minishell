@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/22 23:34:12 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/23 08:45:34 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@
 # define PERMISSION_DENIED 126
 # define COMMAND_NOT_FOUND 127
 # define SEGFAULT 139
-# define IS_DIRECTORY -1
+# define IS_DIRECTORY 21
 # define EXEC_NOT_FOUND -2
 
 typedef enum e_type
@@ -77,8 +77,7 @@ typedef struct s_cmd
 	int				n;
 	t_type			type;
 	t_token			*cmd_arg;
-	t_token			*in_redir;
-	t_token			*out_redir;
+	t_token			*redir;
 	struct s_cmd	*next;
 }					t_cmd;
 
@@ -114,6 +113,7 @@ char				*expand_envir(char *clean, char *instruction,
 bool				is_builtin(t_token *token);
 bool				is_redir(t_token *token, char *redir_type);
 void				fix_redirections(char *instruction);
+void 				clean_token_quotes(t_token *tokens);
 
 /* list_utils */
 t_token				*init_token(void);
@@ -147,19 +147,19 @@ int						wait_processes(pid_t pid);
 
 /* validation */
 int					validate_executable(t_macro *macro, t_cmd *cmd);
+int					validate_redirections(t_token *redir);
 
 /* validation utils */
 bool				is_directory(const char *path);
 char				**parse_paths(char **env);
 char				*get_executable_path(char **paths, char *executable);
+int					open_file(t_token *token);
 
 /* expand */
-char				*get_expanded_instruction(char *instruction,
-						t_macro *macro);
+char				*get_expanded_instruction(char *instruction, t_macro *macro);
 
 /* dup */
-void				dup_file_descriptors(t_macro *macro, t_cmd *cmd,
-						int read_end);
+void				dup_file_descriptors(t_macro *macro, t_cmd *cmd, int read_end);
 
 /* clean utils*/
 char				*get_envir_name(char *str);

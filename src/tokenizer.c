@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 21:24:44 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/22 17:45:51 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/23 08:26:07 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,5 +105,6 @@ void	tokenizer(t_macro *macro)
 		free(lexemes);
 		return ;
 	}
+	clean_token_quotes(macro->tokens);
 	free(lexemes);
 }

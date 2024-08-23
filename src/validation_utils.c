@@ -3,16 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   validation_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 23:25:19 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/21 02:07:45 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/23 08:58:00 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 extern int	g_exit;
+
+int	open_file(t_token *token)
+{
+	int	fd;
+
+	if (token->type == INRED)
+		fd = open(token->value, O_RDONLY);
+	else if (token->type == OUTRED)
+		fd = open(token->value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	else if (token->type == APPEND)
+		fd = open(token->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
+    if (fd == -1)
+    {
+        if (errno == ENOENT)
+            g_exit = (NO_FILE);
+        else if (errno == EACCES)
+            g_exit = (NO_FILE);
+        else if (errno == EISDIR)
+            g_exit = (NO_FILE);
+        perror(token->value);
+        return (-1);
+    }
+	return (fd);
+}
 
 bool	is_directory(const char *path)
 {
