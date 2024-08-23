@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 14:49:38 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/22 12:24:41 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/22 22:16:49 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,8 +104,7 @@ int	main(int argc, char **argv, char **envp)
 		}
 		macro->instruction = line;
 		tokenizer(macro);
-		// print_tokens(macro->tokens);
-		// continue ;
+		//print_tokens(macro->tokens);
 		macro->cmds = parsing(macro);
 		execution(macro);
 	}

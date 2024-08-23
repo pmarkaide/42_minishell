@@ -6,7 +6,7 @@
 #    By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/01 15:11:43 by pmarkaid          #+#    #+#              #
-#    Updated: 2024/08/22 17:46:32 by pmarkaid         ###   ########.fr        #
+#    Updated: 2024/08/22 21:25:13 by pmarkaid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,7 +53,7 @@ TEST_OBJS = $(TEST_SRCS:.c=.o)
 TEST_NAME = tests_runner
 
 CC = cc 
-CFLAGS = -Wall -Werror -Wextra -g
+CFLAGS = -Werror -Wextra -g
 DEBUG_FLAGS = -g
 
 # External Libraries

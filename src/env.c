@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 09:11:22 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/22 12:03:41 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/22 22:15:08 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ char	*ft_getenv(char *var, char **env)
 	while (!ft_strchr(var, '=') && env && env[i])
 	{
 		m = ft_strchr_i(env[i], '=');
-		if (!ft_strncmp(env[i], var, ft_strlen(var)))
+		if (!ft_strncmp(env[i], var, m))
 			return (ft_substr(env[i], m + 1, ft_strlen(env[i])));
 		i++;
 	}
