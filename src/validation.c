@@ -11,12 +11,13 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+
 extern int	g_exit;
 
 static int	validate_access(char *file)
 {
-	char *msg;
-	
+	char	*msg;
+
 	if (!access(file, F_OK))
 	{
 		if (!access(file, X_OK))
@@ -28,7 +29,7 @@ static int	validate_access(char *file)
 				ft_putstr_fd(msg, 2);
 				free(msg);
 				return (126);
-				//return (error_msg(file, 126));
+				// return (error_msg(file, 126));
 			}
 			return (0);
 		}
@@ -64,8 +65,8 @@ static char	*search_for_executable(t_macro *macro, t_cmd *cmd)
 int	validate_executable(t_macro *macro, t_cmd *cmd)
 {
 	char	*full_path;
-	//int		exit_code;
 
+	// int		exit_code;
 	if (ft_strchr("./", cmd->cmd_arg->value[0]) == NULL)
 	{
 		full_path = search_for_executable(macro, cmd);
@@ -78,7 +79,7 @@ int	validate_executable(t_macro *macro, t_cmd *cmd)
 		}
 	}
 	g_exit = validate_access(cmd->cmd_arg->value);
-	//exit_code = validate_access(cmd->cmd_arg->value);
+	// exit_code = validate_access(cmd->cmd_arg->value);
 	// if (exit_code != 0)
 	// 	ft_putstr_fd("executable not found\n", 2);
 	return (g_exit);

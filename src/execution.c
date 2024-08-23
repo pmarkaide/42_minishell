@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:23:53 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/21 02:05:23 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/22 20:56:12 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-extern int g_exit;
+extern int	g_exit;
 
 int	execute_builtin(t_macro *macro, char **cmd_array)
 {
@@ -25,19 +25,8 @@ int	execute_builtin(t_macro *macro, char **cmd_array)
 	return (g_exit);
 }
 
-static char	**prepare_child_execution(t_macro *macro, t_cmd *cmd)
-{
-	char	**cmd_array;
-
-	if (cmd->type == CMD)
-		validate_executable(macro, cmd);
-	cmd_array = build_cmd_args_array(cmd->cmd_arg);
-	if (!cmd_array)
-		exit(errno);
-	return (cmd_array);
-}
-
-static void	execute_child_process(t_macro *macro, int index, int read_end, int pipe_exit[2])	
+static void	execute_child_process(t_macro *macro, int index, int read_end,
+		int pipe_exit[2])
 {
 	int		i;
 	t_cmd	*cmd;
@@ -54,8 +43,8 @@ static void	execute_child_process(t_macro *macro, int index, int read_end, int p
 		g_exit = execute_builtin(macro, cmd_array);
 	else
 		execve(cmd_array[0], cmd_array, macro->env);
-	//g_exit = errno;
-	//printf("g_exit loca0: %d\neres el pid %d\n", g_exit, getpid());
+	// g_exit = errno;
+	// printf("g_exit loca0: %d\neres el pid %d\n", g_exit, getpid());
 	// if (g_exit != 0)
 	// 	ft_putstr_fd("execution failed\n", 2);
 	write(pipe_exit[1], &g_exit, sizeof(int));
@@ -86,14 +75,14 @@ static int	execute_cmds(t_macro *macro, int read_end, int pipe_exit[2])
 		close(macro->pipe_fd[1]);
 		i++;
 	}
-			if (macro->pid != 0)
-		{
-			close (pipe_exit[1]);
-			read(pipe_exit[0], &g_exit, sizeof(int));	
-			//printf("g_exit loca1: %deres el pid: %d\n", g_exit, getpid());
-			close(pipe_exit[0]);
-		} 
-	//printf("g_exit loca2: %deres el pid: %d\n", g_exit, getpid());
+	if (macro->pid != 0)
+	{
+		close(pipe_exit[1]);
+		read(pipe_exit[0], &g_exit, sizeof(int));
+		// printf("g_exit loca1: %deres el pid: %d\n", g_exit, getpid());
+		close(pipe_exit[0]);
+	}
+	// printf("g_exit loca2: %deres el pid: %d\n", g_exit, getpid());
 	if (read_end > 0)
 		close(read_end);
 	return (i);
@@ -104,9 +93,9 @@ int	execution(t_macro *macro)
 	int		read_end;
 	int		num_cmds_executed;
 	char	**cmd_array;
-	int	 	pipe_exit[2];
-	int 	i;
-	int 	status;
+	int		pipe_exit[2];
+	int		i;
+	int		status;
 
 	if (macro->num_cmds == 1 && macro->cmds->type == BUILTIN)
 	{
@@ -128,15 +117,15 @@ int	execution(t_macro *macro)
 		{
 			waitpid(macro->pid[i++], &status, 0);
 			if (WIFEXITED(status))
-                g_exit = WEXITSTATUS(status);
+				g_exit = WEXITSTATUS(status);
 		}
-		//wait_processes(macro->pid, num_cmds_executed);
+		// wait_processes(macro->pid, num_cmds_executed);
 		if (macro->pid != 0)
 		{
-			close (pipe_exit[1]);
+			close(pipe_exit[1]);
 			read(pipe_exit[0], &g_exit, sizeof(int));
 			close(pipe_exit[0]);
-		} 
+		}
 		free(macro->pid);
 	}
 	return (g_exit);

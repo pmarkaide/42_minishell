@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	g_exit;
+int		g_exit;
 
 t_macro	*start_env(t_macro *macro, char **argv)
 {
@@ -84,7 +84,7 @@ int	main(int argc, char **argv, char **envp)
 			perror("Error getting current directory");
 		}
 		path = ft_strjoin(path, " @ minishell>$ ", NULL);
-		//path = ft_strjoin(path, " $ ", NULL);
+		// path = ft_strjoin(path, " $ ", NULL);
 		line = readline(path);
 		if (line == NULL || *line == EOF)
 		{
@@ -93,7 +93,7 @@ int	main(int argc, char **argv, char **envp)
 			break ;
 		}
 		if (ft_strcmp(line, "") == 0)
-			continue;
+			continue ;
 		if (line[0] != '\0')
 			add_history(line);
 		// FALTA FUNCION AQUI PARA AÑADIR HISTORIAL EN macro->history
@@ -104,8 +104,8 @@ int	main(int argc, char **argv, char **envp)
 		}
 		macro->instruction = line;
 		tokenizer(macro);
-		//print_tokens(macro->tokens);
-		//continue;
+		// print_tokens(macro->tokens);
+		// continue ;
 		macro->cmds = parsing(macro);
 		execution(macro);
 	}

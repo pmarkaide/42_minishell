@@ -6,7 +6,7 @@
 #    By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/01 15:11:43 by pmarkaid          #+#    #+#              #
-#    Updated: 2024/08/21 19:00:37 by pmarkaid         ###   ########.fr        #
+#    Updated: 2024/08/22 17:46:32 by pmarkaid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,8 @@ SRCS_FILES = \
 	dup.c \
 	clean_utils.c \
 	expand.c \
-	split_args.c
+	split_args.c \
+	tokenizer_expand.c
 
 SRC_DIR = src/
 SRCS = $(addprefix $(SRC_DIR), $(SRCS_FILES))
