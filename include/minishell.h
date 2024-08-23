@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/22 23:19:22 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/23 08:26:44 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ char				*expand_envir(char *clean, char *instruction,
 bool				is_builtin(t_token *token);
 bool				is_redir(t_token *token, char *redir_type);
 void				fix_redirections(char *instruction);
+void 				clean_token_quotes(t_token *tokens);
 
 /* list_utils */
 t_token				*init_token(void);

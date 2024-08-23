@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 23:25:19 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/22 23:24:08 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/23 08:07:41 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,16 @@ int	open_file(t_token *token)
 		fd = open(token->value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	else if (token->type == APPEND)
 		fd = open(token->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	g_exit = errno;
     if (fd == -1)
     {
-        g_exit = errno;
+        if (errno == ENOENT)
+            g_exit = (NO_FILE);
+        if (errno == EACCES)
+            g_exit = (PERMISSION_DENIED);
+        if (errno == EISDIR)
+            g_exit = (NO_FILE);
         perror(token->value);
-		return (-1);
+        return (-1);
     }
 	return (fd);
 }
