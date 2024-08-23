@@ -103,16 +103,11 @@ int	main(int argc, char **argv, char **envp)
 			continue ;
 		}
 		macro->instruction = line;
-		macro->instruction = get_expanded_instruction(macro->instruction, macro);
 		tokenizer(macro);
-		// test_builtins(macro);
+		//print_tokens(macro->tokens);
+		//continue;
 		macro->cmds = parsing(macro);
 		execution(macro);
-		// free_instruction(&macro);
-		// ft_readline(&macro);
-		// free_macro(&macro);
-		// ft_printf("%s\n", macro.instruction);
-		//free(line);
 	}
 	exit(g_exit);
 }

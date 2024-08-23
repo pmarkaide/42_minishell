@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 21:24:44 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/21 18:59:22 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/22 16:26:04 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,12 +81,118 @@ t_token	*identify_tokens(t_list *lexemes)
 	return (tokens);
 }
 
+t_token	*build_retokens(t_list *lexemes, t_type type)
+{
+	t_token	*token;
+	t_token	*retokens;
+
+	retokens = NULL;
+	while (lexemes)
+	{
+		token = init_token();
+		if (!token)
+			return (NULL);
+		if (type == CMD)
+		{
+			token->type = CMD;
+			type = ARG;
+		}
+		else
+			token->type = ARG;
+		token->value = lexemes->content;
+		token_add_back(&retokens, token);
+		lexemes = lexemes->next;
+	}
+	return (retokens);
+}
+
+void	plug_retokens(t_token *token, t_token *retokens, t_macro *macro)
+{
+	t_token	*next;
+	t_token	*prev;
+	t_token	*last;
+
+	next = token->next;
+	prev = macro->tokens;
+	while (prev && prev->next != token)
+		prev = prev->next;
+	if (prev)
+		prev->next = retokens;
+	else
+		macro->tokens = retokens;
+	last = last_token(retokens);
+	if (last)
+		last->next = next;
+}
+
+t_token	*retokenize(t_token *token, t_macro *macro)
+{
+	t_list	*lexemes;
+	t_token	*retokens;
+	char	*expanded;
+
+	expanded = get_expanded_instruction(token->value, macro);
+	if (!expanded)
+		return (NULL);
+	lexemes = split_args_by_quotes(expanded);
+	if (!lexemes)
+		return (NULL);
+	retokens = build_retokens(lexemes, token->type);
+	return (retokens);
+}
+
+t_token	*expand_arg_tokens(t_macro *macro)
+{
+	t_token	*tokens;
+	t_token	*retokens;
+	char	*expanded;
+
+	tokens = macro->tokens;
+	while (tokens)
+	{
+		if (ft_strchr(tokens->value, '$'))
+		{
+			expanded = get_expanded_instruction(tokens->value, macro);
+			if (!expanded)
+				return (NULL);
+			if (ft_strchr("\"", tokens->value[0]))
+				tokens->value = expanded;
+			else
+			{
+				retokens = retokenize(tokens, macro);
+				if (!retokens)
+					return (NULL);
+				plug_retokens(tokens, retokens, macro);
+			}
+		}
+		tokens = tokens->next;
+	}
+	return (macro->tokens);
+}
+
 void	tokenizer(t_macro *macro)
 {
 	t_list	*lexemes;
 
 	fix_redirections(macro->instruction);
 	lexemes = split_args_by_quotes(macro->instruction);
+	if (!lexemes)
+	{
+		free_tokens(&macro->tokens);
+		return ;
+	}
 	macro->tokens = identify_tokens(lexemes);
+	if (!macro->tokens)
+	{
+		free(lexemes);
+		return ;
+	}
+	macro->tokens = expand_arg_tokens(macro);
+	if (!macro->tokens)
+	{
+		free_tokens(&macro->tokens);
+		free(lexemes);
+		return ;
+	}
 	free(lexemes);
 }

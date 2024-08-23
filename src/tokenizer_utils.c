@@ -6,34 +6,34 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 10:42:50 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/21 18:59:38 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/21 19:11:21 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	fix_redirections(char *instruction)
+void	fix_redirections(char *ins)
 {
 	int	i;
 	int	j;
 
 	i = 0;
 	j = 0;
-	while (instruction[i] != '\0')
+	while (ins[i] != '\0')
 	{
-		if (instruction[i] == '>' || instruction[i] == '<')
+		if ((ins[i] == '>' || ins[i] == '<') && !is_in_quote(ins, i))
 		{
-			instruction[j++] = instruction[i];
+			ins[j++] = ins[i];
 			i++;
-			while (ft_isspace(instruction[i]))
+			while (ft_isspace(ins[i]))
 				i++;
 			i--;
 		}
 		else
-			instruction[j++] = instruction[i];
+			ins[j++] = ins[i];
 		i++;
 	}
-	instruction[j] = '\0';
+	ins[j] = '\0';
 }
 
 bool	is_redir(t_token *token, char *redir_type)
