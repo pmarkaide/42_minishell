@@ -23,19 +23,19 @@ int	execute_builtin(t_macro *macro, char **cmd_array)
 	return (g_exit);
 }
 
-int execute_single_builtin(t_macro *macro)
+int	execute_single_builtin(t_macro *macro)
 {
-	char **cmd_array;
-	int saved_stdout;
-	int saved_stdin;
+	char	**cmd_array;
+	int		saved_stdout;
+	int		saved_stdin;
 
 	saved_stdout = dup(STDOUT_FILENO);
 	saved_stdin = dup(STDIN_FILENO);
 	cmd_array = build_cmd_args_array(macro->cmds->cmd_arg);
 	if (cmd_array == NULL)
 		return (1);
-	if(validate_redirections(macro->cmds->redir) == -1)
-		return(-1);
+	if (validate_redirections(macro->cmds->redir) == -1)
+		return (-1);
 	dup_file_descriptors(macro, macro->cmds, 0);
 	g_exit = execute_builtin(macro, cmd_array);
 	free_array(&cmd_array);
@@ -43,10 +43,11 @@ int execute_single_builtin(t_macro *macro)
 	dup2(saved_stdin, STDIN_FILENO);
 	close(saved_stdout);
 	close(saved_stdin);
-	return g_exit;
+	return (g_exit);
 }
 
-static void	execute_child_process(t_macro *macro, int index, int read_end, int pipe_exit[2])
+static void	execute_child_process(t_macro *macro, int index, int read_end,
+		int pipe_exit[2])
 {
 	int		i;
 	t_cmd	*cmd;
@@ -57,7 +58,7 @@ static void	execute_child_process(t_macro *macro, int index, int read_end, int p
 	i = 0;
 	while (cmd != NULL && i++ < index)
 		cmd = cmd->next;
-	if(validate_redirections(cmd->redir) == -1)
+	if (validate_redirections(cmd->redir) == -1)
 		exit(g_exit);
 	dup_file_descriptors(macro, cmd, read_end);
 	cmd_array = prepare_child_execution(macro, cmd);
@@ -72,7 +73,6 @@ static void	execute_child_process(t_macro *macro, int index, int read_end, int p
 	}
 	exit(g_exit);
 }
-
 
 static int	execute_cmds(t_macro *macro, int read_end, int pipe_exit[2])
 {
@@ -107,8 +107,8 @@ int	execution(t_macro *macro)
 	int		read_end;
 	int		num_cmds_executed;
 	char	**cmd_array;
-	int	 	pipe_exit[2];
-	int 	i;
+	int		pipe_exit[2];
+	int		i;
 
 	if (macro->num_cmds == 1 && macro->cmds->type == BUILTIN)
 		execute_single_builtin(macro);

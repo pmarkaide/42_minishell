@@ -113,7 +113,7 @@ char				*expand_envir(char *clean, char *instruction,
 bool				is_builtin(t_token *token);
 bool				is_redir(t_token *token, char *redir_type);
 void				fix_redirections(char *instruction);
-void 				clean_token_quotes(t_token *tokens);
+void				clean_token_quotes(t_token *tokens);
 
 /* list_utils */
 t_token				*init_token(void);
@@ -142,8 +142,8 @@ int					execution(t_macro *macro);
 char				**build_cmd_args_array(t_token *cmd_args);
 char				**prepare_child_execution(t_macro *macro, t_cmd *cmd);
 int					wait_processes(pid_t pid);
-void 				catch_parent_exit(int *pipe_exit, int *g_exit);
-void 				close_fds(int *pipe_fd, int read_end);
+void				catch_parent_exit(int *pipe_exit, int *g_exit);
+void				close_fds(int *pipe_fd, int read_end);
 
 /* validation */
 int					validate_executable(t_macro *macro, t_cmd *cmd);
@@ -156,10 +156,12 @@ char				*get_executable_path(char **paths, char *executable);
 int					open_file(t_token *token);
 
 /* expand */
-char				*get_expanded_instruction(char *instruction, t_macro *macro);
+char				*get_expanded_instruction(char *instruction,
+						t_macro *macro);
 
 /* dup */
-void				dup_file_descriptors(t_macro *macro, t_cmd *cmd, int read_end);
+void				dup_file_descriptors(t_macro *macro, t_cmd *cmd,
+						int read_end);
 
 /* clean utils*/
 char				*get_envir_name(char *str);

@@ -103,7 +103,7 @@ int	main(int argc, char **argv, char **envp)
 		}
 		macro->instruction = line;
 		tokenizer(macro);
-		//print_tokens(macro->tokens);
+		// print_tokens(macro->tokens);
 		macro->cmds = parsing(macro);
 		execution(macro);
 	}
