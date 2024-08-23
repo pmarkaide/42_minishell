@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:23:53 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/22 22:59:54 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/23 10:13:50 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,6 @@ int	execute_builtin(t_macro *macro, char **cmd_array)
 	// if (g_exit != 0)
 	// 	ft_putstr_fd("builtin failed\n", 2);
 	return (g_exit);
-}
-
-static char	**prepare_child_execution(t_macro *macro, t_cmd *cmd)
-{
-	char	**cmd_array;
-
-	if (cmd->type == CMD)
-		validate_executable(macro, cmd);
-	cmd_array = build_cmd_args_array(cmd->cmd_arg);
-	if (!cmd_array)
-		exit(errno);
-	return (cmd_array);
 }
 
 static void	execute_child_process(t_macro *macro, int index, int read_end, int pipe_exit[2])	
