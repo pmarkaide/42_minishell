@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 23:25:19 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/23 08:07:41 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/23 08:58:00 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ int	open_file(t_token *token)
     {
         if (errno == ENOENT)
             g_exit = (NO_FILE);
-        if (errno == EACCES)
-            g_exit = (PERMISSION_DENIED);
-        if (errno == EISDIR)
+        else if (errno == EACCES)
+            g_exit = (NO_FILE);
+        else if (errno == EISDIR)
             g_exit = (NO_FILE);
         perror(token->value);
         return (-1);
