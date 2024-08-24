@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 14:49:38 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/23 08:27:25 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/23 11:52:28 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,6 @@ int	main(int argc, char **argv, char **envp)
 			continue ;
 		if (line[0] != '\0')
 			add_history(line);
-		// FALTA FUNCION AQUI PARA AÑADIR HISTORIAL EN macro->history
 		if (syntax_error_check(line))
 		{
 			free(line);
@@ -104,7 +103,7 @@ int	main(int argc, char **argv, char **envp)
 		}
 		macro->instruction = line;
 		tokenizer(macro);
-		//print_tokens(macro->tokens);
+		// print_tokens(macro->tokens);
 		macro->cmds = parsing(macro);
 		execution(macro);
 	}
