@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 09:53:20 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/24 21:04:30 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/24 21:50:27 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,8 @@ static t_cmd	*parse_tokens(t_token *tokens, int *n)
 			return (NULL);
 		cmd->n = (*n)++;
 		cmd->cmd_arg = parse_cmd_arg_tokens(tmp);
-		cmd->type = cmd->cmd_arg->type;
+		if(cmd->cmd_arg)
+			cmd->type = cmd->cmd_arg->type;
 		cmd->redir = parse_redir_tokens(tmp);
 		cmd_add_back(&cmds, cmd);
 		while (tmp && tmp->type != PIPE)

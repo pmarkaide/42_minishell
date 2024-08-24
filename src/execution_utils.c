@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 20:03:14 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/23 12:00:47 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/24 22:06:51 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ char	**build_cmd_args_array(t_token *cmd_args)
 	int		i;
 
 	tmp = cmd_args;
+	if(!cmd_args)
+		return (NULL);
 	cmd_array = (char **)malloc(sizeof(char *) * (tokens_size(cmd_args) + 1));
 	if (!cmd_array)
 		return (NULL);
