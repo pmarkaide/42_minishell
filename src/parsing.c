@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 09:53:20 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/22 22:55:17 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/24 21:04:30 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,12 @@ static char	parsing_error_check(t_token *tokens)
 	tmp = tokens;
 	if (tmp && tmp->type == PIPE)
 		c = '|';
-	tmp = last_token(tokens);
+	while (tmp && tmp->next)
+	{
+		if (tmp->type == PIPE && tmp->next->type == PIPE)
+			c = '|';
+		tmp = tmp->next;
+	}
 	if (tmp && tmp->type == PIPE)
 		c = '|';
 	if (c != 0)
