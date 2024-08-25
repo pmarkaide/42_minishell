@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 15:55:31 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/25 12:44:17 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/25 12:53:03 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,10 +107,10 @@ static int	ft_echo2(char **args)
 	// }
 	while (args[i])
 	{
-		if (args[i][0] == '?' && args[i][1] == '\0')
-			ft_putnbr_fd(g_exit, STDOUT_FILENO);
-		else
-			ft_putstr_fd(args[i], STDOUT_FILENO);
+		// if (args[i][0] == '?' && args[i][1] == '\0')
+		// 	ft_putnbr_fd(g_exit, STDOUT_FILENO);
+		// else
+		ft_putstr_fd(args[i], STDOUT_FILENO);
 		if (args[i + 1])
 			ft_putchar_fd(' ', STDOUT_FILENO);
 		i++;
