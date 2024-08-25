@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:23:53 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/23 12:33:42 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/24 22:06:23 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ static void	execute_child_process(t_macro *macro, int index, int read_end,
 		exit(g_exit);
 	dup_file_descriptors(macro, cmd, read_end);
 	cmd_array = prepare_child_execution(macro, cmd);
+	if (!cmd_array || !cmd_array[0])
+        exit(errno);
 	if (cmd->type == BUILTIN)
 		g_exit = execute_builtin(macro, cmd_array);
 	else

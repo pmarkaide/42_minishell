@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:45:23 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/22 17:46:09 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/23 13:21:31 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,12 @@ t_token	*expand_arg_tokens(t_macro *macro)
 		if (ft_strchr(tokens->value, '$'))
 		{
 			expanded = get_expanded_instruction(tokens->value, macro);
-			if (!expanded)
-				return (NULL);
+            if (!expanded || *expanded == '\0')
+            {
+                tokens->value = ft_strdup("");
+                if (!tokens->value)
+                    return (NULL);
+            }
 			if (ft_strchr("\"", tokens->value[0]))
 				tokens->value = expanded;
 			else
@@ -98,5 +102,14 @@ t_token	*expand_arg_tokens(t_macro *macro)
 		}
 		tokens = tokens->next;
 	}
+
+	// Promotion logic
+    if (macro->tokens && macro->tokens->value[0] == '\0' && macro->tokens->next)
+    {
+        t_token *second_token = macro->tokens->next;
+        macro->tokens->value = second_token->value;
+        macro->tokens->next = second_token->next;
+        free(second_token);
+    }
 	return (macro->tokens);
 }
