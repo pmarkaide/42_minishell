@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:52:58 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/25 13:11:26 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/25 21:54:10 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,10 @@ char	*build_expanded_instruction(char *clean, char *ins, t_macro *macro)
 	{
 		if(ins[i] == '$' && (ins[i + 1] == '\0' || ft_isdelim(ins[i + 1])))
 			clean[j++] = ins[i++];
+		else if(ft_strlen(ins) > 2 && ins[i] == '$' && ins[i + 1] != '\0' && ins[i + 1] == '"')
+		{
+			clean[j++] = ins[i++];
+		}	
 		else if (ins[i] == '$' && envir_must_be_expanded(ins, i))
 		{
 			i++;
@@ -83,11 +87,19 @@ size_t	expanded_envir_len(char *ins, t_macro *macro)
 	{
 		if (ins[i] == '$' && (ins[i + 1] == '\0' || ft_isdelim(ins[i + 1])))
 			i++;
+		else if(ft_strlen(ins) > 2 && ins[i] == '$' && ins[i + 1] != '\0' && ins[i + 1] == '"')
+		{
+			i++;
+			envir_len = 1;
+		}
 		else if (ins[i] == '$' && envir_must_be_expanded(ins, i))
 		{
 			i++;
 			if(ins[i] == '?')
+			{
+				i++;
 				envir_len += ft_strlen(ft_itoa(g_exit));
+			}
 			else
 			{
 				envir_name = get_envir_name(&ins[i]);
