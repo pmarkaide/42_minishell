@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validation_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 23:25:19 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/23 08:58:00 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/25 23:07:34 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,10 @@ char	**parse_paths(char **env)
 
 	i = 0;
 	if (!env)
-		return (NULL);
+	{
+		paths = ft_calloc(1, sizeof(char*));
+		return (paths);
+	}
 	while (env[i])
 	{
 		if (ft_strnstr(env[i], "PATH=", 5))
@@ -68,7 +71,8 @@ char	**parse_paths(char **env)
 		}
 		i++;
 	}
-	return (NULL);
+	paths = ft_calloc(1, sizeof(char*));
+	return (paths);
 }
 
 char	*get_executable_path(char **paths, char *executable)
