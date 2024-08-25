@@ -95,7 +95,7 @@ static int	ft_echo2(char **args)
 
 	i = 1;
 	n_flag = 0;
-	while (args[i] && ft_strncmp(args[i], "-n", 2) == 0)
+	while (args[i] && ft_strncmp(args[i], "-n", 2) == 0 && args[i][2] == '\0')
 	{
 		n_flag = 1;
 		i++;

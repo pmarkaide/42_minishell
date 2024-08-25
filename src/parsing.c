@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 09:53:20 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/22 22:55:17 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/24 21:50:27 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,8 @@ static t_cmd	*parse_tokens(t_token *tokens, int *n)
 			return (NULL);
 		cmd->n = (*n)++;
 		cmd->cmd_arg = parse_cmd_arg_tokens(tmp);
-		cmd->type = cmd->cmd_arg->type;
+		if(cmd->cmd_arg)
+			cmd->type = cmd->cmd_arg->type;
 		cmd->redir = parse_redir_tokens(tmp);
 		cmd_add_back(&cmds, cmd);
 		while (tmp && tmp->type != PIPE)
@@ -105,7 +106,12 @@ static char	parsing_error_check(t_token *tokens)
 	tmp = tokens;
 	if (tmp && tmp->type == PIPE)
 		c = '|';
-	tmp = last_token(tokens);
+	while (tmp && tmp->next)
+	{
+		if (tmp->type == PIPE && tmp->next->type == PIPE)
+			c = '|';
+		tmp = tmp->next;
+	}
 	if (tmp && tmp->type == PIPE)
 		c = '|';
 	if (c != 0)

@@ -66,10 +66,7 @@ char	*build_expanded_instruction(char *clean, char *ins, t_macro *macro)
 		else
 			clean[j++] = ins[i++];
 	}
-	clean[j] = '\0';
 	free(exit_str);
-	    // Debug prints
-	//printf("clean: %s\n", clean);
 	return (clean);
 }
 
@@ -120,6 +117,8 @@ char	*get_expanded_instruction(char *ins, t_macro *macro)
 	total_len = envir_len + ft_strlen(ins);
 	//printf("total_len: %zu\n", total_len);
 	clean = ft_calloc(1, sizeof(char) * total_len + 1);
+	if(!clean)
+		return(NULL);
 	clean = build_expanded_instruction(clean, ins, macro);
 	clean[total_len] = '\0';
 	return (clean);
