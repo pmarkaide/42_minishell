@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/25 15:11:00 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/25 15:29:06 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ t_list				*split_args_by_quotes(char *ins);
 
 /* tokenizer_expand */
 t_token				*expand_arg_tokens(t_macro *macro);
+void ensure_at_least_one_cmd(t_token **tokens);
 
 /* tokenizer_utils */
 bool				is_inside_single_quotes(const char *str, int index);
@@ -114,6 +115,7 @@ bool				is_builtin(t_token *token);
 bool				is_redir(t_token *token, char *redir_type);
 void				fix_redirections(char *instruction);
 void				clean_token_quotes(t_token *tokens);
+
 
 /* list_utils */
 t_token				*init_token(void);
