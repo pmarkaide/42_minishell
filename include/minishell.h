@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/23 13:18:35 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/25 17:52:18 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ int					tokens_size(t_token *tokens);
 t_cmd				*parsing(t_macro *macro);
 
 /* parsing utils */
-void				handle_here_doc(t_cmd *cmds);
+void				handle_here_doc(t_token *tokens);
 
 /* execution */
 int					execution(t_macro *macro);

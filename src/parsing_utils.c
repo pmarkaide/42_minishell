@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 10:42:44 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/23 08:40:38 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/25 17:51:02 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,26 +36,20 @@ static int	read_here_doc(t_token *token)
 	return (pipe_fd[0]);
 }
 
-void	handle_here_doc(t_cmd *cmds)
+void	handle_here_doc(t_token *tokens)
 {
 	t_token	*token;
-	t_cmd	*cmd;
 	int		fd;
 
-	cmd = cmds;
-	while (cmd)
+	token = tokens;
+	while (token)
 	{
-		token = cmd->redir;
-		while (token)
+		if (token->type == HERE_DOC)
 		{
-			if (token->type == HERE_DOC)
-			{
-				fd = read_here_doc(token);
-				free(token->value);
-				token->value = ft_itoa(fd);
-			}
-			token = token->next;
+			fd = read_here_doc(token);
+			free(token->value);
+			token->value = ft_itoa(fd);
 		}
-		cmd = cmd->next;
+		token = token->next;
 	}
 }
