@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 14:49:38 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/24 21:06:04 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/25 15:12:45 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,8 +106,6 @@ int	main(int argc, char **argv, char **envp)
 		}
 		macro->instruction = line;
 		tokenizer(macro);
-		if(ft_strcmp(macro->tokens->value, "") == 0)
-			continue;
 		//print_tokens(macro->tokens);
 		macro->cmds = parsing(macro);
 		execution(macro);

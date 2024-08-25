@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/23 13:18:35 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/25 15:11:00 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,8 @@ void				print_cmds(t_cmd *cmds);
 char				*enum_to_char(t_type type);
 bool				is_last_of_type(t_token *tokens, t_type type);
 int					tokens_size(t_token *tokens);
+void 				remove_token(t_token **tokens, t_token *token);
+t_token				*remove_empty_envir_tokens(t_macro *macro);
 
 /* parsing */
 t_cmd				*parsing(t_macro *macro);
