@@ -6,11 +6,36 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 10:42:44 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/25 17:51:02 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/26 11:32:18 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static int close_here_doc_not_needed(t_token *tokens)
+{
+	t_token	*tmp;
+	t_token *last;
+	int		fd;
+
+	tmp = tokens;
+	while (tmp && is_redir(tmp, "input"))
+	{
+		last = tmp;
+		tmp = tmp->next;
+	}
+	tmp = tokens;
+	while (tmp)
+	{
+		if (tmp->type == HERE_DOC && tmp != last)
+		{
+			fd = ft_atoi(tmp->value);
+			close(fd);
+		}
+		tmp = tmp->next;
+	}
+	return (0);
+}
 
 static int	read_here_doc(t_token *token)
 {
@@ -52,4 +77,5 @@ void	handle_here_doc(t_token *tokens)
 		}
 		token = token->next;
 	}
+	close_here_doc_not_needed(tokens);
 }
