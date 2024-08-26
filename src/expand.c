@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:52:58 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/25 21:54:10 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/26 21:06:19 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,10 @@ int	expand_variable(char *clean, int j, char *ins, int i, t_macro *macro)
 	return (i);
 }
 
-
 char	*build_expanded_instruction(char *clean, char *ins, t_macro *macro)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
 	char	*exit_str;
 
 	i = 0;
@@ -46,12 +45,12 @@ char	*build_expanded_instruction(char *clean, char *ins, t_macro *macro)
 	exit_str = ft_itoa(g_exit);
 	while (ins[i])
 	{
-		if(ins[i] == '$' && (ins[i + 1] == '\0' || ft_isdelim(ins[i + 1])))
+		if (ins[i] == '$' && (ins[i + 1] == '\0' || ft_isdelim(ins[i + 1])))
 			clean[j++] = ins[i++];
-		else if(ft_strlen(ins) > 2 && ins[i] == '$' && ins[i + 1] != '\0' && ins[i + 1] == '"')
+		else if (ft_strlen(ins) > 2 && ins[i] == '$' && ins[i + 1] != '\0' && (ft_isquote(ins[i + 1])))
 		{
 			clean[j++] = ins[i++];
-		}	
+		}
 		else if (ins[i] == '$' && envir_must_be_expanded(ins, i))
 		{
 			i++;
@@ -63,8 +62,8 @@ char	*build_expanded_instruction(char *clean, char *ins, t_macro *macro)
 			}
 			else
 			{
-			i = expand_variable(clean, j, ins, i, macro);
-			j += ft_strlen(&clean[j]);
+				i = expand_variable(clean, j, ins, i, macro);
+				j += ft_strlen(&clean[j]);
 			}
 		}
 		else
@@ -87,7 +86,7 @@ size_t	expanded_envir_len(char *ins, t_macro *macro)
 	{
 		if (ins[i] == '$' && (ins[i + 1] == '\0' || ft_isdelim(ins[i + 1])))
 			i++;
-		else if(ft_strlen(ins) > 2 && ins[i] == '$' && ins[i + 1] != '\0' && ins[i + 1] == '"')
+		else if (ft_strlen(ins) > 2 && ins[i] == '$' && ins[i + 1] != '\0' && ins[i + 1] == '"')
 		{
 			i++;
 			envir_len = 1;
@@ -95,7 +94,7 @@ size_t	expanded_envir_len(char *ins, t_macro *macro)
 		else if (ins[i] == '$' && envir_must_be_expanded(ins, i))
 		{
 			i++;
-			if(ins[i] == '?')
+			if (ins[i] == '?')
 			{
 				i++;
 				envir_len += ft_strlen(ft_itoa(g_exit));
@@ -127,10 +126,10 @@ char	*get_expanded_instruction(char *ins, t_macro *macro)
 
 	envir_len = expanded_envir_len(ins, macro);
 	total_len = envir_len + ft_strlen(ins);
-	//printf("total_len: %zu\n", total_len);
+	// printf("total_len: %zu\n", total_len);
 	clean = ft_calloc(1, sizeof(char) * total_len + 1);
-	if(!clean)
-		return(NULL);
+	if (!clean)
+		return (NULL);
 	clean = build_expanded_instruction(clean, ins, macro);
 	clean[total_len] = '\0';
 	return (clean);

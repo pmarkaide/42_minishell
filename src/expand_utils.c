@@ -6,35 +6,35 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 20:53:07 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/22 20:55:07 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/26 21:07:21 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-bool	is_inside_double_quotes(char *str, int index)
+bool	envir_must_be_expanded(char *str, int index)
 {
+	bool	inside_single_quotes;
 	bool	inside_double_quotes;
 	int		i;
 
+	inside_single_quotes = false;
 	inside_double_quotes = false;
 	i = 0;
-	while (i <= index && str[i] != '\0')
+	while (i < index && str[i] != '\0')
 	{
-		if (str[i] == '\"')
+		if (str[i] == '\'' && !inside_double_quotes)
+			inside_single_quotes = !inside_single_quotes;
+		else if (str[i] == '\"' && !inside_single_quotes)
 			inside_double_quotes = !inside_double_quotes;
 		i++;
 	}
-	return (inside_double_quotes);
-}
-
-bool	envir_must_be_expanded(char *str, int index)
-{
-	if (!is_in_quote(str, index))
+	if (inside_single_quotes)
+		return (false);
+	else if (inside_double_quotes)
 		return (true);
-	if (is_inside_double_quotes(str, index))
+	else
 		return (true);
-	return (false);
 }
 
 bool	is_in_quote(char *str, int index)
