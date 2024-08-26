@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 10:42:44 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/26 15:02:55 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/26 16:12:33 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,22 +37,27 @@ void close_here_doc_not_needed(t_token *tokens)
 	}
 }
 
-static int	read_here_doc(t_token *token)
+static int	read_here_doc(t_token *token, t_macro *macro)
 {
 	char	*line;
+	char	*del;
 	int		pipe_fd[2];
 
 	if (pipe(pipe_fd) == -1)
 		return (error_msg("pipe error\n", -1));
+	del = clean_quotes(token->value);
+	ft_printf("del: %s\n", del);
 	while (1)
 	{
 		line = readline("> ");
-		if (!line || ft_strcmp(line, token->value) == 0)
+		if (!line || ft_strcmp(line, del) == 0)
 		{
 			close(pipe_fd[1]);
 			free(line);
 			break ;
 		}
+		if(!ft_isquote(token->value[0]))
+			line = get_expanded_instruction(line, macro);			
 		write(pipe_fd[1], line, strlen(line));
 		write(pipe_fd[1], "\n", 1);
 		free(line);
@@ -61,7 +66,7 @@ static int	read_here_doc(t_token *token)
 	return (pipe_fd[0]);
 }
 
-void	handle_here_doc(t_cmd *cmds)
+void	handle_here_doc(t_cmd *cmds, t_macro *macro)
 {
 	t_token	*token;
 	t_cmd	*cmd;
@@ -77,7 +82,7 @@ void	handle_here_doc(t_cmd *cmds)
 			{
 				if (token->type == HERE_DOC)
 				{
-					fd = read_here_doc(token);
+					fd = read_here_doc(token, macro);
 					free(token->value);
 					token->value = ft_itoa(fd);
 				}
