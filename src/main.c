@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 14:49:38 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/25 17:31:25 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/26 13:42:14 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,11 +106,15 @@ int	main(int argc, char **argv, char **envp)
 		}
 		macro->instruction = line;
 		tokenizer(macro);
-		if(ft_strcmp(macro->tokens->value, "") == 0)
-			continue;
-		print_tokens(macro->tokens);
+		//print_tokens(macro->tokens);
 		macro->cmds = parsing(macro);
+		if (macro->cmds == NULL)
+		{
+			free(line);
+			continue ;
+		}
 		execution(macro);
+		//VALORAR METER AQUI UN CLEAN_MACRO ANTES DE QUE VUELVA EL LOOP: se puede limpiar todo menos el env. No lo quiero meter ahora por no hacer doubles frees, pero probablemente haya que meterlo por temas de leaks.
 	}
 	exit(g_exit);
 }

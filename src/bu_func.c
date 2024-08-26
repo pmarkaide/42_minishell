@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 15:55:31 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/25 12:44:17 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/25 22:23:50 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,10 +107,10 @@ static int	ft_echo2(char **args)
 	// }
 	while (args[i])
 	{
-		if (args[i][0] == '?' && args[i][1] == '\0')
-			ft_putnbr_fd(g_exit, STDOUT_FILENO);
-		else
-			ft_putstr_fd(args[i], STDOUT_FILENO);
+		// if (args[i][0] == '?' && args[i][1] == '\0')
+		// 	ft_putnbr_fd(g_exit, STDOUT_FILENO);
+		// else
+		ft_putstr_fd(args[i], STDOUT_FILENO);
 		if (args[i + 1])
 			ft_putchar_fd(' ', STDOUT_FILENO);
 		i++;
@@ -306,6 +306,7 @@ static int	ft_export2(char **args, t_macro *macro)
 	int		argc;
 	char	*clean_value;
 	int		exit_flag;
+	//int		len;
 
 	exit_flag = 0;
 	argc = 0;
@@ -332,11 +333,12 @@ static int	ft_export2(char **args, t_macro *macro)
 		}
 		clean_value = remove_quotes(args[i]);
 		j = 0;
-		// len = ft_strlen(args[i]);
-		len_var = ft_strchr_i(clean_value, '=');
-		// printf("clean_value: %d\n", len_var);
+		//len = ft_strlen(args[i]);
+		// len_var = ft_strchr_i(clean_value, '=');
+		// printf("clean_value: %s y long es %d\n", clean_value, len_var);
 		while (macro->env[j])
 		{
+			len_var = ft_strchr_i(macro->env[j], '=');
 			if (ft_strncmp(clean_value, macro->env[j], len_var) == 0) //&& macro->env[j][len] == '=')
 			{
 				free(macro->env[j]);
