@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:23:53 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/26 13:43:04 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/26 15:03:17 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ static void	execute_child_process(t_macro *macro, int index, int read_end,
 	i = 0;
 	while (cmd != NULL && i++ < index)
 		cmd = cmd->next;
-	handle_here_doc(macro->tokens);
 	if (validate_redirections(cmd->redir) == -1)
 		exit(g_exit);
 	dup_file_descriptors(macro, cmd, read_end);

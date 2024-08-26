@@ -6,18 +6,19 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 10:42:44 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/26 11:32:18 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/26 15:02:55 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int close_here_doc_not_needed(t_token *tokens)
+void close_here_doc_not_needed(t_token *tokens)
 {
 	t_token	*tmp;
 	t_token *last;
 	int		fd;
 
+	last = NULL;
 	tmp = tokens;
 	while (tmp && is_redir(tmp, "input"))
 	{
@@ -34,7 +35,6 @@ static int close_here_doc_not_needed(t_token *tokens)
 		}
 		tmp = tmp->next;
 	}
-	return (0);
 }
 
 static int	read_here_doc(t_token *token)
@@ -61,21 +61,29 @@ static int	read_here_doc(t_token *token)
 	return (pipe_fd[0]);
 }
 
-void	handle_here_doc(t_token *tokens)
+void	handle_here_doc(t_cmd *cmds)
 {
 	t_token	*token;
+	t_cmd	*cmd;
 	int		fd;
 
-	token = tokens;
-	while (token)
+	cmd = cmds;
+	while (cmd)
 	{
-		if (token->type == HERE_DOC)
+		if(cmd->redir)
 		{
-			fd = read_here_doc(token);
-			free(token->value);
-			token->value = ft_itoa(fd);
+			token = cmd->redir;
+			while (token)
+			{
+				if (token->type == HERE_DOC)
+				{
+					fd = read_here_doc(token);
+					free(token->value);
+					token->value = ft_itoa(fd);
+				}
+				token = token->next;
+			}
 		}
-		token = token->next;
+		cmd = cmd->next;
 	}
-	close_here_doc_not_needed(tokens);
 }

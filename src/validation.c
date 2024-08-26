@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:35:57 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/22 23:21:04 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/26 15:00:01 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,10 @@ int	validate_redirections(t_token *redir)
         if (is_redir(tmp, "input") || is_redir(tmp, "output"))
         {
             if (tmp->type == HERE_DOC)
+			{
+				tmp = tmp->next;
                 continue;
+			}
             else
             {
                 fd = open_file(tmp);
@@ -36,6 +39,7 @@ int	validate_redirections(t_token *redir)
         }
         tmp = tmp->next;
     }
+	close_here_doc_not_needed(redir);
     return (0);
 }
 
