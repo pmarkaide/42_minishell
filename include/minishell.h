@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/26 16:00:07 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/26 21:07:30 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,20 +104,15 @@ t_list				*split_args_by_quotes(char *ins);
 
 /* tokenizer_expand */
 t_token				*expand_arg_tokens(t_macro *macro);
-void ensure_at_least_one_cmd(t_token **tokens);
+void				ensure_at_least_one_cmd(t_token **tokens);
 
 /* tokenizer_utils */
-bool				is_inside_single_quotes(const char *str, int index);
-bool				is_inside_double_quotes(char *str, int index);
-char				*expand_envir(char *clean, char *instruction,
-						t_macro *macro);
+char				*expand_envir(char *clean, char *instruction, t_macro *macro);
 bool				is_builtin(t_token *token);
 bool				is_redir(t_token *token, char *redir_type);
 void				fix_redirections(char *instruction);
 void				clean_token_quotes(t_token *tokens);
 char				*clean_quotes(char *str);
-
-
 
 /* list_utils */
 t_token				*init_token(void);
@@ -132,7 +127,7 @@ void				print_cmds(t_cmd *cmds);
 char				*enum_to_char(t_type type);
 bool				is_last_of_type(t_token *tokens, t_type type);
 int					tokens_size(t_token *tokens);
-void 				remove_token(t_token **tokens, t_token *token);
+void				remove_token(t_token **tokens, t_token *token);
 t_token				*remove_empty_envir_tokens(t_macro *macro);
 
 /* parsing */
@@ -140,7 +135,7 @@ t_cmd				*parsing(t_macro *macro);
 
 /* parsing utils */
 void				handle_here_doc(t_cmd *cmds, t_macro *macro);
-void 				close_here_doc_not_needed(t_token *tokens);
+void				close_here_doc_not_needed(t_token *tokens);
 
 /* execution */
 int					execution(t_macro *macro);
@@ -200,7 +195,8 @@ int					ft_strchr_i(const char *s, int c);
 char				**ft_replace_matrix_row(char ***big, char **small, int n);
 void				ft_unset(t_macro *macro);
 int					var_in_env(char *argv, char **env, int ij[2]);
-int					select_and_run_builtin(char *cmd, char **args, t_macro *macro);
+int					select_and_run_builtin(char *cmd, char **args,
+						t_macro *macro);
 bool				check_builtin(char *real_cmd);
 char				*grab_env(char *var, char **env, int n);
 char				**fix_env(char *var, char *value, char **env, int n);
