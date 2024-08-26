@@ -6,19 +6,18 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 15:55:31 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/25 22:23:50 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/26 20:09:35 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-extern int g_exit; // global variable
+extern int g_exit; 
 
 void	test_builtins(t_macro *macro)
 {
 	char	*line;
 
-	// printf("-------OUTPUT DE MINISHELL (CD IMPRIME DIRECTORIO ACTUAL)----------\n");
 	line = macro->instruction;
 	if (ft_strncmp(line, "pwd", 3) == 0)
 		ft_pwd();
@@ -37,7 +36,6 @@ void	test_builtins(t_macro *macro)
 	else if (ft_strncmp(line, "unset", 5) == 0)
 		ft_unset(macro);
 	else
-		// ft_putendl_fd("Not builtin", STDOUT_FILENO);
 		return ;
 }
 
@@ -53,7 +51,6 @@ char	*remove_path(char *cmd)
 	return (real_cmd);
 }
 
-// remove this if not needed
 bool	check_builtin(char *real_cmd)
 {
 	if (ft_strncmp(real_cmd, "echo", 4) == 0)
@@ -100,16 +97,8 @@ static int	ft_echo2(char **args)
 		n_flag = 1;
 		i++;
 	}
-	// if (args[i] && ft_strncmp(args[i], "-n", 2) == 0)
-	// {
-	// 	n_flag = 1;
-	// 	i++;
-	// }
 	while (args[i])
 	{
-		// if (args[i][0] == '?' && args[i][1] == '\0')
-		// 	ft_putnbr_fd(g_exit, STDOUT_FILENO);
-		// else
 		ft_putstr_fd(args[i], STDOUT_FILENO);
 		if (args[i + 1])
 			ft_putchar_fd(' ', STDOUT_FILENO);
@@ -268,7 +257,6 @@ static int	check_export(char *arg)
 			return (0);
 		i++;
 	}
-	// printf("i: %d\n", i);
 	return (1);
 }
 
@@ -306,7 +294,6 @@ static int	ft_export2(char **args, t_macro *macro)
 	int		argc;
 	char	*clean_value;
 	int		exit_flag;
-	//int		len;
 
 	exit_flag = 0;
 	argc = 0;
@@ -320,8 +307,6 @@ static int	ft_export2(char **args, t_macro *macro)
 	i = 1;
 	while (args[i])
 	{
-		// printf("args[i]: %s\n", args[i]);
-		// printf("check_export: %d\n", check_export(args[i]));
 		if (check_export(args[i]) == 0)
 		{
 			ft_putstr_fd("minishell: export: `", STDERR_FILENO);
@@ -333,9 +318,6 @@ static int	ft_export2(char **args, t_macro *macro)
 		}
 		clean_value = remove_quotes(args[i]);
 		j = 0;
-		//len = ft_strlen(args[i]);
-		// len_var = ft_strchr_i(clean_value, '=');
-		// printf("clean_value: %s y long es %d\n", clean_value, len_var);
 		while (macro->env[j])
 		{
 			len_var = ft_strchr_i(macro->env[j], '=');
@@ -366,23 +348,23 @@ int	ft_cd2(char **args, t_macro *macro)
 	char	*home;
 	int		i;
 	int		argc;
+	int		home_flag;
+	char	*oldpwd;
 
-	// i = 0;
-	// while (args[i])
-	// {
-	// 	printf("args[%d]: %s\n", i, args[i]);
-	// 	i++;
-	// }
 	i = 0;
+	home_flag = 0;
 	while (macro->env[i])
 	{
 		if (ft_strncmp(macro->env[i], "HOME=", 5) == 0)
 		{
 			home = ft_strdup(macro->env[i] + 5);
+			home_flag = 1;
 			break ;
 		}
 		i++;
 	}
+	if (home_flag == 0)
+		home = NULL;
 	argc = 0;
 	while (args[argc])
 		argc++;
@@ -391,11 +373,15 @@ int	ft_cd2(char **args, t_macro *macro)
 		ft_putendl_fd("minishell: cd: too many arguments", STDERR_FILENO);
 		return (1);
 	}
-	if (!args[1] || ft_strncmp(args[1], "~", 1) == 0)
+	if (home != NULL && (!args[1] || ft_strncmp(args[1], "~", 1) == 0))
 		path = home;
 	else
 		path = args[1];
-	// printf("path: %s\n", path);
+	if (access(path, X_OK) != 0)
+    {
+        perror("Error: Cannot change directory");
+        return (1);
+    }
 	if (path == NULL)
 	{
 		ft_putendl_fd("minishell: cd: HOME not set", STDERR_FILENO);
@@ -407,35 +393,31 @@ int	ft_cd2(char **args, t_macro *macro)
 	}
 	if (chdir(path) == -1)
 	{
-		ft_putstr_fd("minishell: cd: ", STDERR_FILENO);
+		ft_putstr_fd("minishell: XXXcd: ", STDERR_FILENO);
 		perror(path);
 		return (1);
 	}
 	macro->env = fix_env("OLDPWD", grab_env("PWD", macro->env, 3), macro->env,
 			6);
-	// printf("OLDPWD set to %s\n", grab_env("OLDPWD", macro->env, 6));
+	oldpwd = ft_calloc(sizeof(char*), ft_strlen(grab_env("PWD", macro->env, 3)));
+	oldpwd = grab_env("PWD", macro->env, 3);
+	oldpwd = ft_strjoin(oldpwd, "/", NULL);
+	if (getcwd(NULL, 0) == NULL)
+	{
+		macro->env = fix_env("PWD", ft_strjoin(oldpwd, args[1], NULL), macro->env, 3);
+		return (0);
+	}
 	macro->env = fix_env("PWD", getcwd(NULL, 0), macro->env, 3);
-	// printf("PWD set to %s\n", grab_env("PWD", macro->env, 3));
 	return (0);
 }
 
 int	select_and_run_builtin(char *cmd, char **args, t_macro *macro)
 {
-	// int i;
-	// i=	0;
-	// printf("dentro de exec_builtin cmd ##%s\n", cmd);
-	// while(args[i])
-	// {
-	// 	printf("args[%d]: %s\n", i, args[i]);
-	// 	i++;
-	// }
+
 	if (ft_strncmp(cmd, "echo", 4) == 0)
 		return (ft_echo2(args));
 	if (ft_strncmp(cmd, "cd", 2) == 0)
-	{
-		// printf("dentro de cd\n");
 		return (ft_cd2(args, macro));
-	}
 	if (ft_strncmp(cmd, "pwd", 3) == 0)
 		return (ft_pwd2());
 	if (ft_strncmp(cmd, "export", 6) == 0)
