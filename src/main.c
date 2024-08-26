@@ -106,8 +106,6 @@ int	main(int argc, char **argv, char **envp)
 		}
 		macro->instruction = line;
 		tokenizer(macro);
-		if(ft_strcmp(macro->tokens->value, "") == 0)
-			continue;
 		//print_tokens(macro->tokens);
 		macro->cmds = parsing(macro);
 		if (macro->cmds == NULL)

@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:45:23 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/23 13:21:31 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/25 15:43:44 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,11 +85,7 @@ t_token	*expand_arg_tokens(t_macro *macro)
 		{
 			expanded = get_expanded_instruction(tokens->value, macro);
             if (!expanded || *expanded == '\0')
-            {
-                tokens->value = ft_strdup("");
-                if (!tokens->value)
-                    return (NULL);
-            }
+				return(NULL);
 			if (ft_strchr("\"", tokens->value[0]))
 				tokens->value = expanded;
 			else
@@ -102,14 +98,56 @@ t_token	*expand_arg_tokens(t_macro *macro)
 		}
 		tokens = tokens->next;
 	}
-
-	// Promotion logic
-    if (macro->tokens && macro->tokens->value[0] == '\0' && macro->tokens->next)
-    {
-        t_token *second_token = macro->tokens->next;
-        macro->tokens->value = second_token->value;
-        macro->tokens->next = second_token->next;
-        free(second_token);
-    }
 	return (macro->tokens);
+}
+
+t_token	*remove_empty_envir_tokens(t_macro *macro)
+{
+	t_token	*tokens;
+	t_token	*retokens;
+	char	*expanded;
+
+	tokens = macro->tokens;
+	while (tokens)
+	{
+		if (ft_strchr(tokens->value, '$'))
+		{
+			expanded = get_expanded_instruction(tokens->value, macro);
+			if(!expanded)
+				return(NULL);
+            if (*expanded == '\0')
+				remove_token(&macro->tokens, tokens);
+		}
+		tokens = tokens->next;
+	}
+	return (macro->tokens);
+}
+
+void ensure_at_least_one_cmd(t_token **tokens)
+{
+    t_token *current = *tokens;
+    int cmd_found = 0; 
+	int first_token = 1;
+
+    while (current)
+	{
+        if (first_token || current->type == PIPE)
+        {
+            cmd_found = 0;
+            first_token = 0;
+        }
+        if (is_redir(current, "infile") || is_redir(current, "outfile"))
+		{
+            current = current->next;
+            continue; 
+        }
+		if(current->type == CMD)
+			cmd_found = 1;
+        if (!cmd_found &&  current->type == ARG)
+		{
+            current->type = CMD; 
+            cmd_found = 1; 
+        }   
+        current = current->next;
+    }
 }

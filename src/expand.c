@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:52:58 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/22 22:17:44 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/25 13:11:26 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,15 +57,16 @@ char	*build_expanded_instruction(char *clean, char *ins, t_macro *macro)
 				j += ft_strlen(exit_str);
 				i++;
 			}
+			else
+			{
 			i = expand_variable(clean, j, ins, i, macro);
 			j += ft_strlen(&clean[j]);
+			}
 		}
 		else
 			clean[j++] = ins[i++];
 	}
-	clean[j] = '\0';
 	free(exit_str);
-	    // Debug prints
 	return (clean);
 }
 
@@ -114,7 +115,10 @@ char	*get_expanded_instruction(char *ins, t_macro *macro)
 
 	envir_len = expanded_envir_len(ins, macro);
 	total_len = envir_len + ft_strlen(ins);
+	//printf("total_len: %zu\n", total_len);
 	clean = ft_calloc(1, sizeof(char) * total_len + 1);
+	if(!clean)
+		return(NULL);
 	clean = build_expanded_instruction(clean, ins, macro);
 	clean[total_len] = '\0';
 	return (clean);
