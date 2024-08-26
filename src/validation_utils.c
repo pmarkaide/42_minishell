@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validation_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 23:25:19 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/25 23:07:34 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/26 13:44:26 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int	open_file(t_token *token)
 {
 	int	fd;
 
+	fd = -1;
 	if (token->type == INRED)
 		fd = open(token->value, O_RDONLY);
 	else if (token->type == OUTRED)

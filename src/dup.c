@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 23:24:13 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/23 12:29:00 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/26 14:54:18 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,17 @@ static int	open_last_redir_file(t_token *redir, char *redir_type)
 		tmp = tmp->next;
 	}
 	fd = -1;
-	if (last_redir)
+	tmp = redir;
+	while (tmp)
 	{
-		if (last_redir->type == HERE_DOC)
-			fd = ft_atoi(last_redir->value);
-		else
-			fd = open_file(last_redir);
+		if (tmp == last_redir)
+		{
+			if (last_redir->type == HERE_DOC)
+				fd = ft_atoi(last_redir->value);
+			else
+				fd = open_file(last_redir);
+		}
+		tmp = tmp->next;
 	}
 	return (fd);
 }

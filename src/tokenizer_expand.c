@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:45:23 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/25 15:43:44 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/26 13:44:54 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,6 @@ t_token	*expand_arg_tokens(t_macro *macro)
 t_token	*remove_empty_envir_tokens(t_macro *macro)
 {
 	t_token	*tokens;
-	t_token	*retokens;
 	char	*expanded;
 
 	tokens = macro->tokens;

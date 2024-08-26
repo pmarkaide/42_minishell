@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:23:53 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/25 21:23:13 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/26 15:03:17 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,6 @@ int	execution(t_macro *macro)
 {
 	int		read_end;
 	int		num_cmds_executed;
-	char	**cmd_array;
 	int		pipe_exit[2];
 	int		i;
 
