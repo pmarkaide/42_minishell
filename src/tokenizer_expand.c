@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:45:23 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/26 13:44:54 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/26 16:09:32 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ t_token	*expand_arg_tokens(t_macro *macro)
 	char	*expanded;
 
 	tokens = macro->tokens;
-	while (tokens)
+	while (tokens && tokens->type != HERE_DOC)
 	{
 		if (ft_strchr(tokens->value, '$'))
 		{
