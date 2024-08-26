@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 14:49:38 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/25 15:12:45 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/25 21:25:11 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,13 @@ int	main(int argc, char **argv, char **envp)
 		tokenizer(macro);
 		//print_tokens(macro->tokens);
 		macro->cmds = parsing(macro);
+		if (macro->cmds == NULL)
+		{
+			free(line);
+			continue ;
+		}
 		execution(macro);
+		//VALORAR METER AQUI UN CLEAN_MACRO ANTES DE QUE VUELVA EL LOOP: se puede limpiar todo menos el env. No lo quiero meter ahora por no hacer doubles frees, pero probablemente haya que meterlo por temas de leaks.
 	}
 	exit(g_exit);
 }

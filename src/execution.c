@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:23:53 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/24 22:06:23 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/25 21:23:13 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,8 @@ int	execution(t_macro *macro)
 	int		pipe_exit[2];
 	int		i;
 
+	if (macro->cmds == NULL)
+		return (0);
 	if (macro->num_cmds == 1 && macro->cmds->type == BUILTIN)
 		execute_single_builtin(macro);
 	else
