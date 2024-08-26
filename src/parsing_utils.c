@@ -6,16 +6,16 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 10:42:44 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/26 16:12:33 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/26 16:16:54 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void close_here_doc_not_needed(t_token *tokens)
+void	close_here_doc_not_needed(t_token *tokens)
 {
 	t_token	*tmp;
-	t_token *last;
+	t_token	*last;
 	int		fd;
 
 	last = NULL;
@@ -45,8 +45,8 @@ static int	read_here_doc(t_token *token, t_macro *macro)
 
 	if (pipe(pipe_fd) == -1)
 		return (error_msg("pipe error\n", -1));
+	// TODO: protect
 	del = clean_quotes(token->value);
-	ft_printf("del: %s\n", del);
 	while (1)
 	{
 		line = readline("> ");
@@ -56,8 +56,8 @@ static int	read_here_doc(t_token *token, t_macro *macro)
 			free(line);
 			break ;
 		}
-		if(!ft_isquote(token->value[0]))
-			line = get_expanded_instruction(line, macro);			
+		if (!ft_isquote(token->value[0]))
+			line = get_expanded_instruction(line, macro);
 		write(pipe_fd[1], line, strlen(line));
 		write(pipe_fd[1], "\n", 1);
 		free(line);
@@ -75,7 +75,7 @@ void	handle_here_doc(t_cmd *cmds, t_macro *macro)
 	cmd = cmds;
 	while (cmd)
 	{
-		if(cmd->redir)
+		if (cmd->redir)
 		{
 			token = cmd->redir;
 			while (token)
