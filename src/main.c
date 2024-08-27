@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 14:49:38 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/27 22:31:37 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/28 00:01:13 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,18 @@ t_macro	*start_env(t_macro *macro, char **argv)
 	return (macro);
 }
 
+static char	*grab_home(t_macro *macro)
+{
+	char	*home;
+
+	home = grab_env("HOME", macro->env, 4);
+	if (home == NULL)
+	{
+		return (NULL);
+	}
+	return (home);
+}
+
 t_macro	*init_macro(char **envp, char **argv)
 {
 	t_macro	*macro;
@@ -62,6 +74,7 @@ t_macro	*init_macro(char **envp, char **argv)
 	macro->pid = 0;
 	macro = start_env(macro, argv);
 	macro->m_pwd = char_pwd();
+	macro->m_home = grab_home(macro);
 	return (macro);
 }
 
