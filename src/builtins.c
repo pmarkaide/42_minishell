@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 15:55:31 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/27 11:51:00 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/27 13:02:20 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	select_and_run_builtin(char *cmd, char **args, t_macro *macro)
 	if (ft_strncmp(cmd, "cd", 2) == 0)
 		return (ft_cd2(args, macro));
 	if (ft_strncmp(cmd, "pwd", 3) == 0)
-		return (ft_pwd2());
+		return (ft_pwd2(macro));
 	if (ft_strncmp(cmd, "export", 6) == 0)
 		return (ft_export2(args, macro));
 	if (ft_strncmp(cmd, "unset", 5) == 0)

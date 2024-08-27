@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:04:29 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/27 11:50:24 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/27 13:28:19 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,18 +45,18 @@ int	ft_cd2(char **args, t_macro *macro)
 		ft_putendl_fd("minishell: cd: too many arguments", STDERR_FILENO);
 		return (1);
 	}
-	if (home != NULL && (!args[1] || ft_strncmp(args[1], "~", 1) == 0))
+	if (!args[1] || args[1][0] == '\0' || ft_strncmp(args[1], "~", 1) == 0)
 		path = home;
 	else
 		path = args[1];
+	if (home == NULL && !path)
+	{
+		ft_putendl_fd("minishell: cd: HOME not set", STDERR_FILENO);
+		return (1);
+	}
 	if (access(path, X_OK) != 0)
 	{
 		perror("Error: Cannot change directory");
-		return (1);
-	}
-	if (path == NULL)
-	{
-		ft_putendl_fd("minishell: cd: HOME not set", STDERR_FILENO);
 		return (1);
 	}
 	if (ft_strncmp(path, "-", 1) == 0)
@@ -64,8 +64,8 @@ int	ft_cd2(char **args, t_macro *macro)
 		path = grab_env("OLDPWD", macro->env, 6);
 	}
 	if (chdir(path) == -1)
-	{
-		ft_putstr_fd("minishell: XXXcd: ", STDERR_FILENO);
+	{	
+		ft_putstr_fd("minishell: cd: ", STDERR_FILENO);
 		perror(path);
 		return (1);
 	}
@@ -76,6 +76,7 @@ int	ft_cd2(char **args, t_macro *macro)
 	oldpwd = ft_strjoin(oldpwd, "/", NULL);
 	if (getcwd(NULL, 0) == NULL)
 	{
+		ft_putendl_fd("cd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory", STDERR_FILENO);
 		macro->env = fix_env("PWD", ft_strjoin(oldpwd, args[1], NULL), macro->env, 3);
 		return (0);
 	}

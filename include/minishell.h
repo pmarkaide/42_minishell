@@ -85,7 +85,6 @@ typedef struct s_macro
 {
 	char			**envp;
 	char			**env;
-	char			*path;
 	char			**history;
 	char			*instruction;
 	t_token			*tokens;
@@ -199,7 +198,7 @@ char				*remove_path(char *cmd);
 t_macro				*init_macro(char **envp, char **argv);
 t_macro				*start_env(t_macro *macro, char **argv);
 char				*ft_getenv(char *var, char **env);
-int					ft_pwd2(void);
+int					ft_pwd2(t_macro *macro);
 int					ft_env2(t_macro *macro);
 int					ft_exit2(char **args);
 int					ft_unset2(char **args, t_macro *macro);
