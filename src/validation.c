@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:35:57 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/26 15:00:01 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/27 09:17:34 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ static int	validate_access(char *file)
 				ft_putstr_fd(msg, 2);
 				free(msg);
 				return (126);
-				// return (error_msg(file, 126));
 			}
 			return (0);
 		}
@@ -95,7 +94,6 @@ int	validate_executable(t_macro *macro, t_cmd *cmd)
 {
 	char	*full_path;
 
-	// int		exit_code;
 	if (ft_strchr("./", cmd->cmd_arg->value[0]) == NULL)
 	{
 		full_path = search_for_executable(macro, cmd);
@@ -108,8 +106,5 @@ int	validate_executable(t_macro *macro, t_cmd *cmd)
 		}
 	}
 	g_exit = validate_access(cmd->cmd_arg->value);
-	// exit_code = validate_access(cmd->cmd_arg->value);
-	// if (exit_code != 0)
-	// 	ft_putstr_fd("executable not found\n", 2);
 	return (g_exit);
 }

@@ -1,31 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strndup.c                                       :+:      :+:    :+:   */
+/*   buin_echo.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/18 16:00:41 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/27 09:23:30 by dbejar-s         ###   ########.fr       */
+/*   Created: 2024/08/27 09:04:32 by dbejar-s          #+#    #+#             */
+/*   Updated: 2024/08/27 09:10:54 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-char	*ft_strndup(char *str, int n)
+extern int g_exit; 
+
+int	ft_echo2(char **args)
 {
-	char	*new;
-	int		i;
+	int	i;
+	int	n_flag;
 
-	new = malloc(sizeof(char) * n + 1);
-	if (!new)
-		return (NULL);
-	i = 0;
-	while (i < n)
+	i = 1;
+	n_flag = 0;
+	while (args[i] && ft_strncmp(args[i], "-n", 2) == 0 && args[i][2] == '\0')
 	{
-		new[i] = str[i];
+		n_flag = 1;
 		i++;
 	}
-	new[i] = '\0';
-	return (new);
+	while (args[i])
+	{
+		ft_putstr_fd(args[i], STDOUT_FILENO);
+		if (args[i + 1])
+			ft_putchar_fd(' ', STDOUT_FILENO);
+		i++;
+	}
+	if (!n_flag)
+		ft_putchar_fd('\n', STDOUT_FILENO);
+	return (0);
 }
