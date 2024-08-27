@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:52:58 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/27 11:37:30 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/27 22:40:05 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ size_t	expanded_envir_len(char *ins, t_macro *macro)
 	{
 		if (ins[i] == '$' && (ins[i + 1] == '\0' || ft_isdelim(ins[i + 1])))
 			i++;
-		else if (ft_strlen(ins) > 2 && ins[i] == '$' && ins[i + 1] != '\0' && ins[i + 1] == '"')
+		else if (ft_strlen(ins) > 2 && ins[i] == '$' && ft_isquote(ins[i + 1]))
 		{
 			i++;
 			envir_len = 1;
