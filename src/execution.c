@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:23:53 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/27 09:25:55 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/27 21:21:01 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,9 @@ int	execute_single_builtin(t_macro *macro)
 
 	saved_stdout = dup(STDOUT_FILENO);
 	saved_stdin = dup(STDIN_FILENO);
-	cmd_array = build_cmd_args_array(macro->cmds->cmd_arg);
-	if (cmd_array == NULL)
-		return (1);
-	if (validate_redirections(macro->cmds->redir) == -1)
-		return (-1);
+	validate_redirections(macro->cmds->redir);
 	dup_file_descriptors(macro, macro->cmds, 0);
+	cmd_array = build_cmd_args_array(macro->cmds->cmd_arg);
 	g_exit = execute_builtin(macro, cmd_array);
 	free_array(&cmd_array);
 	dup2(saved_stdout, STDOUT_FILENO);
@@ -46,8 +43,7 @@ int	execute_single_builtin(t_macro *macro)
 	return (g_exit);
 }
 
-static void	execute_child_process(t_macro *macro, int index, int read_end,
-		int pipe_exit[2])
+static void	execute_child_process(t_macro *macro, int index, int read_end, int pipe_exit[2])
 {
 	int		i;
 	t_cmd	*cmd;
@@ -58,12 +54,9 @@ static void	execute_child_process(t_macro *macro, int index, int read_end,
 	i = 0;
 	while (cmd != NULL && i++ < index)
 		cmd = cmd->next;
-	if (validate_redirections(cmd->redir) == -1)
-		exit(g_exit);
+	validation(macro, cmd);
 	dup_file_descriptors(macro, cmd, read_end);
-	cmd_array = prepare_child_execution(macro, cmd);
-	if (!cmd_array || !cmd_array[0])
-		exit (errno);
+	cmd_array = build_cmd_args_array(cmd->cmd_arg);
 	if (cmd->type == BUILTIN)
 		g_exit = execute_builtin(macro, cmd_array);
 	else

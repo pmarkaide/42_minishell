@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 09:53:20 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/27 11:37:02 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/27 20:34:21 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+extern int	g_exit;
 
 static t_token	*parse_redir_tokens(t_token *tokens)
 {
@@ -119,6 +121,7 @@ static char	parsing_error_check(t_token *tokens)
 		ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
 		ft_putchar_fd(c, 2);
 		ft_putstr_fd("'\n", 2);
+		g_exit = 2;
 	}
 	return (c);
 }

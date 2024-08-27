@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:35:57 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/27 11:46:41 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/27 21:17:34 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,68 +43,53 @@ int	validate_redirections(t_token *redir)
 	return (0);
 }
 
-static int	validate_access(char *file)
+void	validate_access(char *exec)
 {
-	char	*msg;
-
-	if (!access(file, F_OK))
+	if (!access(exec, F_OK))
 	{
-		if (!access(file, X_OK))
+		if (!access(exec, X_OK))
 		{
-			if (is_directory(file))
-			{
-				msg = ft_strjoin("minishell: ", file, NULL);
-				msg = ft_strjoin(msg, ": Is a directory\n", NULL);
-				ft_putstr_fd(msg, 2);
-				free(msg);
-				return (126);
-			}
-			return (0);
+			if (is_directory(exec))
+				exit_error(exec, "Is a directory", 126);
+			return ;
 		}
-		return (error_msg(file, 126));
+		exit_error(exec, "Permission denied", 126);
 	}
-	return (error_msg(file, 127));
+	exit_error(exec, "No such file or directory", 127);
 }
 
-static char	*search_for_executable(t_macro *macro, t_cmd *cmd)
+int	search_executable(t_macro *macro, t_cmd *cmd)
 {
-	char	*executable;
 	char	**paths;
 	char	*full_path;
 
-	executable = ft_strdup(cmd->cmd_arg->value);
-	if (!executable)
-		return (NULL);
+	full_path = NULL;
 	paths = parse_paths(macro->env);
 	if (!paths)
-	{
-		free(executable);
-		return (NULL);
-	}
-	full_path = get_executable_path(paths, executable);
+		exit_error(cmd->cmd_arg->value, "No such file or directory", 127);
+	full_path = get_executable_path(paths, cmd->cmd_arg->value);
 	free(paths);
-	free(executable);
 	if (!full_path)
-		return (NULL);
+	{
+		ft_putstr_fd(cmd->cmd_arg->value, 2);
+		ft_putstr_fd(": command not found\n", 2);
+		exit(g_exit);
+	}
 	else
-		return (full_path);
+	{
+		free(cmd->cmd_arg->value);
+		cmd->cmd_arg->value = full_path;
+	}
+	return (g_exit);
 }
 
-int	validate_executable(t_macro *macro, t_cmd *cmd)
+void	validation(t_macro *macro, t_cmd *cmd)
 {
-	char	*full_path;
-
-	if (ft_strchr("./", cmd->cmd_arg->value[0]) == NULL)
+	if (cmd && cmd->type == CMD)
 	{
-		full_path = search_for_executable(macro, cmd);
-		if (!full_path)
-			return (1);
-		else
-		{
-			free(cmd->cmd_arg->value);
-			cmd->cmd_arg->value = full_path;
-		}
+		if (ft_strchr("./", cmd->cmd_arg->value[0]) == NULL)
+			search_executable(macro, cmd);
+		validate_access(cmd->cmd_arg->value);
 	}
-	g_exit = validate_access(cmd->cmd_arg->value);
-	return (g_exit);
+	validate_redirections(cmd->redir);
 }

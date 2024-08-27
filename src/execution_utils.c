@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 20:03:14 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/27 10:48:17 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/27 21:13:46 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+extern int	g_exit;
 
 void	close_fds(int *pipe_fd, int read_end)
 {
@@ -51,41 +53,26 @@ int	wait_processes(pid_t pid)
 
 char	**build_cmd_args_array(t_token *cmd_args)
 {
-	char	**cmd_array;
-	t_token	*tmp;
-	int		i;
+    char	**cmd_array;
+    int		i;
 
-	tmp = cmd_args;
-	if (!cmd_args)
-		return (NULL);
-	cmd_array = (char **)malloc(sizeof(char *) * (tokens_size(cmd_args) + 1));
-	if (!cmd_array)
-		return (NULL);
-	i = 0;
-	tmp = cmd_args;
-	while (tmp)
-	{
-		cmd_array[i] = ft_strdup(tmp->value);
-		if (!cmd_array[i])
-		{
-			free_array(&cmd_array);
-			return (NULL);
-		}
-		i++;
-		tmp = tmp->next;
-	}
-	cmd_array[i] = NULL;
-	return (cmd_array);
-}
-
-char	**prepare_child_execution(t_macro *macro, t_cmd *cmd)
-{
-	char	**cmd_array;
-
-	if (cmd->type == CMD)
-		validate_executable(macro, cmd);
-	cmd_array = build_cmd_args_array(cmd->cmd_arg);
-	if (!cmd_array)
-		exit(errno);
-	return (cmd_array);
+    if (!cmd_args)
+        return (NULL);
+    cmd_array = (char **)malloc(sizeof(char *) * (tokens_size(cmd_args) + 1));
+    if (!cmd_array)
+        exit_error("build_cmd_args_array", "malloc error", -1);
+    i = 0;
+    while (cmd_args)
+    {
+        cmd_array[i] = ft_strdup(cmd_args->value);
+        if (!cmd_array[i])
+        {
+            free_array(&cmd_array);
+            exit_error("build_cmd_args_array", "malloc error", -1);
+        }
+        i++;
+        cmd_args = cmd_args->next;
+    }
+    cmd_array[i] = NULL;
+    return (cmd_array);
 }
