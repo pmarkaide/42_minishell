@@ -6,13 +6,13 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:04:29 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/27 09:07:02 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/27 11:50:24 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-extern int g_exit; 
+extern int	g_exit;
 
 int	ft_cd2(char **args, t_macro *macro)
 {
@@ -50,10 +50,10 @@ int	ft_cd2(char **args, t_macro *macro)
 	else
 		path = args[1];
 	if (access(path, X_OK) != 0)
-    {
-        perror("Error: Cannot change directory");
-        return (1);
-    }
+	{
+		perror("Error: Cannot change directory");
+		return (1);
+	}
 	if (path == NULL)
 	{
 		ft_putendl_fd("minishell: cd: HOME not set", STDERR_FILENO);
@@ -71,7 +71,7 @@ int	ft_cd2(char **args, t_macro *macro)
 	}
 	macro->env = fix_env("OLDPWD", grab_env("PWD", macro->env, 3), macro->env,
 			6);
-	oldpwd = ft_calloc(sizeof(char*), ft_strlen(grab_env("PWD", macro->env, 3)));
+	oldpwd = ft_calloc(sizeof(char *), ft_strlen(grab_env("PWD", macro->env, 3)));
 	oldpwd = grab_env("PWD", macro->env, 3);
 	oldpwd = ft_strjoin(oldpwd, "/", NULL);
 	if (getcwd(NULL, 0) == NULL)

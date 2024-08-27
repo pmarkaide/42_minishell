@@ -6,13 +6,13 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:04:49 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/27 09:09:20 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/27 11:47:53 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-extern int g_exit; 
+extern int	g_exit;
 
 int	ft_unset2(char **args, t_macro *macro)
 {

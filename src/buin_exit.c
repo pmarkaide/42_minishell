@@ -6,13 +6,13 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:04:40 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/27 09:08:39 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/27 11:49:01 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-extern int g_exit; 
+extern int	g_exit;
 
 int	ft_exit2(char **args)
 {
