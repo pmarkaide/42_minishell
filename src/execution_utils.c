@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 20:03:14 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/27 15:08:30 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/27 15:51:53 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	close_fds(int *pipe_fd, int read_end)
 	{
 		close(pipe_fd[1]);
 		pipe_fd[1] = -1;
-	}extern int	g_exit;
+	}
 	if (read_end > 0)
 		close(read_end);
 }

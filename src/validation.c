@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:35:57 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/27 15:04:20 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/27 15:49:08 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,17 +43,17 @@ int	validate_redirections(t_token *redir)
 	return (0);
 }
 
-int	validate_access(char *file)
+int	validate_access(char *exec)
 {
 	char	*msg;
 
-	if (!access(file, F_OK))
+	if (!access(exec, F_OK))
 	{
-		if (!access(file, X_OK))
+		if (!access(exec, X_OK))
 		{
-			if (is_directory(file))
+			if (is_directory(exec))
 			{
-				msg = ft_strjoin("minishell: ", file, NULL);
+				msg = ft_strjoin("minishell: ", exec, NULL);
 				msg = ft_strjoin(msg, ": Is a directory\n", NULL);
 				ft_putstr_fd(msg, 2);
 				free(msg);
@@ -61,9 +61,9 @@ int	validate_access(char *file)
 			}
 			return (0);
 		}
-		return (error_msg(file, 126));
+		return (error_msg(exec, 126));
 	}
-	return (error_msg(file, 127));
+	return (error_msg(exec, 127));
 }
 
 int	search_executable(t_macro *macro, t_cmd *cmd)
@@ -87,6 +87,28 @@ int	search_executable(t_macro *macro, t_cmd *cmd)
 			cmd->cmd_arg->value = full_path;
 		}
 	}
-	g_exit = validate_access(cmd->cmd_arg->value);
 	return (g_exit);
+}
+
+void validation(t_macro *macro, t_cmd *cmd)
+{
+	//TODO: create error_exit printer to exit
+	g_exit = search_executable(macro, cmd);
+	if(g_exit != 0)
+	{
+		error_msg(cmd->cmd_arg->value, g_exit);
+		exit(g_exit);
+	}
+	g_exit = validate_access(cmd->cmd_arg->value);
+		if(g_exit != 0)
+	{
+		error_msg(cmd->cmd_arg->value, g_exit);
+		exit(g_exit);
+	}
+	g_exit = validate_redirections(cmd->redir);
+	if(g_exit != 0)
+	{
+		error_msg(cmd->cmd_arg->value, g_exit);
+		exit(g_exit);
+	}
 }
