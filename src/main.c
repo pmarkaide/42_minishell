@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 14:49:38 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/27 22:31:37 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/27 23:57:11 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,82 @@ t_macro	*init_macro(char **envp, char **argv)
 	return (macro);
 }
 
+
+static int	in_root(char *path)
+{
+	if (ft_strcmp(path, "/") == 0)
+		return (1);
+	return (0);
+}
+
+static int	in_home(t_macro *macro)
+{
+	char	*home;
+
+	home = grab_env("HOME", macro->env, 4);
+	if (home == NULL)
+		return (0);
+	if (ft_strcmp(macro->m_pwd, home) == 0)
+	{
+		free(home);
+		return (1);
+	}
+	free(home);
+	return (0);
+}
+
+static char	*upper_than_home(t_macro *macro)
+{
+	char	*home;
+	char	*path;
+	char	*tmp;
+	int		len;
+
+	home = grab_env("HOME", macro->env, 4);
+	if (home == NULL)
+		return (NULL);
+	len = ft_strlen(home);
+	if (ft_strncmp(macro->m_pwd, home, len) == 0)
+	{
+		tmp = ft_strdup(macro->m_pwd);
+		path = ft_strjoin("minishell:~", tmp + len, NULL);
+		path = ft_strjoin(path, "$ ", NULL);
+		free(home);
+		free(tmp);
+		return (path);
+	}
+	else
+	{
+		free(home);
+		return (NULL);
+	}	
+}
+
+static char	*create_path(t_macro *macro)
+{
+	char	*path;
+	char	*tmp;
+	
+	if (in_root(macro->m_pwd))
+	{
+		path = ft_strdup("minishell:/$ ");
+	}
+	else if (in_home(macro))
+	{
+		path = ft_strdup("minishell:~$ ");
+	}
+	else if (upper_than_home(macro) != NULL)
+		path = upper_than_home(macro);
+	else
+	{
+		tmp = ft_strjoin("minishell:", macro->m_pwd, NULL);
+		tmp = ft_strjoin(tmp, "$ ", NULL);
+		path = ft_strdup(tmp);
+		free(tmp);
+	}
+	return (path);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_macro	*macro;
@@ -78,7 +154,7 @@ int	main(int argc, char **argv, char **envp)
 	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
-		path = ft_strjoin("minishell>", " ", NULL);
+		path = create_path(macro);
 		line = readline(path);
 		if (line == NULL || *line == EOF)
 		{
