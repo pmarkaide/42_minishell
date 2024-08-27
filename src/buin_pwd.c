@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:00:43 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/27 13:04:17 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/27 22:44:14 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ int	ft_pwd2(t_macro *macro)
 {
 	char	*path;
 
-	path = grab_env("PWD", macro->env, 3);
+	path = getcwd(NULL, 0);	
 	if (path == NULL)
 	{
-		path = getcwd(NULL, 0);
+		path = ft_strdup(macro->m_pwd);
 		if (path == NULL)
 		{
 			perror("Error getting current directory");

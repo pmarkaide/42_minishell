@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 14:49:38 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/27 13:00:44 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/27 22:31:37 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ t_macro	*init_macro(char **envp, char **argv)
 	macro->cmds = NULL;
 	macro->pid = 0;
 	macro = start_env(macro, argv);
+	macro->m_pwd = char_pwd();
 	return (macro);
 }
 

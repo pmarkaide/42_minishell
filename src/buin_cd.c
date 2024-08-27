@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:04:29 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/27 13:28:19 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/27 22:51:07 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,20 @@ int	ft_cd2(char **args, t_macro *macro)
 		ft_putendl_fd("minishell: cd: HOME not set", STDERR_FILENO);
 		return (1);
 	}
-	if (access(path, X_OK) != 0)
-	{
-		perror("Error: Cannot change directory");
-		return (1);
-	}
 	if (ft_strncmp(path, "-", 1) == 0)
 	{
 		path = grab_env("OLDPWD", macro->env, 6);
+		if (!path)
+		{
+			ft_putendl_fd("minishell: cd: OLDPWD not set", STDERR_FILENO);
+			return (1);
+		}
+	}
+	if (access(path, X_OK) != 0)
+	{
+		path = ft_strjoin("minishell: cd: ", path, NULL);
+		perror(path);
+		return (1);
 	}
 	if (chdir(path) == -1)
 	{	
@@ -69,17 +75,20 @@ int	ft_cd2(char **args, t_macro *macro)
 		perror(path);
 		return (1);
 	}
-	macro->env = fix_env("OLDPWD", grab_env("PWD", macro->env, 3), macro->env,
-			6);
-	oldpwd = ft_calloc(sizeof(char *), ft_strlen(grab_env("PWD", macro->env, 3)));
-	oldpwd = grab_env("PWD", macro->env, 3);
-	oldpwd = ft_strjoin(oldpwd, "/", NULL);
+	if (grab_env("OLDPWD", macro->env, 6))
+		macro->env = fix_env("OLDPWD", macro->m_pwd, macro->env, 6);
+	oldpwd = ft_calloc(sizeof(char *), ft_strlen(macro->m_pwd) + 2);
+	oldpwd = ft_strjoin(macro->m_pwd, "/", NULL);
 	if (getcwd(NULL, 0) == NULL)
 	{
 		ft_putendl_fd("cd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory", STDERR_FILENO);
-		macro->env = fix_env("PWD", ft_strjoin(oldpwd, args[1], NULL), macro->env, 3);
+		macro->m_pwd = ft_strjoin(oldpwd, args[1], NULL);
+		if (grab_env("PWD", macro->env, 3))
+			macro->env = fix_env("PWD", macro->m_pwd, macro->env, 3);
 		return (0);
 	}
-	macro->env = fix_env("PWD", getcwd(NULL, 0), macro->env, 3);
+	macro->m_pwd = getcwd(NULL, 0);
+	if (grab_env("PWD", macro->env, 3))
+		macro->env = fix_env("PWD", macro->m_pwd, macro->env, 3);
 	return (0);
 }
