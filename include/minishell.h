@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/27 15:51:08 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/27 19:09:22 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,5 +209,6 @@ int					ft_cd2(char **args, t_macro *macro);
 
 /* error */
 int					error_msg(char *msg, int exit_code);
+void 				exit_error(char *file, char *msg, int exit_code);
 
 #endif /* MINISHELL_H */

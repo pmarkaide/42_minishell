@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 20:03:14 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/27 15:51:53 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/27 18:47:31 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,30 +77,5 @@ char	**build_cmd_args_array(t_token *cmd_args)
 		tmp = tmp->next;
 	}
 	cmd_array[i] = NULL;
-	return (cmd_array);
-}
-
-char	**prepare_child_execution(t_macro *macro, t_cmd *cmd)
-{
-	char	**cmd_array;
-
-	if (cmd->type == CMD)
-	{
-		g_exit = search_executable(macro, cmd);
-		if(g_exit != 0)
-			{
-				error_msg(cmd->cmd_arg->value, g_exit);
-				exit(g_exit);
-			}
-		g_exit = validate_access(cmd->cmd_arg->value);
-		if(g_exit != 0)
-			{
-				error_msg(cmd->cmd_arg->value, g_exit);
-				exit(g_exit);
-			}
-	}
-	cmd_array = build_cmd_args_array(cmd->cmd_arg);
-	if (!cmd_array)
-		exit(errno);
 	return (cmd_array);
 }

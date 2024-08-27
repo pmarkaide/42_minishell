@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:35:57 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/27 15:49:08 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/27 19:13:50 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,20 +72,23 @@ int	search_executable(t_macro *macro, t_cmd *cmd)
 	char	*full_path;
 
 	full_path = NULL;
-	if (ft_strchr("./", cmd->cmd_arg->value[0]) == NULL)
+	paths = parse_paths(macro->env);
+	if (!paths)
+		exit_error(cmd->cmd_arg->value, "No such file or directory\n", 127);
+	full_path = get_executable_path(paths, cmd->cmd_arg->value);
+	free(paths);
+	if (!full_path)
 	{
-		paths = parse_paths(macro->env);
-		if (!paths)
-			return (127);
-		full_path = get_executable_path(paths, cmd->cmd_arg->value);
-		free(paths);
-		if (!full_path)
-			return (127);
+		if (errno == ENOENT)
+			exit_error(cmd->cmd_arg->value, ": command not found\n", 127);
 		else
-		{
-			free(cmd->cmd_arg->value);
-			cmd->cmd_arg->value = full_path;
-		}
+			exit_error(cmd->cmd_arg->value, strerror(errno), 127);
+	}
+	else
+	{
+		free(cmd->cmd_arg->value);
+		ft_printf("full_path: %s\n", full_path);
+		cmd->cmd_arg->value = full_path;
 	}
 	return (g_exit);
 }
@@ -93,14 +96,17 @@ int	search_executable(t_macro *macro, t_cmd *cmd)
 void validation(t_macro *macro, t_cmd *cmd)
 {
 	//TODO: create error_exit printer to exit
-	g_exit = search_executable(macro, cmd);
-	if(g_exit != 0)
+	if (ft_strchr("./", cmd->cmd_arg->value[0]) == NULL)
 	{
-		error_msg(cmd->cmd_arg->value, g_exit);
-		exit(g_exit);
+		g_exit = search_executable(macro, cmd);
+		if(g_exit != 0)
+		{
+			error_msg(cmd->cmd_arg->value, g_exit);
+			exit(g_exit);
+		}
 	}
 	g_exit = validate_access(cmd->cmd_arg->value);
-		if(g_exit != 0)
+	if(g_exit != 0)
 	{
 		error_msg(cmd->cmd_arg->value, g_exit);
 		exit(g_exit);
