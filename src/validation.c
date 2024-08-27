@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:35:57 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/27 19:13:50 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/27 19:40:24 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,20 +74,18 @@ int	search_executable(t_macro *macro, t_cmd *cmd)
 	full_path = NULL;
 	paths = parse_paths(macro->env);
 	if (!paths)
-		exit_error(cmd->cmd_arg->value, "No such file or directory\n", 127);
+		return(-1);
 	full_path = get_executable_path(paths, cmd->cmd_arg->value);
 	free(paths);
 	if (!full_path)
 	{
-		if (errno == ENOENT)
-			exit_error(cmd->cmd_arg->value, ": command not found\n", 127);
-		else
-			exit_error(cmd->cmd_arg->value, strerror(errno), 127);
+			ft_putstr_fd(cmd->cmd_arg->value,2);
+			ft_putstr_fd(": command not found\n",2);
+			exit(g_exit);
 	}
 	else
 	{
 		free(cmd->cmd_arg->value);
-		ft_printf("full_path: %s\n", full_path);
 		cmd->cmd_arg->value = full_path;
 	}
 	return (g_exit);
@@ -97,14 +95,7 @@ void validation(t_macro *macro, t_cmd *cmd)
 {
 	//TODO: create error_exit printer to exit
 	if (ft_strchr("./", cmd->cmd_arg->value[0]) == NULL)
-	{
-		g_exit = search_executable(macro, cmd);
-		if(g_exit != 0)
-		{
-			error_msg(cmd->cmd_arg->value, g_exit);
-			exit(g_exit);
-		}
-	}
+		search_executable(macro, cmd);
 	g_exit = validate_access(cmd->cmd_arg->value);
 	if(g_exit != 0)
 	{

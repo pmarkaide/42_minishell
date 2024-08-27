@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 23:25:19 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/27 15:39:45 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/27 19:38:48 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ int	open_file(t_token *token)
 			g_exit = (NO_FILE);
 		else if (errno == EISDIR)
 			g_exit = (NO_FILE);
-		perror(token->value);
+		//perror(token->value); -> this message is also correct
+		exit_error(token->value, strerror(errno), g_exit);
 		return (-1);
 	}
 	return (fd);
@@ -94,9 +95,5 @@ char	*get_executable_path(char **paths, char *executable)
 		i++;
 	}
 	g_exit = 127;
-	// msg = ft_strjoin(executable, ": command not found\n", NULL);
-	// if (msg == NULL)
-	// 	return (NULL);
-	// ft_putstr_fd(msg, 2);
 	return (NULL);
 }
