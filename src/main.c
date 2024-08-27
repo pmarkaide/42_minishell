@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 14:49:38 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/26 16:19:20 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/26 20:08:34 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,12 +78,12 @@ int	main(int argc, char **argv, char **envp)
 	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
-		path = getcwd(NULL, 0);
-		if (path == NULL)
-		{
-			perror("Error getting current directory");
-		}
-		path = ft_strjoin(path, " @ minishell>$ ", NULL);
+		// path = getcwd(NULL, 0);
+		// if (path == NULL)
+		// {
+		// 	perror("Error getting current directory");
+		// }
+		path = ft_strjoin("minishell>", " ", NULL);
 		// path = ft_strjoin(path, " $ ", NULL);
 		line = readline(path);
 		if (line == NULL || *line == EOF)
