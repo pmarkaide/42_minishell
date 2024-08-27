@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 20:03:14 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/27 18:47:31 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/27 21:13:46 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,29 +53,26 @@ int	wait_processes(pid_t pid)
 
 char	**build_cmd_args_array(t_token *cmd_args)
 {
-	char	**cmd_array;
-	t_token	*tmp;
-	int		i;
+    char	**cmd_array;
+    int		i;
 
-	tmp = cmd_args;
-	if (!cmd_args)
-		return (NULL);
-	cmd_array = (char **)malloc(sizeof(char *) * (tokens_size(cmd_args) + 1));
-	if (!cmd_array)
-		return (NULL);
-	i = 0;
-	tmp = cmd_args;
-	while (tmp)
-	{
-		cmd_array[i] = ft_strdup(tmp->value);
-		if (!cmd_array[i])
-		{
-			free_array(&cmd_array);
-			return (NULL);
-		}
-		i++;
-		tmp = tmp->next;
-	}
-	cmd_array[i] = NULL;
-	return (cmd_array);
+    if (!cmd_args)
+        return (NULL);
+    cmd_array = (char **)malloc(sizeof(char *) * (tokens_size(cmd_args) + 1));
+    if (!cmd_array)
+        exit_error("build_cmd_args_array", "malloc error", -1);
+    i = 0;
+    while (cmd_args)
+    {
+        cmd_array[i] = ft_strdup(cmd_args->value);
+        if (!cmd_array[i])
+        {
+            free_array(&cmd_array);
+            exit_error("build_cmd_args_array", "malloc error", -1);
+        }
+        i++;
+        cmd_args = cmd_args->next;
+    }
+    cmd_array[i] = NULL;
+    return (cmd_array);
 }

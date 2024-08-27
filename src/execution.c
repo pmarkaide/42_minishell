@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:23:53 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/27 19:14:34 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/27 21:21:01 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,9 @@ int	execute_single_builtin(t_macro *macro)
 
 	saved_stdout = dup(STDOUT_FILENO);
 	saved_stdin = dup(STDIN_FILENO);
-	//TODO: validation step return cmd_array if not would exit
-	cmd_array = build_cmd_args_array(macro->cmds->cmd_arg);
-	if (cmd_array == NULL)
-		return (1);
-	if (validate_redirections(macro->cmds->redir) == -1)
-		return (-1);
+	validate_redirections(macro->cmds->redir);
 	dup_file_descriptors(macro, macro->cmds, 0);
+	cmd_array = build_cmd_args_array(macro->cmds->cmd_arg);
 	g_exit = execute_builtin(macro, cmd_array);
 	free_array(&cmd_array);
 	dup2(saved_stdout, STDOUT_FILENO);
@@ -61,8 +57,6 @@ static void	execute_child_process(t_macro *macro, int index, int read_end, int p
 	validation(macro, cmd);
 	dup_file_descriptors(macro, cmd, read_end);
 	cmd_array = build_cmd_args_array(cmd->cmd_arg);
-	if (!cmd_array || !cmd_array[0])
-		exit (errno);
 	if (cmd->type == BUILTIN)
 		g_exit = execute_builtin(macro, cmd_array);
 	else

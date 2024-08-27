@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:35:57 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/27 20:22:26 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/27 21:17:34 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	validate_access(char *exec)
 		{
 			if (is_directory(exec))
 				exit_error(exec, "Is a directory", 126);
-			return;
+			return ;
 		}
 		exit_error(exec, "Permission denied", 126);
 	}
@@ -71,9 +71,9 @@ int	search_executable(t_macro *macro, t_cmd *cmd)
 	free(paths);
 	if (!full_path)
 	{
-			ft_putstr_fd(cmd->cmd_arg->value,2);
-			ft_putstr_fd(": command not found\n",2);
-			exit(g_exit);
+		ft_putstr_fd(cmd->cmd_arg->value, 2);
+		ft_putstr_fd(": command not found\n", 2);
+		exit(g_exit);
 	}
 	else
 	{
@@ -83,9 +83,9 @@ int	search_executable(t_macro *macro, t_cmd *cmd)
 	return (g_exit);
 }
 
-void validation(t_macro *macro, t_cmd *cmd)
+void	validation(t_macro *macro, t_cmd *cmd)
 {
-	if(cmd->type == CMD)
+	if (cmd && cmd->type == CMD)
 	{
 		if (ft_strchr("./", cmd->cmd_arg->value[0]) == NULL)
 			search_executable(macro, cmd);
