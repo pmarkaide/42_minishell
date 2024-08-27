@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/27 13:02:33 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/27 16:11:58 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ typedef struct s_macro
 	int				num_cmds;
 	int				pipe_fd[2];
 	pid_t			*pid;
+	char			*m_pwd;
 }					t_macro;
 
 /* presyntax*/
