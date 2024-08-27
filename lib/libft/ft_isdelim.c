@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_isdelim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:02:47 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/18 14:05:51 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/27 09:22:49 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int ft_isdelim(char c)
+int	ft_isdelim(char c)
 {
-    return (c == ' ' || c == '\t');
+	return (c == ' ' || c == '\t');
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/26 21:07:30 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/27 09:25:18 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,8 @@ t_token				*expand_arg_tokens(t_macro *macro);
 void				ensure_at_least_one_cmd(t_token **tokens);
 
 /* tokenizer_utils */
-char				*expand_envir(char *clean, char *instruction, t_macro *macro);
+char				*expand_envir(char *clean, char *instruction,
+						t_macro *macro);
 bool				is_builtin(t_token *token);
 bool				is_redir(t_token *token, char *redir_type);
 void				fix_redirections(char *instruction);
@@ -177,14 +178,6 @@ void				free_tokens(t_token **tokens);
 
 /* others */
 void				ft_signal_handler(int signum);
-void				test_builtins(t_macro *macro);
-void				ft_pwd(void);
-void				ft_echo(char *line);
-void				ft_echo_n(char *line);
-void				ft_env(char **envp);
-void				ft_export(t_macro *macro);
-void				ft_exit(t_macro *macro);
-void				ft_cd(char *line);
 char				*char_pwd(void);
 char				**copy_env(char **envp);
 void				ft_free_matrix(char ***m);
@@ -197,13 +190,19 @@ void				ft_unset(t_macro *macro);
 int					var_in_env(char *argv, char **env, int ij[2]);
 int					select_and_run_builtin(char *cmd, char **args,
 						t_macro *macro);
-bool				check_builtin(char *real_cmd);
 char				*grab_env(char *var, char **env, int n);
 char				**fix_env(char *var, char *value, char **env, int n);
 char				*remove_path(char *cmd);
 t_macro				*init_macro(char **envp, char **argv);
 t_macro				*start_env(t_macro *macro, char **argv);
 char				*ft_getenv(char *var, char **env);
+int					ft_pwd2(void);
+int					ft_env2(t_macro *macro);
+int					ft_exit2(char **args);
+int					ft_unset2(char **args, t_macro *macro);
+int					ft_export2(char **args, t_macro *macro);
+int					ft_echo2(char **args);
+int					ft_cd2(char **args, t_macro *macro);
 
 /* error */
 int					error_msg(char *msg, int exit_code);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:23:53 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/26 15:03:17 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/27 09:25:55 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static void	execute_child_process(t_macro *macro, int index, int read_end,
 	dup_file_descriptors(macro, cmd, read_end);
 	cmd_array = prepare_child_execution(macro, cmd);
 	if (!cmd_array || !cmd_array[0])
-        exit(errno);
+		exit (errno);
 	if (cmd->type == BUILTIN)
 		g_exit = execute_builtin(macro, cmd_array);
 	else

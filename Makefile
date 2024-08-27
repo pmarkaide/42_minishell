@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+         #
+#    By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/01 15:11:43 by pmarkaid          #+#    #+#              #
-#    Updated: 2024/08/26 11:39:00 by pmarkaid         ###   ########.fr        #
+#    Updated: 2024/08/27 09:05:19 by dbejar-s         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,11 +22,10 @@ SRCS_FILES = \
 	free.c \
 	parsing.c	\
 	parsing_utils.c \
-	builtins.c	\
 	env.c 	\
 	main_utils.c 	\
 	signals.c 	\
-	bu_func.c 	\
+	builtins.c 	\
 	validation.c \
 	validation_utils.c \
 	execution.c \
@@ -36,6 +35,13 @@ SRCS_FILES = \
 	expand.c \
 	expand_utils.c \
 	split_args.c \
+	buin_cd.c \
+	buin_echo.c \
+	buin_env.c \
+	buin_exit.c \
+	buin_export.c \
+	buin_pwd.c \
+	buin_unset.c \
 	tokenizer_expand.c
 
 

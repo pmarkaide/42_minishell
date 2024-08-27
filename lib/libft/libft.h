@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 12:08:37 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/22 12:26:30 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/27 09:18:51 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,9 +103,9 @@ int					ft_isquote(char c);
 t_list				*ft_split_args(char *str, char *delim);
 char				*ft_strtok(char *str, char *delim);
 void				ft_del(void *content);
-char 				**ft_lst_to_array(t_list **lst);
+char				**ft_lst_to_array(t_list **lst);
 int					ft_isdelim(char c);
-char 				*ft_strndup(char *str, int n);
+char				*ft_strndup(char *str, int n);
 char				*ft_remove_char(char *str, char c);
 
 #endif
