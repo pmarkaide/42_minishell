@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:35:57 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/27 19:40:24 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/27 20:17:46 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,27 +43,18 @@ int	validate_redirections(t_token *redir)
 	return (0);
 }
 
-int	validate_access(char *exec)
+void	validate_access(char *exec)
 {
-	char	*msg;
-
 	if (!access(exec, F_OK))
 	{
 		if (!access(exec, X_OK))
 		{
 			if (is_directory(exec))
-			{
-				msg = ft_strjoin("minishell: ", exec, NULL);
-				msg = ft_strjoin(msg, ": Is a directory\n", NULL);
-				ft_putstr_fd(msg, 2);
-				free(msg);
-				return (126);
-			}
-			return (0);
+				exit_error(exec, ": Is a directory", 126);
 		}
-		return (error_msg(exec, 126));
+		exit_error(exec, ": Permission denied", 126);
 	}
-	return (error_msg(exec, 127));
+	exit_error(exec, ": No such file or directory", 127);
 }
 
 int	search_executable(t_macro *macro, t_cmd *cmd)
@@ -74,7 +65,7 @@ int	search_executable(t_macro *macro, t_cmd *cmd)
 	full_path = NULL;
 	paths = parse_paths(macro->env);
 	if (!paths)
-		return(-1);
+		exit_error(cmd->cmd_arg->value, "No such file or directory", 127);
 	full_path = get_executable_path(paths, cmd->cmd_arg->value);
 	free(paths);
 	if (!full_path)
@@ -93,19 +84,11 @@ int	search_executable(t_macro *macro, t_cmd *cmd)
 
 void validation(t_macro *macro, t_cmd *cmd)
 {
-	//TODO: create error_exit printer to exit
-	if (ft_strchr("./", cmd->cmd_arg->value[0]) == NULL)
-		search_executable(macro, cmd);
-	g_exit = validate_access(cmd->cmd_arg->value);
-	if(g_exit != 0)
+	if(cmd->type == CMD)
 	{
-		error_msg(cmd->cmd_arg->value, g_exit);
-		exit(g_exit);
+		if (ft_strchr("./", cmd->cmd_arg->value[0]) == NULL)
+			search_executable(macro, cmd);
+		validate_access(cmd->cmd_arg->value);
 	}
-	g_exit = validate_redirections(cmd->redir);
-	if(g_exit != 0)
-	{
-		error_msg(cmd->cmd_arg->value, g_exit);
-		exit(g_exit);
-	}
+	validate_redirections(cmd->redir);
 }

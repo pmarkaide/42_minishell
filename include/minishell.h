@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/27 19:09:22 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/27 19:55:03 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,7 @@ void				close_fds(int *pipe_fd, int read_end);
 /* validation */
 void				validation(t_macro *macro, t_cmd *cmd);
 int					validate_redirections(t_token *redir);
-int					validate_access(char *file);
+void				validate_access(char *exec);
 int					search_executable(t_macro *macro, t_cmd *cmd);
 
 /* validation utils */

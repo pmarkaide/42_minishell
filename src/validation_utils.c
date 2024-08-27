@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 23:25:19 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/27 19:38:48 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/27 20:19:25 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,7 @@ char	**parse_paths(char **env)
 
 	i = 0;
 	if (!env)
-	{
-		paths = ft_calloc(1, sizeof(char *));
-		return (paths);
-	}
+		return(NULL);
 	while (env[i])
 	{
 		if (ft_strnstr(env[i], "PATH=", 5))
@@ -73,8 +70,7 @@ char	**parse_paths(char **env)
 		}
 		i++;
 	}
-	paths = ft_calloc(1, sizeof(char *));
-	return (paths);
+	return(NULL);
 }
 
 char	*get_executable_path(char **paths, char *executable)
