@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:04:29 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/27 22:51:07 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/28 00:07:16 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,16 +45,11 @@ int	ft_cd2(char **args, t_macro *macro)
 		ft_putendl_fd("minishell: cd: too many arguments", STDERR_FILENO);
 		return (1);
 	}
-	if (!args[1] || args[1][0] == '\0' || ft_strncmp(args[1], "~", 1) == 0)
+	if (!args[1] || args[1][0] == '\0')
 		path = home;
-	else
-		path = args[1];
-	if (home == NULL && !path)
-	{
-		ft_putendl_fd("minishell: cd: HOME not set", STDERR_FILENO);
-		return (1);
-	}
-	if (ft_strncmp(path, "-", 1) == 0)
+	else if (ft_strncmp(args[1], "~", 1) == 0)
+		path = ft_strdup(macro->m_home);
+	else if (ft_strncmp(args[1], "-", 1) == 0)
 	{
 		path = grab_env("OLDPWD", macro->env, 6);
 		if (!path)
@@ -62,6 +57,13 @@ int	ft_cd2(char **args, t_macro *macro)
 			ft_putendl_fd("minishell: cd: OLDPWD not set", STDERR_FILENO);
 			return (1);
 		}
+	}
+	else
+		path = ft_strdup(args[1]);
+	if (home == NULL && !path)
+	{
+		ft_putendl_fd("minishell: cd: HOME not set", STDERR_FILENO);
+		return (1);
 	}
 	if (access(path, X_OK) != 0)
 	{
