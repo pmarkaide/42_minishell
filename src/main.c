@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 14:49:38 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/27 11:56:12 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/27 13:00:44 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ t_macro	*init_macro(char **envp, char **argv)
 	ft_bzero(macro, sizeof(t_macro));
 	macro->envp = envp;
 	macro->env = copy_env(envp);
-	macro->path = char_pwd();
 	macro->history = NULL;
 	macro->instruction = NULL;
 	macro->tokens = NULL;
@@ -102,7 +101,7 @@ int	main(int argc, char **argv, char **envp)
 		tokenizer(macro);
 		macro->cmds = parsing(macro);
 		if (macro->cmds == NULL)
-		{
+		{	
 			free(line);
 			continue ;
 		}

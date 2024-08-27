@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:00:43 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/27 09:27:29 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/27 13:04:17 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,19 @@ char	*remove_path(char *cmd)
 	return (real_cmd);
 }
 
-int	ft_pwd2(void)
+int	ft_pwd2(t_macro *macro)
 {
 	char	*path;
 
-	path = getcwd(NULL, 0);
+	path = grab_env("PWD", macro->env, 3);
 	if (path == NULL)
 	{
-		perror("Error getting current directory");
-		return (1);
+		path = getcwd(NULL, 0);
+		if (path == NULL)
+		{
+			perror("Error getting current directory");
+			return (1);
+		}
 	}
 	ft_putendl_fd(path, STDOUT_FILENO);
 	free(path);
