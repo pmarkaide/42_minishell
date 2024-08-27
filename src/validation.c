@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:35:57 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/27 09:17:34 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/27 11:46:41 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,31 +16,31 @@ extern int	g_exit;
 
 int	validate_redirections(t_token *redir)
 {
-    t_token	*tmp;
-    int		fd;
+	t_token	*tmp;
+	int		fd;
 
-    tmp = redir;
-    while (tmp)
-    {
-        if (is_redir(tmp, "input") || is_redir(tmp, "output"))
-        {
-            if (tmp->type == HERE_DOC)
+	tmp = redir;
+	while (tmp)
+	{
+		if (is_redir(tmp, "input") || is_redir(tmp, "output"))
+		{
+			if (tmp->type == HERE_DOC)
 			{
 				tmp = tmp->next;
-                continue;
+				continue ;
 			}
-            else
-            {
-                fd = open_file(tmp);
-                if (fd == -1)	
+			else
+			{
+				fd = open_file(tmp);
+				if (fd == -1)
 					return (-1);
-                close(fd);
-            }
-        }
-        tmp = tmp->next;
-    }
+				close(fd);
+			}
+		}
+		tmp = tmp->next;
+	}
 	close_here_doc_not_needed(redir);
-    return (0);
+	return (0);
 }
 
 static int	validate_access(char *file)

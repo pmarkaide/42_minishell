@@ -6,17 +6,16 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 15:55:31 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/27 09:11:53 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/27 11:51:00 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-extern int g_exit; 
+extern int	g_exit;
 
 int	select_and_run_builtin(char *cmd, char **args, t_macro *macro)
 {
-
 	if (ft_strncmp(cmd, "echo", 4) == 0)
 		return (ft_echo2(args));
 	if (ft_strncmp(cmd, "cd", 2) == 0)
