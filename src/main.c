@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 14:49:38 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/27 13:00:44 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/27 22:21:52 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,12 +77,25 @@ int	main(int argc, char **argv, char **envp)
 	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
-		path = ft_strjoin("minishell>", " ", NULL);
-		line = readline(path);
+		if (isatty(fileno(stdin)))
+        {
+			path = ft_strjoin("minishell>", " ", NULL);
+			line = readline(path);
+		}
+		else
+		{
+			line = get_next_line(fileno(stdin));
+            if (line)
+            {
+                char *trimmed_line = ft_strtrim(line, "\n");
+                free(line);
+                line = trimmed_line;
+            }
+		}
 		if (line == NULL || *line == EOF)
 		{
 			g_exit = 0;
-			printf("exit\n");
+			//printf("exit\n");
 			break ;
 		}
 		if (ft_str_empty(line))
