@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_expand.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:45:23 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/26 16:09:32 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/27 11:35:32 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,8 @@ t_token	*expand_arg_tokens(t_macro *macro)
 		if (ft_strchr(tokens->value, '$'))
 		{
 			expanded = get_expanded_instruction(tokens->value, macro);
-            if (!expanded || *expanded == '\0')
-				return(NULL);
+			if (!expanded || *expanded == '\0')
+				return (NULL);
 			if (ft_strchr("\"", tokens->value[0]))
 				tokens->value = expanded;
 			else
@@ -112,9 +112,9 @@ t_token	*remove_empty_envir_tokens(t_macro *macro)
 		if (ft_strchr(tokens->value, '$'))
 		{
 			expanded = get_expanded_instruction(tokens->value, macro);
-			if(!expanded)
-				return(NULL);
-            if (*expanded == '\0')
+			if (!expanded)
+				return (NULL);
+			if (*expanded == '\0')
 				remove_token(&macro->tokens, tokens);
 		}
 		tokens = tokens->next;
@@ -122,31 +122,34 @@ t_token	*remove_empty_envir_tokens(t_macro *macro)
 	return (macro->tokens);
 }
 
-void ensure_at_least_one_cmd(t_token **tokens)
+void	ensure_at_least_one_cmd(t_token **tokens)
 {
-    t_token *current = *tokens;
-    int cmd_found = 0; 
-	int first_token = 1;
+	t_token	*current;
+	int		cmd_found;
+	int		first_token;
 
-    while (current)
+	current = *tokens;
+	cmd_found = 0;
+	first_token = 1;
+	while (current)
 	{
-        if (first_token || current->type == PIPE)
-        {
-            cmd_found = 0;
-            first_token = 0;
-        }
-        if (is_redir(current, "infile") || is_redir(current, "outfile"))
+		if (first_token || current->type == PIPE)
 		{
-            current = current->next;
-            continue; 
-        }
-		if(current->type == CMD)
+			cmd_found = 0;
+			first_token = 0;
+		}
+		if (is_redir(current, "infile") || is_redir(current, "outfile"))
+		{
+			current = current->next;
+			continue ;
+		}
+		if (current->type == CMD)
 			cmd_found = 1;
-        if (!cmd_found &&  current->type == ARG)
+		if (!cmd_found && current->type == ARG)
 		{
-            current->type = CMD; 
-            cmd_found = 1; 
-        }   
-        current = current->next;
-    }
+			current->type = CMD;
+			cmd_found = 1;
+		}
+		current = current->next;
+	}
 }

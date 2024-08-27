@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 09:53:20 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/26 15:47:15 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/27 11:37:02 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ static t_cmd	*parse_tokens(t_token *tokens, int *n)
 			return (NULL);
 		cmd->n = (*n)++;
 		cmd->cmd_arg = parse_cmd_arg_tokens(tmp);
-		if(cmd->cmd_arg)
+		if (cmd->cmd_arg)
 			cmd->type = cmd->cmd_arg->type;
 		cmd->redir = parse_redir_tokens(tmp);
 		cmd_add_back(&cmds, cmd);

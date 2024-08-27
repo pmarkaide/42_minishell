@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 10:42:50 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/26 16:00:42 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/27 10:47:09 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,41 +74,41 @@ bool	is_builtin(t_token *token)
 
 char	*clean_quotes(char *str)
 {
-    char	*result;
-    int		i;
-    int		j;
-    bool	double_quote_open;
-    bool	single_quote_open;
+	char	*result;
+	int		i;
+	int		j;
+	bool	double_quote_open;
+	bool	single_quote_open;
 
-    result = (char *)malloc(ft_strlen(str) + 1);
-    if (!result)
-        return (NULL);
-    double_quote_open = false;
-    single_quote_open = false;
-    i = 0;
-    j = 0;
-    while (str[i])
-    {
-        if (str[i] == '\"' && !single_quote_open)
-            double_quote_open = !double_quote_open;
-        else if (str[i] == '\'' && !double_quote_open)
-            single_quote_open = !single_quote_open;
-        else
-            result[j++] = str[i];
-        i++;
-    }
-    result[j] = '\0';
-    return (result);
+	result = (char *)malloc(ft_strlen(str) + 1);
+	if (!result)
+		return (NULL);
+	double_quote_open = false;
+	single_quote_open = false;
+	i = 0;
+	j = 0;
+	while (str[i])
+	{
+		if (str[i] == '\"' && !single_quote_open)
+			double_quote_open = !double_quote_open;
+		else if (str[i] == '\'' && !double_quote_open)
+			single_quote_open = !single_quote_open;
+		else
+			result[j++] = str[i];
+		i++;
+	}
+	result[j] = '\0';
+	return (result);
 }
 
-void clean_token_quotes(t_token *tokens)
+void	clean_token_quotes(t_token *tokens)
 {
-	t_token *tmp;
+	t_token	*tmp;
 
-	tmp =tokens;
-	while(tmp)
+	tmp = tokens;
+	while (tmp)
 	{
-		if(tmp->type != HERE_DOC)
+		if (tmp->type != HERE_DOC)
 			tmp->value = clean_quotes(tmp->value);
 		tmp = tmp->next;
 	}
