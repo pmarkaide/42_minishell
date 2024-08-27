@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:35:57 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/27 20:17:46 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/27 20:22:26 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,12 @@ void	validate_access(char *exec)
 		if (!access(exec, X_OK))
 		{
 			if (is_directory(exec))
-				exit_error(exec, ": Is a directory", 126);
+				exit_error(exec, "Is a directory", 126);
+			return;
 		}
-		exit_error(exec, ": Permission denied", 126);
+		exit_error(exec, "Permission denied", 126);
 	}
-	exit_error(exec, ": No such file or directory", 127);
+	exit_error(exec, "No such file or directory", 127);
 }
 
 int	search_executable(t_macro *macro, t_cmd *cmd)
