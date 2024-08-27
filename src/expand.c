@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:52:58 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/26 21:06:19 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/27 11:37:30 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,6 @@ char	*get_expanded_instruction(char *ins, t_macro *macro)
 
 	envir_len = expanded_envir_len(ins, macro);
 	total_len = envir_len + ft_strlen(ins);
-	// printf("total_len: %zu\n", total_len);
 	clean = ft_calloc(1, sizeof(char) * total_len + 1);
 	if (!clean)
 		return (NULL);

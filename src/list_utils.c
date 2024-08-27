@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 21:43:43 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/25 15:05:25 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/27 11:32:34 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,26 +33,28 @@ void	token_add_back(t_token **tokens, t_token *new)
 		(last_token(*tokens))->next = new;
 }
 
-void remove_token(t_token **tokens, t_token *token)
+void	remove_token(t_token **tokens, t_token *token)
 {
-    t_token *current = *tokens;
-    t_token *prev = NULL;
+	t_token	*current;
+	t_token	*prev;
 
-    while (current != NULL)
-    {
-        if (current == token)
-        {
-            if (prev != NULL)
-                prev->next = current->next;
-            else
-                *tokens = current->next;
-            free(current->value);
-            free(current);
-            return;
-        }
-        prev = current;
-        current = current->next;
-    }
+	current = *tokens;
+	prev = NULL;
+	while (current != NULL)
+	{
+		if (current == token)
+		{
+			if (prev != NULL)
+				prev->next = current->next;
+			else
+				*tokens = current->next;
+			free(current->value);
+			free(current);
+			return ;
+		}
+		prev = current;
+		current = current->next;
+	}
 }
 
 t_token	*last_token(t_token *token)

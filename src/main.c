@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 14:49:38 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/26 20:08:34 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/27 10:50:24 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,13 +78,7 @@ int	main(int argc, char **argv, char **envp)
 	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
-		// path = getcwd(NULL, 0);
-		// if (path == NULL)
-		// {
-		// 	perror("Error getting current directory");
-		// }
 		path = ft_strjoin("minishell>", " ", NULL);
-		// path = ft_strjoin(path, " $ ", NULL);
 		line = readline(path);
 		if (line == NULL || *line == EOF)
 		{
@@ -106,7 +100,6 @@ int	main(int argc, char **argv, char **envp)
 		}
 		macro->instruction = line;
 		tokenizer(macro);
-		//print_tokens(macro->tokens);
 		macro->cmds = parsing(macro);
 		if (macro->cmds == NULL)
 		{
@@ -114,7 +107,6 @@ int	main(int argc, char **argv, char **envp)
 			continue ;
 		}
 		execution(macro);
-		//VALORAR METER AQUI UN CLEAN_MACRO ANTES DE QUE VUELVA EL LOOP: se puede limpiar todo menos el env. No lo quiero meter ahora por no hacer doubles frees, pero probablemente haya que meterlo por temas de leaks.
 	}
 	exit(g_exit);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validation_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 23:25:19 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/26 13:44:26 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/27 10:41:06 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,17 @@ int	open_file(t_token *token)
 		fd = open(token->value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	else if (token->type == APPEND)
 		fd = open(token->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
-    if (fd == -1)
-    {
-        if (errno == ENOENT)
-            g_exit = (NO_FILE);
-        else if (errno == EACCES)
-            g_exit = (NO_FILE);
-        else if (errno == EISDIR)
-            g_exit = (NO_FILE);
-        perror(token->value);
-        return (-1);
-    }
+	if (fd == -1)
+	{
+		if (errno == ENOENT)
+			g_exit = (NO_FILE);
+		else if (errno == EACCES)
+			g_exit = (NO_FILE);
+		else if (errno == EISDIR)
+			g_exit = (NO_FILE);
+		perror(token->value);
+		return (-1);
+	}
 	return (fd);
 }
 
@@ -60,7 +60,7 @@ char	**parse_paths(char **env)
 	i = 0;
 	if (!env)
 	{
-		paths = ft_calloc(1, sizeof(char*));
+		paths = ft_calloc(1, sizeof(char *));
 		return (paths);
 	}
 	while (env[i])
@@ -72,7 +72,7 @@ char	**parse_paths(char **env)
 		}
 		i++;
 	}
-	paths = ft_calloc(1, sizeof(char*));
+	paths = ft_calloc(1, sizeof(char *));
 	return (paths);
 }
 
