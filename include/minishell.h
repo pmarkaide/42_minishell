@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/27 09:25:18 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/27 15:05:08 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,7 @@ void				close_here_doc_not_needed(t_token *tokens);
 
 /* execution */
 int					execution(t_macro *macro);
+int					search_executable(t_macro *macro, t_cmd *cmd);
 
 /* execution utils */
 char				**build_cmd_args_array(t_token *cmd_args);
@@ -149,8 +150,9 @@ void				catch_parent_exit(int *pipe_exit, int *g_exit);
 void				close_fds(int *pipe_fd, int read_end);
 
 /* validation */
-int					validate_executable(t_macro *macro, t_cmd *cmd);
 int					validate_redirections(t_token *redir);
+int					validate_access(char *file);
+int					search_executable(t_macro *macro, t_cmd *cmd);
 
 /* validation utils */
 bool				is_directory(const char *path);

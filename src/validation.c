@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:35:57 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/27 11:46:41 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/27 15:04:20 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	validate_redirections(t_token *redir)
 	return (0);
 }
 
-static int	validate_access(char *file)
+int	validate_access(char *file)
 {
 	char	*msg;
 
@@ -66,39 +66,21 @@ static int	validate_access(char *file)
 	return (error_msg(file, 127));
 }
 
-static char	*search_for_executable(t_macro *macro, t_cmd *cmd)
+int	search_executable(t_macro *macro, t_cmd *cmd)
 {
-	char	*executable;
 	char	**paths;
 	char	*full_path;
 
-	executable = ft_strdup(cmd->cmd_arg->value);
-	if (!executable)
-		return (NULL);
-	paths = parse_paths(macro->env);
-	if (!paths)
-	{
-		free(executable);
-		return (NULL);
-	}
-	full_path = get_executable_path(paths, executable);
-	free(paths);
-	free(executable);
-	if (!full_path)
-		return (NULL);
-	else
-		return (full_path);
-}
-
-int	validate_executable(t_macro *macro, t_cmd *cmd)
-{
-	char	*full_path;
-
+	full_path = NULL;
 	if (ft_strchr("./", cmd->cmd_arg->value[0]) == NULL)
 	{
-		full_path = search_for_executable(macro, cmd);
+		paths = parse_paths(macro->env);
+		if (!paths)
+			return (127);
+		full_path = get_executable_path(paths, cmd->cmd_arg->value);
+		free(paths);
 		if (!full_path)
-			return (1);
+			return (127);
 		else
 		{
 			free(cmd->cmd_arg->value);

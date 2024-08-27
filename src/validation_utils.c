@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validation_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 23:25:19 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/27 10:41:06 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/27 15:06:51 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ char	*get_executable_path(char **paths, char *executable)
 {
 	int		i;
 	char	*full_path;
-	char	*msg;
+	//char	*msg;
 
 	i = 0;
 	while (paths[i])
@@ -94,9 +94,9 @@ char	*get_executable_path(char **paths, char *executable)
 		i++;
 	}
 	g_exit = 127;
-	msg = ft_strjoin(executable, ": command not found\n", NULL);
-	if (msg == NULL)
-		return (NULL);
-	ft_putstr_fd(msg, 2);
+	// msg = ft_strjoin(executable, ": command not found\n", NULL);
+	// if (msg == NULL)
+	// 	return (NULL);
+	// ft_putstr_fd(msg, 2);
 	return (NULL);
 }

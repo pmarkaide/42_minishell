@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 20:03:14 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/27 10:48:17 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/27 15:08:30 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+extern int	g_exit;
 
 void	close_fds(int *pipe_fd, int read_end)
 {
@@ -23,7 +25,7 @@ void	close_fds(int *pipe_fd, int read_end)
 	{
 		close(pipe_fd[1]);
 		pipe_fd[1] = -1;
-	}
+	}extern int	g_exit;
 	if (read_end > 0)
 		close(read_end);
 }
@@ -83,7 +85,20 @@ char	**prepare_child_execution(t_macro *macro, t_cmd *cmd)
 	char	**cmd_array;
 
 	if (cmd->type == CMD)
-		validate_executable(macro, cmd);
+	{
+		g_exit = search_executable(macro, cmd);
+		if(g_exit != 0)
+			{
+				error_msg(cmd->cmd_arg->value, g_exit);
+				exit(g_exit);
+			}
+		g_exit = validate_access(cmd->cmd_arg->value);
+		if(g_exit != 0)
+			{
+				error_msg(cmd->cmd_arg->value, g_exit);
+				exit(g_exit);
+			}
+	}
 	cmd_array = build_cmd_args_array(cmd->cmd_arg);
 	if (!cmd_array)
 		exit(errno);
