@@ -18,6 +18,7 @@ int	execute_builtin(t_macro *macro, char **cmd_array)
 
 	builtin = remove_path(cmd_array[0]);
 	macro->exit_code = select_and_run_builtin(builtin, cmd_array, macro);
+	free_array(&cmd_array);
 	return (macro->exit_code);
 }
 
@@ -123,15 +124,16 @@ void	execution(t_macro *macro)
 			return ;
 		}
 		read_end = 0;
-		macro->pid = malloc(sizeof(pid_t) * macro->num_cmds);
+		macro->pid = malloc(sizeof(pid_t) * macro->num_cmds); //TODO: protect
 		num_cmds_executed = execute_cmds(macro, read_end, pipe_exit);
 		i = 0;
 		while (i < num_cmds_executed)
 			status = wait_processes(macro->pid[i++]);
-		if (macro->pid != 0)
+		if (macro->pid != 0) //is this correct and need? you are in the parent
 			catch_parent_exit(pipe_exit, &status);
 		macro->exit_code = status;
 		free(macro->pid);
+    macro->pid = NULL;
 		close_fds(macro->pipe_fd, read_end);
 	}
 	return ;

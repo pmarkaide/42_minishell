@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:04:44 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/28 02:10:02 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/28 18:09:17 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,9 @@ int	ft_export2(char **args, t_macro *macro)
 	int		argc;
 	char	*clean_value;
 	int		exit_flag;
-
+	int 	k;
+	char 	**new_env;
+	
 	exit_flag = 0;
 	argc = 0;
 	while (args[argc])
@@ -138,7 +140,19 @@ int	ft_export2(char **args, t_macro *macro)
 		if (!macro->env[j])
 		{
 			macro->env[j] = ft_strdup(clean_value);
-			macro->env[j + 1] = NULL;
+			new_env = malloc((j + 2) * sizeof(char *));
+			if (new_env == NULL) {
+				perror("malloc");
+				exit(1);
+			}
+			k = 0;
+			while (k <= j) {
+				new_env[k] = macro->env[k];
+				k++;
+			}
+			new_env[j + 1] = NULL;
+			free(macro->env);
+			macro->env = new_env;
 		}
 		free(clean_value);
 		i++;

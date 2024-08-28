@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:00:43 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/28 02:10:06 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/28 18:41:48 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	ft_pwd2(t_macro *macro)
 char	*char_pwd(void)
 {
 	char	*path;
-
+	
 	path = getcwd(NULL, 0);
 	if (path == NULL)
 	{

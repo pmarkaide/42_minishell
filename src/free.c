@@ -75,6 +75,8 @@ void	free_ins(t_macro *macro)
 {
 	free_tokens(&macro->tokens);
 	free_cmds(&macro->cmds);
+	free(macro->pid);
+	close_fds(macro->pipe_fd, 0);
 	macro->num_cmds = 0;
 }
 
