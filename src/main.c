@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 14:49:38 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/28 12:27:08 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/28 14:23:10 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,13 +136,9 @@ static char	*create_path(t_macro *macro)
 	char	*tmp;
 	
 	if (in_root(macro->m_pwd))
-	{
 		path = ft_strdup("minishell:/$ ");
-	}
 	else if (in_home(macro))
-	{
 		path = ft_strdup("minishell:~$ ");
-	}
 	else if (upper_than_home(macro) != NULL)
 		path = upper_than_home(macro);
 	else
@@ -172,7 +168,7 @@ int	main(int argc, char **argv, char **envp)
 			line = readline("");
 		else
 		{ 
-			path = ft_strjoin("minishell>", " ", NULL);
+			path = create_path(macro);
 			line = readline(path);
 			free(path);
 		}
