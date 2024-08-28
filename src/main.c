@@ -75,6 +75,7 @@ t_macro	*init_macro(char **envp, char **argv)
 	macro = start_env(macro, argv);
 	macro->m_pwd = char_pwd();
 	macro->m_home = grab_home(macro);
+	macro->exit_code = 0;
 	return (macro);
 }
 
@@ -94,9 +95,15 @@ int	main(int argc, char **argv, char **envp)
 		path = ft_strjoin("minishell>", " ", NULL);
 		line = readline(path);
 		free(path);
+		if (g_exit == 130)
+			line = readline("");
+		else
+		{ 
+			path = ft_strjoin("minishell>", " ", NULL);
+			line = readline(path);
+		}
 		if (line == NULL || *line == EOF)
 		{
-			g_exit = 0;
 			printf("exit\n");
 			break ;
 		}
@@ -109,8 +116,14 @@ int	main(int argc, char **argv, char **envp)
 			add_history(line);
 		if (syntax_error_check(line))
 		{
+			macro->exit_code = 2;
 			free(line);
 			continue ;
+		}
+		if (g_exit > 0)
+		{
+			macro->exit_code = g_exit;
+			g_exit = 0;
 		}
 		macro->instruction = line;
 		tokenizer(macro);
@@ -124,5 +137,5 @@ int	main(int argc, char **argv, char **envp)
 		free_ins(macro);
 	}
 	free_macro(macro);
-	exit(g_exit);
+	exit(0);
 }

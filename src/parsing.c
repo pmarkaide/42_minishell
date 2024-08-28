@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 09:53:20 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/27 20:34:21 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/28 02:19:05 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-extern int	g_exit;
 
 static t_token	*parse_redir_tokens(t_token *tokens)
 {
@@ -99,7 +97,7 @@ static t_cmd	*parse_tokens(t_token *tokens, int *n)
 	return (cmds);
 }
 
-static char	parsing_error_check(t_token *tokens)
+static char	parsing_error_check(t_token *tokens, t_macro *macro)
 {
 	char	c;
 	t_token	*tmp;
@@ -121,7 +119,7 @@ static char	parsing_error_check(t_token *tokens)
 		ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
 		ft_putchar_fd(c, 2);
 		ft_putstr_fd("'\n", 2);
-		g_exit = 2;
+		macro->exit_code = 2;
 	}
 	return (c);
 }
@@ -134,7 +132,7 @@ t_cmd	*parsing(t_macro *macro)
 
 	n = 1;
 	cmds = NULL;
-	c = parsing_error_check(macro->tokens);
+	c = parsing_error_check(macro->tokens, macro);
 	if (c != 0)
 		return (NULL);
 	else
