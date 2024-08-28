@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 21:24:44 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/25 15:44:36 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/28 14:45:55 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,10 +95,11 @@ void	tokenizer(t_macro *macro)
 	macro->tokens = identify_tokens(lexemes);
 	if (!macro->tokens)
 	{
-		free(lexemes);
+		ft_lstclear(&lexemes, ft_del);
 		return ;
 	}
-	free(lexemes);
+	ft_lstclear(&lexemes, ft_del);
+	lexemes = NULL;
 	macro->tokens = remove_empty_envir_tokens(macro);
 	ensure_at_least_one_cmd(&macro->tokens);
 	if (!macro->tokens)
