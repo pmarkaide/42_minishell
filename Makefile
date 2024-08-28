@@ -6,7 +6,7 @@
 #    By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/01 15:11:43 by pmarkaid          #+#    #+#              #
-#    Updated: 2024/08/27 09:05:19 by dbejar-s         ###   ########.fr        #
+#    Updated: 2024/08/28 17:58:15 by dbejar-s         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,7 +60,7 @@ TEST_OBJS = $(TEST_SRCS:.c=.o)
 TEST_NAME = tests_runner
 
 CC = cc 
-CFLAGS = -Wall -Werror -Wextra -g
+CFLAGS = -Wall -Werror -Wextra -fsanitize=address -g
 DEBUG_FLAGS = -g
 
 # External Libraries
