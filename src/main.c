@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 14:49:38 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/28 14:23:10 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/28 16:19:03 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,8 +117,7 @@ static char	*upper_than_home(t_macro *macro)
 	if (ft_strncmp(macro->m_pwd, home, len) == 0)
 	{
 		tmp = ft_strdup(macro->m_pwd);
-		path = ft_strjoin("minishell:~", tmp + len, NULL);
-		path = ft_strjoin(path, "$ ", NULL);
+		path = ft_strjoin3("minishell:~", tmp + len, "$ ");
 		free(home);
 		free(tmp);
 		return (path);
@@ -133,21 +132,18 @@ static char	*upper_than_home(t_macro *macro)
 static char	*create_path(t_macro *macro)
 {
 	char	*path;
-	char	*tmp;
+	char	*up_home;
 	
+	up_home = upper_than_home(macro);
 	if (in_root(macro->m_pwd))
 		path = ft_strdup("minishell:/$ ");
 	else if (in_home(macro))
 		path = ft_strdup("minishell:~$ ");
-	else if (upper_than_home(macro) != NULL)
+	else if (up_home)
 		path = upper_than_home(macro);
 	else
-	{
-		tmp = ft_strjoin("minishell:", macro->m_pwd, NULL);
-		tmp = ft_strjoin(tmp, "$ ", NULL);
-		path = ft_strdup(tmp);
-		free(tmp);
-	}
+		path = ft_strjoin3("minishell:", macro->m_pwd, "$ ");
+	free(up_home);
 	return (path);
 }
 
