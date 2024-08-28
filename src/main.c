@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 14:49:38 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/28 12:18:09 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/28 12:27:08 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,15 +92,13 @@ int	main(int argc, char **argv, char **envp)
 	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
-		path = ft_strjoin("minishell>", " ", NULL);
-		line = readline(path);
-		free(path);
 		if (g_exit == 130)
 			line = readline("");
 		else
 		{ 
 			path = ft_strjoin("minishell>", " ", NULL);
 			line = readline(path);
+			free(path);
 		}
 		if (line == NULL || *line == EOF)
 		{
