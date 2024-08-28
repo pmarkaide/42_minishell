@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 14:49:38 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/28 16:19:03 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/28 16:35:10 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,8 +141,6 @@ static char	*create_path(t_macro *macro)
 		path = ft_strdup("minishell:~$ ");
 	else if (up_home)
 		path = upper_than_home(macro);
-		free(macro->m_pwd);
-	}
 	else
 		path = ft_strjoin3("minishell:", macro->m_pwd, "$ ");
 	free(up_home);
@@ -201,7 +199,7 @@ int	main(int argc, char **argv, char **envp)
 			free(line);
 			continue ;
 		}
-		//execution(macro);
+		execution(macro);
 		free_ins(macro);
 	}
 	free_macro(macro);
