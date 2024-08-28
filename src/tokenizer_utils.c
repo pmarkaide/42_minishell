@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 10:42:50 by pmarkaid          #+#    #+#             */
 /*   Updated: 2024/08/28 17:58:55 by dbejar-s         ###   ########.fr       */
@@ -98,7 +98,7 @@ char	*clean_quotes(char *str)
 		i++;
 	}
 	result[j] = '\0';
-	free(str);
+	free_string(&str);
 	return (result);
 }
 

@@ -71,7 +71,7 @@ t_macro	*init_macro(char **envp, char **argv)
 	macro->instruction = NULL;
 	macro->tokens = NULL;
 	macro->cmds = NULL;
-	macro->pid = 0;
+	macro->pid = NULL;
 	macro = start_env(macro, argv);
 	macro->m_pwd = char_pwd();
 	macro->m_home = grab_home(macro);

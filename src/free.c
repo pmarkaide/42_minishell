@@ -7,7 +7,6 @@
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 13:02:09 by pmarkaid          #+#    #+#             */
 /*   Updated: 2024/08/28 18:38:34 by dbejar-s         ###   ########.fr       */
-/*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
@@ -75,6 +74,8 @@ void	free_ins(t_macro *macro)
 {
 	free_tokens(&macro->tokens);
 	free_cmds(&macro->cmds);
+	free(macro->pid);
+	close_fds(macro->pipe_fd, 0);
 	macro->num_cmds = 0;
 }
 
