@@ -3,11 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 13:02:09 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/28 16:07:00 by pmarkaid         ###   ########.fr       */
-/*                                                                            */
+/*   Updated: 2024/08/28 16:19:47 by dbejar-s         ###   ########.fr       *//*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
