@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:23:53 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/28 16:23:15 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/28 21:31:09 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,10 @@ int	execute_single_builtin(t_macro *macro)
 
 	saved_stdout = dup(STDOUT_FILENO);
 	saved_stdin = dup(STDIN_FILENO);
-	validate_redirections(macro->cmds->redir, macro);
+	if(validate_redirections(macro->cmds->redir, macro) == -1)
+		return(-1);
 	dup_file_descriptors(macro, macro->cmds, 0);
-	cmd_array = build_cmd_args_array(macro->cmds->cmd_arg, macro);
+	cmd_array = build_cmd_args_array(macro->cmds->cmd_arg, macro); //TODO: protect
 	macro->exit_code = execute_builtin(macro, cmd_array);
 	free_array(&cmd_array);
 	dup2(saved_stdout, STDOUT_FILENO);
@@ -64,6 +65,7 @@ static void	execute_child_process(t_macro *macro, int index, int read_end, int p
 	status = macro->exit_code;
 	if (index == macro->num_cmds - 1)
 	{
+		close(pipe_exit[0]);
 		write(pipe_exit[1], &status, sizeof(int));
 		close(pipe_exit[1]);
 	}
@@ -131,7 +133,8 @@ void	execution(t_macro *macro)
 			catch_parent_exit(pipe_exit, &status);
 		macro->exit_code = status;
 		free(macro->pid);
-		macro->pid = NULL;
+    macro->pid = NULL;
+		close_fds(macro->pipe_fd, read_end);
 	}
 	return ;
 }

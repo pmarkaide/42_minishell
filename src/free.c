@@ -3,10 +3,11 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 13:02:09 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/28 18:38:34 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/28 20:35:09 by pmarkaid         ###   ########.fr       */
+/*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
@@ -87,5 +88,6 @@ void	free_macro(t_macro *macro)
 	free_ins(macro);
 	free_string(&macro->m_pwd);
 	free_string(&macro->m_home);
+	close_fds(macro->pipe_fd, 0);
 	free(macro);
 }
