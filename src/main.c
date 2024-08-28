@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 14:49:38 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/28 00:01:13 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/28 04:46:28 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ t_macro	*init_macro(char **envp, char **argv)
 	macro = start_env(macro, argv);
 	macro->m_pwd = char_pwd();
 	macro->m_home = grab_home(macro);
+	macro->exit_code = 0;
 	return (macro);
 }
 
@@ -91,11 +92,17 @@ int	main(int argc, char **argv, char **envp)
 	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
-		path = ft_strjoin("minishell>", " ", NULL);
-		line = readline(path);
+		if (g_exit == 130)
+		{
+			line = readline("");
+		}
+		else
+		{ 
+			path = ft_strjoin("minishell>", " ", NULL);
+			line = readline(path);
+		}
 		if (line == NULL || *line == EOF)
 		{
-			g_exit = 0;
 			printf("exit\n");
 			break ;
 		}
@@ -108,8 +115,14 @@ int	main(int argc, char **argv, char **envp)
 			add_history(line);
 		if (syntax_error_check(line))
 		{
+			macro->exit_code = 2;
 			free(line);
 			continue ;
+		}
+		if (g_exit > 0)
+		{
+			macro->exit_code = g_exit;
+			g_exit = 0;
 		}
 		macro->instruction = line;
 		tokenizer(macro);
@@ -121,5 +134,5 @@ int	main(int argc, char **argv, char **envp)
 		}
 		execution(macro);
 	}
-	exit(g_exit);
+	exit(0);
 }

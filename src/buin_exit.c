@@ -6,13 +6,11 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:04:40 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/27 11:49:01 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/28 02:09:33 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-extern int	g_exit;
 
 int	ft_exit2(char **args)
 {
@@ -26,7 +24,7 @@ int	ft_exit2(char **args)
 	if (argc == 1)
 	{
 		ft_putstr_fd("exit\n", STDOUT_FILENO);
-		exit(g_exit);
+		exit(0);
 	}
 	if (argc > 2)
 	{

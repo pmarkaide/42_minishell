@@ -3,18 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   dup.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 23:24:13 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/26 14:54:18 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/28 03:20:23 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-extern int	g_exit;
-
-static int	open_last_redir_file(t_token *redir, char *redir_type)
+static int	open_last_redir_file(t_token *redir, char *redir_type, t_macro *macro)
 {
 	t_token	*tmp;
 	t_token	*last_redir;
@@ -37,7 +35,7 @@ static int	open_last_redir_file(t_token *redir, char *redir_type)
 			if (last_redir->type == HERE_DOC)
 				fd = ft_atoi(last_redir->value);
 			else
-				fd = open_file(last_redir);
+				fd = open_file(last_redir, macro);
 		}
 		tmp = tmp->next;
 	}
@@ -48,7 +46,7 @@ static void	dup_stdout(t_macro *macro, t_cmd *cmd)
 {
 	int	fd;
 
-	fd = open_last_redir_file(cmd->redir, "output");
+	fd = open_last_redir_file(cmd->redir, "output", macro);
 	if (fd >= 1)
 	{
 		if (dup2(fd, STDOUT_FILENO) < 0)
@@ -75,7 +73,7 @@ static void	dup_stdin(t_macro *macro, t_cmd *cmd, int read_end)
 {
 	int	fd;
 
-	fd = open_last_redir_file(cmd->redir, "input");
+	fd = open_last_redir_file(cmd->redir, "input", macro);
 	if (fd >= 1)
 	{
 		if (dup2(fd, STDIN_FILENO) < 0)

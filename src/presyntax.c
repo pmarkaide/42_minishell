@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   presyntax.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 15:12:06 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/27 20:49:09 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/28 02:06:07 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-extern int	g_exit;
 
 static int	invalid_char_check(char *instruction)
 {
@@ -100,7 +98,6 @@ static int	print_syntax_error(char invalid_char)
         ft_putchar_fd(invalid_char, 2);
         ft_putstr_fd("'\n", 2);
     }
-    g_exit = 2;
     return (2);
 }
 
