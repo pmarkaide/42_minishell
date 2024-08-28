@@ -177,6 +177,7 @@ bool				envir_must_be_expanded(char *instruction, int index);
 bool				is_in_quote(char *str, int index);
 
 /* free */
+void				free_string(char **str);
 void				free_array(char ***array);
 void				free_tokens(t_token **tokens);
 void 				free_ins(t_macro *macro);
