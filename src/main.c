@@ -6,13 +6,13 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 14:49:38 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/28 12:09:07 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/28 12:18:09 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		g_exit;
+int			g_exit;
 
 t_macro	*start_env(t_macro *macro, char **argv)
 {
@@ -93,6 +93,7 @@ int	main(int argc, char **argv, char **envp)
 	{
 		path = ft_strjoin("minishell>", " ", NULL);
 		line = readline(path);
+		free(path);
 		if (line == NULL || *line == EOF)
 		{
 			g_exit = 0;
@@ -115,7 +116,7 @@ int	main(int argc, char **argv, char **envp)
 		tokenizer(macro);
 		macro->cmds = parsing(macro);
 		if (macro->cmds == NULL)
-		{	
+		{
 			free(line);
 			continue ;
 		}
