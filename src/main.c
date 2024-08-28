@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 14:49:38 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/28 04:46:28 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/28 12:27:08 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		g_exit;
+int			g_exit;
 
 t_macro	*start_env(t_macro *macro, char **argv)
 {
@@ -169,13 +169,12 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		if (g_exit == 130)
-		{
 			line = readline("");
-		}
 		else
 		{ 
 			path = ft_strjoin("minishell>", " ", NULL);
 			line = readline(path);
+			free(path);
 		}
 		if (line == NULL || *line == EOF)
 		{
@@ -204,11 +203,13 @@ int	main(int argc, char **argv, char **envp)
 		tokenizer(macro);
 		macro->cmds = parsing(macro);
 		if (macro->cmds == NULL)
-		{	
+		{
 			free(line);
 			continue ;
 		}
 		execution(macro);
+		free_ins(macro);
 	}
+	free_macro(macro);
 	exit(0);
 }
