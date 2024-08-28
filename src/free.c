@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 13:02:09 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/28 09:30:11 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/28 12:06:04 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,33 +52,42 @@ void	free_string(char **str)
 	}
 }
 
-void free_cmds(t_cmd *cmds)
+void free_cmds(t_cmd **cmds)
 {
-	t_cmd	*tmp;
+    t_cmd *tmp;
+    t_cmd *next;
 
-	tmp = cmds;
-	while (cmds)
-	{
-		free_tokens(&tmp->cmd_arg);
-		free_tokens(&tmp->redir);
-		free(tmp);
-		tmp = cmds->next;
-	}
-}
+    if (cmds == NULL || *cmds == NULL)
+        return;
 
+    tmp = *cmds;
+    while (tmp != NULL)
+    {
+        next = tmp->next;
+        free_tokens(&tmp->cmd_arg);
+        free_tokens(&tmp->redir);
+        free(tmp);
+        tmp = next;
+    }
+    *cmds = NULL;
 }
 
 void free_ins(t_macro *macro)
 {
-	//free_tokens
-	//free_cmds
-	//free_macro
-	free_tokens(macro->tokens);
-	
+	free_tokens(&macro->tokens);
+	free_cmds(&macro->cmds);
+	macro->num_cmds = 0;
+	close_fds(macro->pipe_fd, NULL);
 }
 
-void free_all(t_macro *macro)
+void free_macro(t_macro *macro)
 {
-	//free_ins
-	//free_macro
+	free_array(&macro->envp);
+	free_array(&macro->env);
+	free_array(&macro->history);
+	free_string(&macro->instruction);
+	free_ins(macro);
+	free(macro->pid);
+	free_string(&macro->m_pwd);
+	free_string(&macro->m_home);
 }
