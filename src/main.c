@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 14:49:38 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/28 03:52:25 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/28 04:46:28 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,15 @@ int	main(int argc, char **argv, char **envp)
 	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
-		path = ft_strjoin("minishell>", " ", NULL);
-		line = readline(path);
+		if (g_exit == 130)
+		{
+			line = readline("");
+		}
+		else
+		{ 
+			path = ft_strjoin("minishell>", " ", NULL);
+			line = readline(path);
+		}
 		if (line == NULL || *line == EOF)
 		{
 			printf("exit\n");
@@ -112,7 +119,7 @@ int	main(int argc, char **argv, char **envp)
 			free(line);
 			continue ;
 		}
-		if (g_exit != 0)
+		if (g_exit > 0)
 		{
 			macro->exit_code = g_exit;
 			g_exit = 0;

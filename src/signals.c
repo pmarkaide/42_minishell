@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 14:18:46 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/28 03:55:26 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/28 04:44:30 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ void	ft_signal_handler(int sig)
 	if (sig == SIGINT)
 	{
 		printf("\n");
-		g_exit = 130;
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
+		g_exit = 130;
 	}
 }
