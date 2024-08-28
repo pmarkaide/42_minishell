@@ -3,18 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   validation_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 23:25:19 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/27 20:19:25 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/28 03:13:46 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-extern int	g_exit;
-
-int	open_file(t_token *token)
+int	open_file(t_token *token, t_macro *macro)
 {
 	int	fd;
 
@@ -28,13 +26,13 @@ int	open_file(t_token *token)
 	if (fd == -1)
 	{
 		if (errno == ENOENT)
-			g_exit = (NO_FILE);
+			macro->exit_code = (NO_FILE);
 		else if (errno == EACCES)
-			g_exit = (NO_FILE);
+			macro->exit_code = (NO_FILE);
 		else if (errno == EISDIR)
-			g_exit = (NO_FILE);
-		//perror(token->value); -> this message is also correct
-		exit_error(token->value, strerror(errno), g_exit);
+			macro->exit_code = (NO_FILE);
+		//perror(token->value)-> this message is also correct
+		exit_error(token->value, strerror(errno), macro, macro->exit_code);
 		return (-1);
 	}
 	return (fd);
@@ -73,7 +71,7 @@ char	**parse_paths(char **env)
 	return(NULL);
 }
 
-char	*get_executable_path(char **paths, char *executable)
+char	*get_executable_path(char **paths, char *executable, t_macro *macro)
 {
 	int		i;
 	char	*full_path;
@@ -90,6 +88,6 @@ char	*get_executable_path(char **paths, char *executable)
 		free(full_path);
 		i++;
 	}
-	g_exit = 127;
+	macro->exit_code = 127;
 	return (NULL);
 }

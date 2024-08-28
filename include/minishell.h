@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/27 16:11:58 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/28 03:44:13 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,8 @@ typedef struct s_macro
 	int				pipe_fd[2];
 	pid_t			*pid;
 	char			*m_pwd;
+	char			*m_home;
+	int				exit_code;
 }					t_macro;
 
 /* presyntax*/
@@ -139,27 +141,26 @@ void				handle_here_doc(t_cmd *cmds, t_macro *macro);
 void				close_here_doc_not_needed(t_token *tokens);
 
 /* execution */
-int					execution(t_macro *macro);
-int					search_executable(t_macro *macro, t_cmd *cmd);
+void					execution(t_macro *macro);
 
 /* execution utils */
-char				**build_cmd_args_array(t_token *cmd_args);
+char				**build_cmd_args_array(t_token *cmd_args, t_macro *macro);
 char				**prepare_child_execution(t_macro *macro, t_cmd *cmd);
 int					wait_processes(pid_t pid);
-void				catch_parent_exit(int *pipe_exit, int *g_exit);
+void				catch_parent_exit(int *pipe_exit, int *exit_code);
 void				close_fds(int *pipe_fd, int read_end);
 
 /* validation */
 void				validation(t_macro *macro, t_cmd *cmd);
-int					validate_redirections(t_token *redir);
-void				validate_access(char *exec);
-int					search_executable(t_macro *macro, t_cmd *cmd);
+int					validate_redirections(t_token *redir, t_macro *macro);
+void				validate_access(char *exec, t_macro *macro);
+void				search_executable(t_macro *macro, t_cmd *cmd);
 
 /* validation utils */
 bool				is_directory(const char *path);
 char				**parse_paths(char **env);
-char				*get_executable_path(char **paths, char *executable);
-int					open_file(t_token *token);
+char				*get_executable_path(char **paths, char *executable, t_macro *macro);
+int					open_file(t_token *token, t_macro *macro);
 
 /* expand */
 char				*get_expanded_instruction(char *instruction,
@@ -209,6 +210,6 @@ int					ft_cd2(char **args, t_macro *macro);
 
 /* error */
 int					error_msg(char *msg, int exit_code);
-void 				exit_error(char *file, char *msg, int exit_code);
+void 				exit_error(char *file, char *msg, t_macro *macro, int exit_code);
 
 #endif /* MINISHELL_H */

@@ -6,13 +6,11 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:00:43 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/27 22:44:14 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/28 02:10:06 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-extern int	g_exit;
 
 char	*remove_path(char *cmd)
 {
