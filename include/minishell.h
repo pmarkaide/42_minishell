@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/28 14:31:32 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/28 16:17:44 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,6 +211,7 @@ int					ft_unset2(char **args, t_macro *macro);
 int					ft_export2(char **args, t_macro *macro);
 int					ft_echo2(char **args);
 int					ft_cd2(char **args, t_macro *macro);
+char				*ft_strjoin3(const char *s1, const char *s2, const char *s3);
 
 /* error */
 int					error_msg(char *msg, int exit_code);
