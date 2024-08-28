@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 14:49:38 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/28 15:00:02 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/28 16:17:25 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ t_macro	*init_macro(char **envp, char **argv)
 	macro->instruction = NULL;
 	macro->tokens = NULL;
 	macro->cmds = NULL;
-	macro->pid = 0;
+	macro->pid = NULL;
 	macro = start_env(macro, argv);
 	macro->m_pwd = char_pwd();
 	macro->m_home = grab_home(macro);
@@ -140,10 +140,7 @@ static char	*create_path(t_macro *macro)
 	else if (in_home(macro))
 		path = ft_strdup("minishell:~$ ");
 	else if (upper_than_home(macro) != NULL) //there is a malloc in this test, not good for leaks
-	{
 		path = upper_than_home(macro);
-		free(macro->m_pwd);
-	}
 	else
 	{
 		tmp = ft_strjoin("minishell:", macro->m_pwd, NULL);
@@ -206,7 +203,7 @@ int	main(int argc, char **argv, char **envp)
 			free(line);
 			continue ;
 		}
-		//execution(macro);
+		execution(macro);
 		free_ins(macro);
 	}
 	free_macro(macro);
