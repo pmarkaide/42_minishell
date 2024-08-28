@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 13:02:09 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/28 12:06:04 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/28 12:15:42 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,17 +77,15 @@ void free_ins(t_macro *macro)
 	free_tokens(&macro->tokens);
 	free_cmds(&macro->cmds);
 	macro->num_cmds = 0;
-	close_fds(macro->pipe_fd, NULL);
+	close_fds(macro->pipe_fd, 0);
 }
 
 void free_macro(t_macro *macro)
 {
-	free_array(&macro->envp);
 	free_array(&macro->env);
 	free_array(&macro->history);
 	free_string(&macro->instruction);
 	free_ins(macro);
-	free(macro->pid);
 	free_string(&macro->m_pwd);
 	free_string(&macro->m_home);
 }

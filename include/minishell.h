@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/28 00:00:28 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/28 12:08:45 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,6 +179,9 @@ bool				is_in_quote(char *str, int index);
 /* free */
 void				free_array(char ***array);
 void				free_tokens(t_token **tokens);
+void 				free_ins(t_macro *macro);
+void 				free_macro(t_macro *macro);
+void 				free_cmds(t_cmd **cmds);
 
 /* others */
 void				ft_signal_handler(int signum);
