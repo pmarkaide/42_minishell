@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validation_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 23:25:19 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/28 03:13:46 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/28 21:32:54 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,7 @@ int	open_file(t_token *token, t_macro *macro)
 			macro->exit_code = (NO_FILE);
 		else if (errno == EISDIR)
 			macro->exit_code = (NO_FILE);
-		//perror(token->value)-> this message is also correct
-		exit_error(token->value, strerror(errno), macro, macro->exit_code);
+		perror(token->value);
 		return (-1);
 	}
 	return (fd);
