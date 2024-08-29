@@ -6,21 +6,20 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:23:53 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/27 09:25:55 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/29 00:00:56 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-extern int	g_exit;
 
 int	execute_builtin(t_macro *macro, char **cmd_array)
 {
 	char	*builtin;
 
 	builtin = remove_path(cmd_array[0]);
-	g_exit = select_and_run_builtin(builtin, cmd_array, macro);
-	return (g_exit);
+	macro->exit_code = select_and_run_builtin(builtin, cmd_array, macro);
+	//free_array(&cmd_array);
+	return (macro->exit_code);
 }
 
 int	execute_single_builtin(t_macro *macro)
@@ -31,54 +30,52 @@ int	execute_single_builtin(t_macro *macro)
 
 	saved_stdout = dup(STDOUT_FILENO);
 	saved_stdin = dup(STDIN_FILENO);
-	cmd_array = build_cmd_args_array(macro->cmds->cmd_arg);
-	if (cmd_array == NULL)
-		return (1);
-	if (validate_redirections(macro->cmds->redir) == -1)
-		return (-1);
+	if(validate_redirections(macro->cmds->redir, macro) == -1)
+		return(-1);
 	dup_file_descriptors(macro, macro->cmds, 0);
-	g_exit = execute_builtin(macro, cmd_array);
+	cmd_array = build_cmd_args_array(macro->cmds->cmd_arg, macro); //TODO: protect
+	macro->exit_code = execute_builtin(macro, cmd_array);
 	free_array(&cmd_array);
 	dup2(saved_stdout, STDOUT_FILENO);
 	dup2(saved_stdin, STDIN_FILENO);
 	close(saved_stdout);
 	close(saved_stdin);
-	return (g_exit);
+	return (macro->exit_code);
 }
 
-static void	execute_child_process(t_macro *macro, int index, int read_end,
-		int pipe_exit[2])
+static void	execute_child_process(t_macro *macro, int index, int read_end, int pipe_exit[2])
 {
 	int		i;
 	t_cmd	*cmd;
 	char	**cmd_array;
+	int		status;
 
 	close(pipe_exit[0]);
 	cmd = macro->cmds;
 	i = 0;
 	while (cmd != NULL && i++ < index)
 		cmd = cmd->next;
-	if (validate_redirections(cmd->redir) == -1)
-		exit(g_exit);
+	validation(macro, cmd);
 	dup_file_descriptors(macro, cmd, read_end);
-	cmd_array = prepare_child_execution(macro, cmd);
-	if (!cmd_array || !cmd_array[0])
-		exit (errno);
+	cmd_array = build_cmd_args_array(cmd->cmd_arg, macro);
 	if (cmd->type == BUILTIN)
-		g_exit = execute_builtin(macro, cmd_array);
+		macro->exit_code = execute_builtin(macro, cmd_array);
 	else
 		execve(cmd_array[0], cmd_array, macro->env);
+	status = macro->exit_code;
 	if (index == macro->num_cmds - 1)
 	{
-		write(pipe_exit[1], &g_exit, sizeof(int));
+		close(pipe_exit[0]);
+		write(pipe_exit[1], &status, sizeof(int));
 		close(pipe_exit[1]);
 	}
-	exit(g_exit);
+	exit(status);
 }
 
 static int	execute_cmds(t_macro *macro, int read_end, int pipe_exit[2])
 {
 	int	i;
+	int	status;
 
 	i = 0;
 	while (i < macro->num_cmds)
@@ -100,34 +97,44 @@ static int	execute_cmds(t_macro *macro, int read_end, int pipe_exit[2])
 		i++;
 	}
 	if (macro->pid != 0)
-		catch_parent_exit(pipe_exit, &g_exit);
+	{
+		catch_parent_exit(pipe_exit, &status);
+		macro->exit_code = status;
+	}
 	return (i);
 }
 
-int	execution(t_macro *macro)
+void	execution(t_macro *macro)
 {
 	int		read_end;
 	int		num_cmds_executed;
 	int		pipe_exit[2];
 	int		i;
+	int		status;
 
 	if (macro->cmds == NULL)
-		return (0);
+		return ;
 	if (macro->num_cmds == 1 && macro->cmds->type == BUILTIN)
 		execute_single_builtin(macro);
 	else
 	{
 		if (pipe(pipe_exit) == -1)
-			return (error_msg("pipe failed", 0));
+		{
+			error_msg("pipe failed", 0);
+			return ;
+		}
 		read_end = 0;
-		macro->pid = malloc(sizeof(pid_t) * macro->num_cmds);
+		macro->pid = malloc(sizeof(pid_t) * macro->num_cmds); //TODO: protect
 		num_cmds_executed = execute_cmds(macro, read_end, pipe_exit);
 		i = 0;
 		while (i < num_cmds_executed)
-			g_exit = wait_processes(macro->pid[i++]);
-		if (macro->pid != 0)
-			catch_parent_exit(pipe_exit, &g_exit);
+			status = wait_processes(macro->pid[i++]);
+		if (macro->pid != 0) //is this correct and need? you are in the parent
+			catch_parent_exit(pipe_exit, &status);
+		macro->exit_code = status;
 		free(macro->pid);
+    macro->pid = NULL;
+		close_fds(macro->pipe_fd, read_end);
 	}
-	return (g_exit);
+	return ;
 }

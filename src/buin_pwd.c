@@ -6,13 +6,11 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:00:43 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/27 13:04:17 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/28 18:41:48 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-extern int	g_exit;
 
 char	*remove_path(char *cmd)
 {
@@ -30,10 +28,10 @@ int	ft_pwd2(t_macro *macro)
 {
 	char	*path;
 
-	path = grab_env("PWD", macro->env, 3);
+	path = getcwd(NULL, 0);	
 	if (path == NULL)
 	{
-		path = getcwd(NULL, 0);
+		path = ft_strdup(macro->m_pwd);
 		if (path == NULL)
 		{
 			perror("Error getting current directory");
@@ -48,7 +46,7 @@ int	ft_pwd2(t_macro *macro)
 char	*char_pwd(void)
 {
 	char	*path;
-
+	
 	path = getcwd(NULL, 0);
 	if (path == NULL)
 	{

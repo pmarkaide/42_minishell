@@ -3,18 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   validation_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 23:25:19 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/27 10:41:06 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/28 21:32:54 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-extern int	g_exit;
-
-int	open_file(t_token *token)
+int	open_file(t_token *token, t_macro *macro)
 {
 	int	fd;
 
@@ -28,11 +26,11 @@ int	open_file(t_token *token)
 	if (fd == -1)
 	{
 		if (errno == ENOENT)
-			g_exit = (NO_FILE);
+			macro->exit_code = (NO_FILE);
 		else if (errno == EACCES)
-			g_exit = (NO_FILE);
+			macro->exit_code = (NO_FILE);
 		else if (errno == EISDIR)
-			g_exit = (NO_FILE);
+			macro->exit_code = (NO_FILE);
 		perror(token->value);
 		return (-1);
 	}
@@ -59,10 +57,7 @@ char	**parse_paths(char **env)
 
 	i = 0;
 	if (!env)
-	{
-		paths = ft_calloc(1, sizeof(char *));
-		return (paths);
-	}
+		return(NULL);
 	while (env[i])
 	{
 		if (ft_strnstr(env[i], "PATH=", 5))
@@ -72,15 +67,14 @@ char	**parse_paths(char **env)
 		}
 		i++;
 	}
-	paths = ft_calloc(1, sizeof(char *));
-	return (paths);
+	return(NULL);
 }
 
-char	*get_executable_path(char **paths, char *executable)
+char	*get_executable_path(char **paths, char *executable, t_macro *macro)
 {
 	int		i;
 	char	*full_path;
-	char	*msg;
+	//char	*msg;
 
 	i = 0;
 	while (paths[i])
@@ -93,10 +87,6 @@ char	*get_executable_path(char **paths, char *executable)
 		free(full_path);
 		i++;
 	}
-	g_exit = 127;
-	msg = ft_strjoin(executable, ": command not found\n", NULL);
-	if (msg == NULL)
-		return (NULL);
-	ft_putstr_fd(msg, 2);
+	macro->exit_code = 127;
 	return (NULL);
 }

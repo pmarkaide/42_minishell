@@ -6,13 +6,11 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:52:58 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/27 11:37:30 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/28 02:21:09 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-extern int	g_exit;
 
 int	expand_variable(char *clean, int j, char *ins, int i, t_macro *macro)
 {
@@ -42,7 +40,7 @@ char	*build_expanded_instruction(char *clean, char *ins, t_macro *macro)
 
 	i = 0;
 	j = 0;
-	exit_str = ft_itoa(g_exit);
+	exit_str = ft_itoa(macro->exit_code);
 	while (ins[i])
 	{
 		if (ins[i] == '$' && (ins[i + 1] == '\0' || ft_isdelim(ins[i + 1])))
@@ -86,7 +84,7 @@ size_t	expanded_envir_len(char *ins, t_macro *macro)
 	{
 		if (ins[i] == '$' && (ins[i + 1] == '\0' || ft_isdelim(ins[i + 1])))
 			i++;
-		else if (ft_strlen(ins) > 2 && ins[i] == '$' && ins[i + 1] != '\0' && ins[i + 1] == '"')
+		else if (ft_strlen(ins) > 2 && ins[i] == '$' && ft_isquote(ins[i + 1]))
 		{
 			i++;
 			envir_len = 1;
@@ -97,7 +95,7 @@ size_t	expanded_envir_len(char *ins, t_macro *macro)
 			if (ins[i] == '?')
 			{
 				i++;
-				envir_len += ft_strlen(ft_itoa(g_exit));
+				envir_len += ft_strlen(ft_itoa(macro->exit_code));
 			}
 			else
 			{

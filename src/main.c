@@ -6,13 +6,13 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 14:49:38 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/27 22:21:52 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/29 11:35:32 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		g_exit;
+int			g_exit;
 
 t_macro	*start_env(t_macro *macro, char **argv)
 {
@@ -42,6 +42,18 @@ t_macro	*start_env(t_macro *macro, char **argv)
 	return (macro);
 }
 
+static char	*grab_home(t_macro *macro)
+{
+	char	*home;
+
+	home = grab_env("HOME", macro->env, 4);
+	if (home == NULL)
+	{
+		return (NULL);
+	}
+	return (home);
+}
+
 t_macro	*init_macro(char **envp, char **argv)
 {
 	t_macro	*macro;
@@ -59,9 +71,80 @@ t_macro	*init_macro(char **envp, char **argv)
 	macro->instruction = NULL;
 	macro->tokens = NULL;
 	macro->cmds = NULL;
-	macro->pid = 0;
+	macro->pid = NULL;
 	macro = start_env(macro, argv);
+	macro->m_pwd = char_pwd();
+	macro->m_home = grab_home(macro);
+	macro->exit_code = 0;
 	return (macro);
+}
+
+
+static int	in_root(char *path)
+{
+	if (ft_strcmp(path, "/") == 0)
+		return (1);
+	return (0);
+}
+
+static int	in_home(t_macro *macro)
+{
+	char	*home;
+
+	home = grab_env("HOME", macro->env, 4);
+	if (home == NULL)
+		return (0);
+	if (ft_strcmp(macro->m_pwd, home) == 0)
+	{
+		free(home);
+		return (1);
+	}
+	free(home);
+	return (0);
+}
+
+static char	*upper_than_home(t_macro *macro)
+{
+	char	*home;
+	char	*path;
+	char	*tmp;
+	int		len;
+
+	home = grab_env("HOME", macro->env, 4);
+	if (home == NULL)
+		return (NULL);
+	len = ft_strlen(home);
+	if (ft_strncmp(macro->m_pwd, home, len) == 0)
+	{
+		tmp = ft_strdup(macro->m_pwd);
+		path = ft_strjoin3("minishell:~", tmp + len, "$ ");
+		free(home);
+		free(tmp);
+		return (path);
+	}
+	else
+	{
+		free(home);
+		return (NULL);
+	}	
+}
+
+static char	*create_path(t_macro *macro)
+{
+	char	*path;
+	char	*up_home;
+	
+	up_home = upper_than_home(macro);
+	if (in_root(macro->m_pwd))
+		path = ft_strdup("minishell:/$ ");
+	else if (in_home(macro))
+		path = ft_strdup("minishell:~$ ");
+	else if (up_home)
+		path = upper_than_home(macro);
+	else
+		path = ft_strjoin3("minishell:", macro->m_pwd, "$ ");
+	free(up_home);
+	return (path);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -107,18 +190,26 @@ int	main(int argc, char **argv, char **envp)
 			add_history(line);
 		if (syntax_error_check(line))
 		{
+			macro->exit_code = 2;
 			free(line);
 			continue ;
+		}
+		if (g_exit > 0)
+		{
+			macro->exit_code = g_exit;
+			g_exit = 0;
 		}
 		macro->instruction = line;
 		tokenizer(macro);
 		macro->cmds = parsing(macro);
 		if (macro->cmds == NULL)
-		{	
+		{
 			free(line);
 			continue ;
 		}
 		execution(macro);
+		free_ins(macro);
 	}
-	exit(g_exit);
+	free_macro(macro);
+	exit(0);
 }

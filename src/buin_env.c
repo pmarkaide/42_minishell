@@ -6,13 +6,11 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:04:37 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/27 11:49:14 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/28 02:09:57 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-extern int	g_exit;
 
 char	*grab_env(char *var, char **env, int n)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   presyntax.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 15:12:06 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/20 15:02:08 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/28 02:06:07 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,14 +87,18 @@ static char	unclosed_quote_check(char *instruction)
 
 static int	print_syntax_error(char invalid_char)
 {
-	ft_putstr_fd("minishell: ", 2);
-	if (invalid_char == '|')
-		ft_printf("syntax error near unexpected token `|'\n");
-	else if (invalid_char == '\n')
-		ft_printf("syntax error near unexpected token `newline'\n");
-	else
-		ft_printf("syntax error near unexpected token `%c'\n", invalid_char);
-	return (1);
+    ft_putstr_fd("minishell: ", 2);
+    if (invalid_char == '|')
+        ft_putstr_fd("syntax error near unexpected token `|'\n", 2);
+    else if (invalid_char == '\n')
+        ft_putstr_fd("syntax error near unexpected token `newline'\n", 2);
+    else
+    {
+        ft_putstr_fd("syntax error near unexpected token `", 2);
+        ft_putchar_fd(invalid_char, 2);
+        ft_putstr_fd("'\n", 2);
+    }
+    return (2);
 }
 
 int	syntax_error_check(char *instruction)
