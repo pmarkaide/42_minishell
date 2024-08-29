@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 23:24:13 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/29 16:43:19 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/29 20:46:02 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,18 +90,19 @@ return 0;
 	return 0;
 }
 
-void	dup_file_descriptors(t_macro *macro, t_cmd *cmd, int read_end)
+int	dup_file_descriptors(t_macro *macro, t_cmd *cmd, int read_end)
 {
 	if(dup_stdout(macro, cmd) == -1)
 	{
 		macro->exit_code = errno;
 		perror("dup_stdout");
-		return ;
+		return -1;
 	}
 	if(dup_stdin(macro, cmd, read_end) == -1)
 	{
 		macro->exit_code = errno;
 		perror("dup_stdin");
-		return ;
+		return -1;
 	}
+	return(0);
 }
