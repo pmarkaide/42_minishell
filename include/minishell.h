@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/29 15:55:12 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/29 16:12:24 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ typedef struct s_macro
 }					t_macro;
 
 /* presyntax*/
-int					syntax_error_check(char *instruction);
+int				syntax_error_check(t_macro *macro, char *instruction);
 
 /* tokenizer */
 int				tokenizer(t_macro *macro);
