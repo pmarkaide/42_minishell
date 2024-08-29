@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 15:12:06 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/28 02:06:07 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/29 22:42:24 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,18 +87,18 @@ static char	unclosed_quote_check(char *instruction)
 
 static int	print_syntax_error(char invalid_char)
 {
-    ft_putstr_fd("minishell: ", 2);
-    if (invalid_char == '|')
-        ft_putstr_fd("syntax error near unexpected token `|'\n", 2);
-    else if (invalid_char == '\n')
-        ft_putstr_fd("syntax error near unexpected token `newline'\n", 2);
-    else
-    {
-        ft_putstr_fd("syntax error near unexpected token `", 2);
-        ft_putchar_fd(invalid_char, 2);
-        ft_putstr_fd("'\n", 2);
-    }
-    return (2);
+	ft_putstr_fd("minishell: ", 2);
+	if (invalid_char == '|')
+		ft_putstr_fd("syntax error near unexpected token `|'\n", 2);
+	else if (invalid_char == '\n')
+		ft_putstr_fd("syntax error near unexpected token `newline'\n", 2);
+	else
+	{
+		ft_putstr_fd("syntax error near unexpected token `", 2);
+		ft_putchar_fd(invalid_char, 2);
+		ft_putstr_fd("'\n", 2);
+	}
+	return (2);
 }
 
 int	syntax_error_check(char *instruction)

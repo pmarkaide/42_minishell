@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 20:03:14 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/29 13:35:32 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/29 22:15:30 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,26 +61,26 @@ int	wait_processes(pid_t pid)
 
 char	**build_cmd_args_array(t_token *cmd_args, t_macro *macro)
 {
-    char	**cmd_array;
-    int		i;
+	char	**cmd_array;
+	int		i;
 
-    if (!cmd_args)
-        return (NULL);
-    cmd_array = (char **)malloc(sizeof(char *) * (tokens_size(cmd_args) + 1));
-    if (!cmd_array)
-        exit_error("build_cmd_args_array", "malloc error", macro, -1);
-    i = 0;
-    while (cmd_args)
-    {
-        cmd_array[i] = ft_strdup(cmd_args->value);
-        if (!cmd_array[i])
-        {
-            free_array(&cmd_array);
-            exit_error("build_cmd_args_array", "malloc error", macro, -1);
-        }
-        i++;
-        cmd_args = cmd_args->next;
-    }
-    cmd_array[i] = NULL;
-    return (cmd_array);
+	if (!cmd_args)
+		return (NULL);
+	cmd_array = (char **)malloc(sizeof(char *) * (tokens_size(cmd_args) + 1));
+	if (!cmd_array)
+		exit_error("build_cmd_args_array", "malloc error", macro, -1);
+	i = 0;
+	while (cmd_args)
+	{
+		cmd_array[i] = ft_strdup(cmd_args->value);
+		if (!cmd_array[i])
+		{
+			free_array(&cmd_array);
+			exit_error("build_cmd_args_array", "malloc error", macro, -1);
+		}
+		i++;
+		cmd_args = cmd_args->next;
+	}
+	cmd_array[i] = NULL;
+	return (cmd_array);
 }

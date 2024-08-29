@@ -6,7 +6,7 @@
 #    By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/01 15:11:43 by pmarkaid          #+#    #+#              #
-#    Updated: 2024/08/29 13:44:25 by dbejar-s         ###   ########.fr        #
+#    Updated: 2024/08/29 22:12:46 by dbejar-s         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,9 @@ SRCS_FILES = \
 	tokenizer_expand.c \
 	general_utils.c \
 	buin_cd_utils.c \
-	free_strings.c
+	free_strings.c \
+	buin_export_utils.c \
+	main_path.c
 
 SRC_DIR = src/
 SRCS = $(addprefix $(SRC_DIR), $(SRCS_FILES))

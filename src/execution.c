@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:23:53 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/29 15:14:28 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/29 22:14:24 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ int	execute_single_builtin(t_macro *macro)
 
 	saved_stdout = dup(STDOUT_FILENO);
 	saved_stdin = dup(STDIN_FILENO);
-	if(validate_redirections(macro->cmds->redir, macro) == -1)
-		return(-1);
+	if (validate_redirections(macro->cmds->redir, macro) == -1)
+		return (-1);
 	dup_file_descriptors(macro, macro->cmds, 0); // TODO: protect
 	cmd_array = build_cmd_args_array(macro->cmds->cmd_arg, macro); // TODO: protect
 	macro->exit_code = execute_builtin(macro, cmd_array);
