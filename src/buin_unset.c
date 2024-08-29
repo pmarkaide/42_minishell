@@ -6,11 +6,23 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:04:49 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/28 02:10:11 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/29 14:23:37 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+#include "minishell.h"
+
+static void	remove_env_var(char **env, int index)
+{
+	free(env[index]);
+	while (env[index])
+	{
+		env[index] = env[index + 1];
+		index++;
+	}
+}
 
 int	ft_unset2(char **args, t_macro *macro)
 {
@@ -27,26 +39,11 @@ int	ft_unset2(char **args, t_macro *macro)
 		while (macro->env[j])
 		{
 			len_env = ft_strchr_i(macro->env[j], '=');
-			if (ft_strncmp(args[i], macro->env[j], len_env) == 0
-				&& len == len_env)
+			if ((ft_strncmp(args[i], macro->env[j], len_env) == 0
+					&& len == len_env) || (len_env == -1
+					&& ft_strncmp(args[i], macro->env[j], len) == 0))
 			{
-				free(macro->env[j]);
-				while (macro->env[j])
-				{
-					macro->env[j] = macro->env[j + 1];
-					j++;
-				}
-				break ;
-			}
-			else if (len_env == -1 && ft_strncmp(args[i], macro->env[j],
-					len) == 0)
-			{
-				free(macro->env[j]);
-				while (macro->env[j])
-				{
-					macro->env[j] = macro->env[j + 1];
-					j++;
-				}
+				remove_env_var(macro->env, j);
 				break ;
 			}
 			j++;
