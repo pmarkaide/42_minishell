@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:23:53 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/28 21:31:09 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/29 00:00:56 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	execute_builtin(t_macro *macro, char **cmd_array)
 
 	builtin = remove_path(cmd_array[0]);
 	macro->exit_code = select_and_run_builtin(builtin, cmd_array, macro);
-	free_array(&cmd_array);
+	//free_array(&cmd_array);
 	return (macro->exit_code);
 }
 

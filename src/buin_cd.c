@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:04:29 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/28 18:19:59 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/29 00:32:39 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int	ft_cd2(char **args, t_macro *macro)
 	int		home_flag;
 	char	*oldpwd;
 	char	*tmp;
+	char	*cwd;
 
 	i = 0;
 	home_flag = 0;
@@ -45,7 +46,7 @@ int	ft_cd2(char **args, t_macro *macro)
 		return (1);
 	}
 	if (!args[1] || args[1][0] == '\0')
-		path = home;
+		path = ft_strdup(home);
 	else if (ft_strncmp(args[1], "~", 1) == 0)
 		path = ft_strdup(macro->m_home);
 	else if (ft_strncmp(args[1], "-", 1) == 0)
@@ -84,7 +85,6 @@ int	ft_cd2(char **args, t_macro *macro)
 	tmp = grab_env("OLDPWD", macro->env, 6);
 	if (tmp)
 		macro->env = fix_env("OLDPWD", macro->m_pwd, macro->env, 6);
-	//oldpwd = ft_calloc(sizeof(char *), ft_strlen(macro->m_pwd) + 2);
 	oldpwd = ft_strjoin(macro->m_pwd, "/", NULL);
 	free(tmp);
 	tmp = getcwd(NULL, 0);
@@ -99,7 +99,15 @@ int	ft_cd2(char **args, t_macro *macro)
 		free(path);
 		return (0);
 	}
-	macro->m_pwd = getcwd(NULL, 0);
+	cwd = getcwd(NULL, 0);
+	if (cwd == NULL) {
+		perror("getcwd");
+		free(home);
+		free(oldpwd);
+		free(path);
+		return (1);
+	}
+	macro->m_pwd = cwd;
 	free(tmp);
 	tmp = grab_env("PWD", macro->env, 3);
 	if (tmp)
