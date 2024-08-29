@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:23:53 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/29 00:00:56 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/29 12:08:35 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	execute_builtin(t_macro *macro, char **cmd_array)
 
 	builtin = remove_path(cmd_array[0]);
 	macro->exit_code = select_and_run_builtin(builtin, cmd_array, macro);
-	//free_array(&cmd_array);
+	free_array(&cmd_array);
 	return (macro->exit_code);
 }
 
@@ -35,7 +35,6 @@ int	execute_single_builtin(t_macro *macro)
 	dup_file_descriptors(macro, macro->cmds, 0);
 	cmd_array = build_cmd_args_array(macro->cmds->cmd_arg, macro); //TODO: protect
 	macro->exit_code = execute_builtin(macro, cmd_array);
-	free_array(&cmd_array);
 	dup2(saved_stdout, STDOUT_FILENO);
 	dup2(saved_stdin, STDIN_FILENO);
 	close(saved_stdout);

@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 14:49:38 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/29 11:51:59 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/29 12:12:06 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ t_macro	*init_macro(char **envp, char **argv)
 		ft_putstr_fd("Error: Malloc failed creating macro structure\n", 2);
 		exit(1);
 	}
-	ft_bzero(macro, sizeof(t_macro));
+	ft_bzero(macro, sizeof(t_macro));macro->pipe_fd[0] = -1;
 	macro->envp = envp;
 	macro->env = copy_env(envp);
 	macro->history = NULL;
@@ -76,6 +76,8 @@ t_macro	*init_macro(char **envp, char **argv)
 	macro->m_pwd = char_pwd();
 	macro->m_home = grab_home(macro);
 	macro->exit_code = 0;
+	macro->pipe_fd[0] = -1;
+	macro->pipe_fd[1] = -1;
 	return (macro);
 }
 
