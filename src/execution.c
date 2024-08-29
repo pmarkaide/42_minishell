@@ -6,37 +6,20 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:23:53 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/29 21:51:31 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/29 23:21:29 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	execute_builtin(t_macro *macro, char **cmd_array)
+int	execute_builtin(t_macro *macro, char **cmd_array)
 {
 	char	*builtin;
 
 	builtin = remove_path(cmd_array[0]);
 	macro->exit_code = select_and_run_builtin(builtin, cmd_array, macro);
 	free_array(&cmd_array);
-}
-
-int restore_fds(int saved_stdout, int saved_stdin) {
-    
-	int result;
-	
-	result = 0;
-    if (dup2(saved_stdout, STDOUT_FILENO) == -1) {
-        perror("dup2 :: restore_fds");
-        result = -1;
-    }
-    if (dup2(saved_stdin, STDIN_FILENO) == -1) {
-        perror("dup2 :: restore_fds");
-        result = -1;
-    }
-    close(saved_stdout);
-    close(saved_stdin);
-    return (result);
+	return (macro->exit_code);
 }
 
 int	execute_single_builtin(t_macro *macro)
@@ -47,24 +30,15 @@ int	execute_single_builtin(t_macro *macro)
 
 	saved_stdout = dup(STDOUT_FILENO);
 	saved_stdin = dup(STDIN_FILENO);
-	if(saved_stdin == -1 || saved_stdout == -1)
-	{
-		error_msg(macro, "dup", -1);
-		return(-1);
-	}
 	if(validate_redirections(macro->cmds->redir, macro) == -1)
 		return(-1);
-	if(dup_file_descriptors(macro, macro->cmds, 0) == -1)
-		return(-1);
-	cmd_array = build_cmd_args_array(macro->cmds->cmd_arg, macro);
-	if(cmd_array == NULL)
-	{
-		error_msg(macro, "malloc", -1);
-		restore_fds(saved_stdout, saved_stdin);
-	}
-	else
-		execute_builtin(macro, cmd_array);
-	restore_fds(saved_stdout, saved_stdin);
+	dup_file_descriptors(macro, macro->cmds, 0); // TODO: protect
+	cmd_array = build_cmd_args_array(macro->cmds->cmd_arg, macro); // TODO: protect
+	macro->exit_code = execute_builtin(macro, cmd_array);
+	dup2(saved_stdout, STDOUT_FILENO);
+	dup2(saved_stdin, STDIN_FILENO);
+	close(saved_stdout);
+	close(saved_stdin);
 	return(0);
 }
 
@@ -81,41 +55,37 @@ static void	execute_child_process(t_macro *macro, int index, int read_end)
 	while (cmd != NULL && i++ < index)
 		cmd = cmd->next;
 	validation(macro, cmd);
-	ft_putstr_fd("pass validation\n",2);
-	if(dup_file_descriptors(macro, macro->cmds, read_end) == -1)
-		exit(macro->exit_code);
-	ft_putstr_fd("pass dup\n",2);
+	dup_file_descriptors(macro, cmd, read_end); // TODO: protect
 	cmd_array = build_cmd_args_array(cmd->cmd_arg, macro);
-	if(!cmd_array)
-		exit_error(cmd->cmd_arg->value, "malloc error", macro, -1);
-	ft_putstr_fd("pass cmd_array\n",2);
 	if (cmd->type == BUILTIN)
-		execute_builtin(macro, cmd_array);
+		macro->exit_code = execute_builtin(macro, cmd_array);
 	else
-	{	ft_putstr_fd("going to execve\n",2);
 		execve(cmd_array[0], cmd_array, macro->env);
-	}
 	status = macro->exit_code;
-	if (index == macro->num_cmds - 1)
-		write_pipe_exit(macro->pipe_exit, status);
+	if (index == macro->num_cmds - 1)  // TODO: split into function
+	{
+		close(macro->pipe_exit[0]);
+		write(macro->pipe_exit[1], &status, sizeof(int));
+		close(macro->pipe_exit[1]);
+	}
 	exit(status);
 }
 
 static int	execute_cmds(t_macro *macro, int read_end)
 {
 	int	i;
-	int status;
+	int	status;
 
 	i = 0;
 	while (i < macro->num_cmds)
 	{
 		if (pipe(macro->pipe_fd) == -1)
-			return (error_msg(NULL, "pipe failed", i));
+			return (error_msg(macro, "pipe failed", i));
 		macro->pid[i] = fork();
 		if (macro->pid[i] < 0)
 		{
 			close_fds(macro, read_end);
-			return (error_msg(NULL, "fork failed", i));
+			return (error_msg(macro, "fork failed", i));
 		}
 		else if (macro->pid[i] == 0)
 			execute_child_process(macro, i, read_end);
@@ -126,11 +96,10 @@ static int	execute_cmds(t_macro *macro, int read_end)
 		i++;
 	}
 	if (macro->pid != 0)
-    {
-        close(macro->pipe_exit[1]); // Close the write end of the pipe in the parent
-        read_pipe_exit(macro->pipe_exit, &status);
-        macro->exit_code = status;
-    }
+	{
+		read_pipe_exit(macro->pipe_exit, &status);
+		macro->exit_code = status;
+	}
 	return (i);
 }
 
@@ -141,32 +110,33 @@ void	execution(t_macro *macro)
 	int		i;
 	int		status;
 
+	if (macro->cmds == NULL)
+		return ;
 	if (macro->num_cmds == 1 && macro->cmds->type == BUILTIN)
 		macro->exit_code = execute_single_builtin(macro);
 	else
 	{
-		//TODO: add pipe and pid malloc in helper function
 		if (pipe(macro->pipe_exit) == -1)
 		{
-			error_msg(macro, "pipe", -1);
+			error_msg(macro, "pipe failed", 0);
 			return ;
 		}
-        printf("execution :: created pipe_exit[%d, %d]\n", macro->pipe_exit[0], macro->pipe_exit[1]);
 		read_end = 0;
 		macro->pid = malloc(sizeof(pid_t) * macro->num_cmds);
 		if(macro->pid == NULL)
 		{
-			error_msg(macro, "malloc", -1);
+			error_msg(macro, "malloc failed", 0);
 			return ;
 		}
 		num_cmds_executed = execute_cmds(macro, read_end);
 		i = 0;
-		ft_putstr_fd("going to wait\n",2);
 		while (i < num_cmds_executed)
 			status = wait_processes(macro->pid[i++]);
-		read_pipe_exit(macro->pipe_exit, &status);
+		if (macro->pid != 0) //is this correct and need? you are in the parent
+			read_pipe_exit(macro->pipe_exit, &status);
 		macro->exit_code = status;
-		ft_free((void**)&macro->pid);
+		free(macro->pid);
+		macro->pid = NULL;
 		close_fds(macro, read_end);
 	}
 	return ;

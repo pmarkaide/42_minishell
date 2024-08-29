@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 10:42:44 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/27 09:24:02 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/29 23:10:48 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static int	read_here_doc(t_token *token, t_macro *macro)
 	int		pipe_fd[2];
 
 	if (pipe(pipe_fd) == -1)
-		return (error_msg("pipe error\n", -1));
+		return (error_msg(macro, "pipe error\n", -1));
 	del = clean_quotes(token->value);
 	while (1)
 	{
