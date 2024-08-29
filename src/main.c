@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 14:49:38 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/28 20:00:58 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/29 11:20:41 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ t_macro	*init_macro(char **envp, char **argv)
 	macro->m_pwd = char_pwd();
 	macro->m_home = grab_home(macro);
 	macro->exit_code = 0;
+	macro->pipe_fd[0] = -1;
+	macro->pipe_fd[1] = -1;
 	return (macro);
 }
 

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+         #
+#    By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/01 15:11:43 by pmarkaid          #+#    #+#              #
-#    Updated: 2024/08/28 17:58:15 by dbejar-s         ###   ########.fr        #
+#    Updated: 2024/08/29 10:58:39 by pmarkaid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,8 +60,8 @@ TEST_OBJS = $(TEST_SRCS:.c=.o)
 TEST_NAME = tests_runner
 
 CC = cc 
-CFLAGS = -Wall -Werror -Wextra -fsanitize=address -g
-DEBUG_FLAGS = -g
+CFLAGS = -Wall -Werror -Wextra  -g
+DEBUG_FLAGS = -Wall -Werror -Wextra -fsanitize=address -g
 
 # External Libraries
 LIBS = -lreadline
