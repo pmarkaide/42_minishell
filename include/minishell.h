@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/29 21:35:59 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/29 23:38:40 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ void				close_here_doc_not_needed(t_token *tokens);
 void				execution(t_macro *macro);
 
 /* execution utils */
-char				**build_cmd_args_array(t_token *cmd_args, t_macro *macro);
+char				**build_cmd_args_array(t_token *cmd_args);
 char				**prepare_child_execution(t_macro *macro, t_cmd *cmd);
 int					wait_processes(pid_t pid);
 void				read_pipe_exit(int *pipe_exit, int *status);
