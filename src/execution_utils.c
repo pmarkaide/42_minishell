@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 20:03:14 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/29 20:21:20 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/29 21:43:46 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,18 +38,38 @@ void	close_fds(t_macro *macro, int read_end)
 		close(read_end);
 }
 
-void	read_pipe_exit(int *pipe_exit, int *exit_code)
+void	read_pipe_exit(int *pipe_exit, int *status)
 {
-	close(pipe_exit[1]);
-	read(pipe_exit[0], exit_code, sizeof(int));
-	close(pipe_exit[0]);
+	if (pipe_exit == NULL || status == NULL)
+    {
+        perror("read_pipe_exit :: invalid arguments");
+        return;
+    }
+	printf("read_pipe_exit :: closing write end of pipe_exit[%d]\n", pipe_exit[1]);
+    close(pipe_exit[1]);
+    printf("read_pipe_exit :: reading from pipe_exit[%d]\n", pipe_exit[0]);
+    if (read(pipe_exit[0], status, sizeof(int)) == -1)
+        perror("read_pipe_exit :: read error");
+    else
+        printf("read_pipe_exit :: read status %d\n", *status);
+    close(pipe_exit[0]);
 }
 
-void	write_pipe_exit(int *pipe_exit, int *status)
+void	write_pipe_exit(int *pipe_exit, int status)
 {
-	close(pipe_exit[0]);
-	write(pipe_exit[1], &status, sizeof(int));
-	close(pipe_exit[1]);
+	if (pipe_exit == NULL)
+    {
+        perror("write_pipe_exit :: invalid arguments");
+        return;
+    }
+  	printf("write_pipe_exit :: closing read end of pipe_exit[%d]\n", pipe_exit[0]);
+    close(pipe_exit[0]);
+    printf("write_pipe_exit :: writing to pipe_exit[%d]\n", pipe_exit[1]);
+    if (write(pipe_exit[1], &status, sizeof(int)) == -1)
+        perror("write_pipe_exit :: write error");
+    else
+        printf("write_pipe_exit :: wrote status %d\n", status);
+    close(pipe_exit[1]);
 }
 
 int	wait_processes(pid_t pid)

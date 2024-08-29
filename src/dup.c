@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 23:24:13 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/29 20:46:02 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/29 22:07:11 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static int	dup_stdout(t_macro *macro, t_cmd *cmd)
 static int	dup_stdin(t_macro *macro, t_cmd *cmd, int read_end)
 {
 	int	fd;
-return 0;
+
 	fd = open_last_redir_file(cmd->redir, "input", macro);
 	if (fd >= 1)
 	{

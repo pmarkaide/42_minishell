@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+         #
+#    By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/01 15:11:43 by pmarkaid          #+#    #+#              #
-#    Updated: 2024/08/29 13:44:25 by dbejar-s         ###   ########.fr        #
+#    Updated: 2024/08/29 20:55:12 by pmarkaid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -71,7 +71,7 @@ LIBS = -lreadline
 all: makelibft $(NAME)
 
 makelibft:
-	make -C $(LIBFT_DIR)
+	@make -C $(LIBFT_DIR) > /dev/null
 
 %.o: %.c
 	$(CC) $(CFLAGS) $(LIBFT_INCLUDE) $(INCLUDE) -c $< -o $@
