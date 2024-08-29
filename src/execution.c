@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:23:53 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/29 11:03:45 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/29 13:24:53 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ void	execution(t_macro *macro)
 			catch_parent_exit(pipe_exit, &status);
 		macro->exit_code = status;
 		free(macro->pid);
-    macro->pid = NULL;
+		macro->pid = NULL;
 		close_fds(macro->pipe_fd, read_end);
 	}
 	return ;
