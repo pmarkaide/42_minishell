@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/29 16:12:24 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/29 16:52:51 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,8 +224,7 @@ void				update_environment(t_macro *macro, char *oldpwd,
 						char *path);
 
 /* error */
-int					error_msg(char *msg, int exit_code);
-void				exit_error(char *file, char *msg, t_macro *macro,
-						int exit_code);
+int					error_msg(t_macro *macro,char *msg, int exit_code);
+void				exit_error(char *file, char *msg, t_macro *macro, int exit_code);
 
 #endif /* MINISHELL_H */
