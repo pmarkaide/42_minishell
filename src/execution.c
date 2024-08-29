@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:23:53 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/29 15:14:28 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/29 16:36:10 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	execute_builtin(t_macro *macro, char **cmd_array)
 	return (macro->exit_code);
 }
 
-int	execute_single_builtin(t_macro *macro)
+void	execute_single_builtin(t_macro *macro)
 {
 	char	**cmd_array;
 	int		saved_stdout;
@@ -39,7 +39,6 @@ int	execute_single_builtin(t_macro *macro)
 	dup2(saved_stdin, STDIN_FILENO);
 	close(saved_stdout);
 	close(saved_stdin);
-	return (macro->exit_code);
 }
 
 static void	execute_child_process(t_macro *macro, int index, int read_end)
@@ -122,7 +121,12 @@ void	execution(t_macro *macro)
 			return ;
 		}
 		read_end = 0;
-		macro->pid = malloc(sizeof(pid_t) * macro->num_cmds); //TODO: protect
+		macro->pid = malloc(sizeof(pid_t) * macro->num_cmds);
+		if(macro->pid == NULL)
+		{
+			error_msg("malloc failed", 0);
+			return ;
+		}
 		num_cmds_executed = execute_cmds(macro, read_end);
 		i = 0;
 		while (i < num_cmds_executed)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dup.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 23:24:13 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/28 03:20:23 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/29 16:43:19 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static int	open_last_redir_file(t_token *redir, char *redir_type, t_macro *macro
 	return (fd);
 }
 
-static void	dup_stdout(t_macro *macro, t_cmd *cmd)
+static int	dup_stdout(t_macro *macro, t_cmd *cmd)
 {
 	int	fd;
 
@@ -51,53 +51,57 @@ static void	dup_stdout(t_macro *macro, t_cmd *cmd)
 	{
 		if (dup2(fd, STDOUT_FILENO) < 0)
 		{
-			perror("dup2 stdout");
 			close(fd);
-			return ;
+			return -1;
 		}
-		close(fd);
+		close(fd);return 0;
 	}
 	else if (cmd->n < macro->num_cmds)
 	{
 		if (dup2(macro->pipe_fd[1], STDOUT_FILENO) < 0)
-		{
-			perror("dup2 pipe write");
-			return ;
-		}
+			return -1;
 	}
 	if (macro->pipe_fd[1] != -1)
 		close(macro->pipe_fd[1]);
+	return 0;
 }
 
-static void	dup_stdin(t_macro *macro, t_cmd *cmd, int read_end)
+static int	dup_stdin(t_macro *macro, t_cmd *cmd, int read_end)
 {
 	int	fd;
-
+return 0;
 	fd = open_last_redir_file(cmd->redir, "input", macro);
 	if (fd >= 1)
 	{
 		if (dup2(fd, STDIN_FILENO) < 0)
 		{
-			perror("dup2 stdin");
 			close(fd);
-			return ;
+			return -1;
 		}
 		close(fd);
 	}
 	else if (cmd->n > 1)
 	{
 		if (dup2(read_end, STDIN_FILENO) < 0)
-		{
-			perror("dup2 pipe read");
-			return ;
-		}
+			return -1;
 	}
 	if (macro->pipe_fd[0] != -1)
 		close(macro->pipe_fd[0]);
+	return 0;
 }
 
 void	dup_file_descriptors(t_macro *macro, t_cmd *cmd, int read_end)
 {
-	dup_stdout(macro, cmd);
-	dup_stdin(macro, cmd, read_end);
+	if(dup_stdout(macro, cmd) == -1)
+	{
+		macro->exit_code = errno;
+		perror("dup_stdout");
+		return ;
+	}
+	if(dup_stdin(macro, cmd, read_end) == -1)
+	{
+		macro->exit_code = errno;
+		perror("dup_stdin");
+		return ;
+	}
 }
