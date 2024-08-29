@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 14:49:38 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/29 12:12:06 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/29 14:37:34 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ t_macro	*init_macro(char **envp, char **argv)
 	macro->exit_code = 0;
 	macro->pipe_fd[0] = -1;
 	macro->pipe_fd[1] = -1;
+	macro->pipe_exit[0] = -1;
+	macro->pipe_exit[1] = -1;
 	return (macro);
 }
 
