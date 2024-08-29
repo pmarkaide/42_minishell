@@ -6,11 +6,9 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:04:49 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/29 14:23:37 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/29 14:26:45 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "minishell.h"
 
 #include "minishell.h"
 
