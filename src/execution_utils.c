@@ -3,26 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 20:03:14 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/28 03:11:29 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/29 13:35:32 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	close_fds(int *pipe_fd, int read_end)
+void	close_fds(t_macro *macro, int read_end)
 {
-	if (pipe_fd[0] != -1)
+	if (macro->pipe_fd[0] != -1)
 	{
-		close(pipe_fd[0]);
-		pipe_fd[0] = -1;
+		close(macro->pipe_fd[0]);
+		macro->pipe_fd[0] = -1;
 	}
-	if (pipe_fd[1] != -1)
+	if (macro->pipe_fd[1] != -1)
 	{
-		close(pipe_fd[1]);
-		pipe_fd[1] = -1;
+		close(macro->pipe_fd[1]);
+		macro->pipe_fd[1] = -1;
+	}
+	if (macro->pipe_exit[0] != -1)
+	{
+		close(macro->pipe_exit[0]);
+		macro->pipe_exit[0] = -1;
+	}
+	if (macro->pipe_exit[1] != -1)
+	{
+		close(macro->pipe_exit[1]);
+		macro->pipe_exit[1] = -1;
 	}
 	if (read_end > 0)
 		close(read_end);

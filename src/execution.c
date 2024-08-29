@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:23:53 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/29 11:03:45 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/29 13:42:46 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,14 @@ int	execute_single_builtin(t_macro *macro)
 	return (macro->exit_code);
 }
 
-static void	execute_child_process(t_macro *macro, int index, int read_end, int pipe_exit[2])
+static void	execute_child_process(t_macro *macro, int index, int read_end)
 {
 	int		i;
 	t_cmd	*cmd;
 	char	**cmd_array;
 	int		status;
 
-	close(pipe_exit[0]);
+	close(macro->pipe_exit[0]);
 	cmd = macro->cmds;
 	i = 0;
 	while (cmd != NULL && i++ < index)
@@ -64,14 +64,14 @@ static void	execute_child_process(t_macro *macro, int index, int read_end, int p
 	status = macro->exit_code;
 	if (index == macro->num_cmds - 1)
 	{
-		close(pipe_exit[0]);
-		write(pipe_exit[1], &status, sizeof(int));
-		close(pipe_exit[1]);
+		close(macro->pipe_exit[0]);
+		write(macro->pipe_exit[1], &status, sizeof(int));
+		close(macro->pipe_exit[1]);
 	}
 	exit(status);
 }
 
-static int	execute_cmds(t_macro *macro, int read_end, int pipe_exit[2])
+static int	execute_cmds(t_macro *macro, int read_end)
 {
 	int	i;
 	int	status;
@@ -84,11 +84,11 @@ static int	execute_cmds(t_macro *macro, int read_end, int pipe_exit[2])
 		macro->pid[i] = fork();
 		if (macro->pid[i] < 0)
 		{
-			close_fds(macro->pipe_fd, read_end);
+			close_fds(macro, read_end);
 			return (error_msg("fork failed", i));
 		}
 		else if (macro->pid[i] == 0)
-			execute_child_process(macro, i, read_end, pipe_exit);
+			execute_child_process(macro, i, read_end);
 		if (read_end > 0)
 			close(read_end);
 		read_end = macro->pipe_fd[0];
@@ -97,7 +97,7 @@ static int	execute_cmds(t_macro *macro, int read_end, int pipe_exit[2])
 	}
 	if (macro->pid != 0)
 	{
-		catch_parent_exit(pipe_exit, &status);
+		catch_parent_exit(macro->pipe_exit, &status);
 		macro->exit_code = status;
 	}
 	return (i);
@@ -107,7 +107,6 @@ void	execution(t_macro *macro)
 {
 	int		read_end;
 	int		num_cmds_executed;
-	int		pipe_exit[2];
 	int		i;
 	int		status;
 
@@ -117,23 +116,23 @@ void	execution(t_macro *macro)
 		execute_single_builtin(macro);
 	else
 	{
-		if (pipe(pipe_exit) == -1)
+		if (pipe(macro->pipe_exit) == -1)
 		{
 			error_msg("pipe failed", 0);
 			return ;
 		}
 		read_end = 0;
 		macro->pid = malloc(sizeof(pid_t) * macro->num_cmds); //TODO: protect
-		num_cmds_executed = execute_cmds(macro, read_end, pipe_exit);
+		num_cmds_executed = execute_cmds(macro, read_end);
 		i = 0;
 		while (i < num_cmds_executed)
 			status = wait_processes(macro->pid[i++]);
 		if (macro->pid != 0) //is this correct and need? you are in the parent
-			catch_parent_exit(pipe_exit, &status);
+			catch_parent_exit(macro->pipe_exit, &status);
 		macro->exit_code = status;
 		free(macro->pid);
-    macro->pid = NULL;
-		close_fds(macro->pipe_fd, read_end);
+		macro->pid = NULL;
+		close_fds(macro, read_end);
 	}
 	return ;
 }

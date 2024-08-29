@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/29 13:21:05 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/29 13:30:52 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ typedef struct s_macro
 	char			*m_pwd;
 	char			*m_home;
 	int				exit_code;
+	int				pipe_exit[2];
 }					t_macro;
 
 /* presyntax*/
@@ -148,7 +149,7 @@ char				**build_cmd_args_array(t_token *cmd_args, t_macro *macro);
 char				**prepare_child_execution(t_macro *macro, t_cmd *cmd);
 int					wait_processes(pid_t pid);
 void				catch_parent_exit(int *pipe_exit, int *exit_code);
-void				close_fds(int *pipe_fd, int read_end);
+void				close_fds(t_macro *macro, int read_end);
 
 /* validation */
 void				validation(t_macro *macro, t_cmd *cmd);
