@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 21:24:44 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/28 14:45:55 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/29 15:55:44 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,41 +77,34 @@ t_token	*identify_tokens(t_list *lexemes)
 		token_add_back(&tokens, token);
 		lexemes = lexemes->next;
 	}
+	ft_lstclear(&lexemes, ft_del);
+	lexemes = NULL;
 	identify_string_tokens(tokens);
 	return (tokens);
 }
 
-void	tokenizer(t_macro *macro)
+int tokenizer(t_macro *macro)
 {
 	t_list	*lexemes;
 
 	fix_redirections(macro->instruction);
 	lexemes = split_args_by_quotes(macro->instruction);
 	if (!lexemes)
-	{
-		free_tokens(&macro->tokens);
-		return ;
-	}
+		return (-1);
 	macro->tokens = identify_tokens(lexemes);
 	if (!macro->tokens)
-	{
-		ft_lstclear(&lexemes, ft_del);
-		return ;
-	}
-	ft_lstclear(&lexemes, ft_del);
-	lexemes = NULL;
+		return (-1);
 	macro->tokens = remove_empty_envir_tokens(macro);
-	ensure_at_least_one_cmd(&macro->tokens);
 	if (!macro->tokens)
-	{
-		free_tokens(&macro->tokens);
-		return ;
-	}
+		return (-1);
+	ensure_at_least_one_cmd(&macro->tokens);
 	macro->tokens = expand_arg_tokens(macro);
 	if (!macro->tokens)
 	{
 		free_tokens(&macro->tokens);
-		return ;
+		return (-1);
 	}
-	clean_token_quotes(macro->tokens);
+	if(clean_token_quotes(macro->tokens) == (-1))
+		return (-1);
+	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_expand.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:45:23 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/27 11:35:32 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/29 15:56:24 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ static t_token	*retokenize(t_token *token, t_macro *macro)
 	if (!lexemes)
 		return (NULL);
 	retokens = build_retokens(lexemes, token->type);
+	if (!retokens)
+		return (NULL);
 	return (retokens);
 }
 

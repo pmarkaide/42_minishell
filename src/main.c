@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 14:49:38 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/29 13:26:00 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/29 15:59:58 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,6 +164,7 @@ int	main(int argc, char **argv, char **envp)
 	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
+		free_string(&macro->instruction);
 		if (g_exit == 130)
 			line = readline("");
 		else
@@ -196,13 +197,10 @@ int	main(int argc, char **argv, char **envp)
 			g_exit = 0;
 		}
 		macro->instruction = line;
-		tokenizer(macro);
-		macro->cmds = parsing(macro);
-		if (macro->cmds == NULL)
-		{
-			free(line);
+		if (tokenizer(macro) == -1)
 			continue ;
-		}
+		if (parsing(macro) == -1)
+			continue ;
 		execution(macro);
 		free_ins(macro);
 	}

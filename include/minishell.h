@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/29 13:30:52 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/29 15:55:12 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ typedef struct s_macro
 int					syntax_error_check(char *instruction);
 
 /* tokenizer */
-void				tokenizer(t_macro *macro);
+int				tokenizer(t_macro *macro);
 t_list				*split_args_by_quotes(char *ins);
 
 /* tokenizer_expand */
@@ -115,7 +115,7 @@ char				*expand_envir(char *clean, char *instruction,
 bool				is_builtin(t_token *token);
 bool				is_redir(t_token *token, char *redir_type);
 void				fix_redirections(char *instruction);
-void				clean_token_quotes(t_token *tokens);
+int					clean_token_quotes(t_token *tokens);
 char				*clean_quotes(char *str);
 
 /* list_utils */
@@ -135,7 +135,7 @@ void				remove_token(t_token **tokens, t_token *token);
 t_token				*remove_empty_envir_tokens(t_macro *macro);
 
 /* parsing */
-t_cmd				*parsing(t_macro *macro);
+int				parsing(t_macro *macro);
 
 /* parsing utils */
 void				handle_here_doc(t_cmd *cmds, t_macro *macro);
