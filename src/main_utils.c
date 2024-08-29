@@ -6,31 +6,11 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 08:50:33 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/28 16:19:20 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/29 13:43:15 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	*ft_strjoin3(const char *s1, const char *s2, const char *s3) 
-{
-    int		total_len;
-	char	*res;
-	
-	if (!s1 || !s2 || !s3)
-        return (NULL);
-	total_len = 0;
-	total_len += ft_strlen(s1);
-	total_len += ft_strlen(s2);
-	total_len += ft_strlen(s3);
-    res = (char *)ft_calloc(sizeof(char), (total_len + 1)); // +1 for the null terminator
-    if (!res)
-        return (NULL);
-    ft_strcpy(res, s1);
-    ft_strcat(res, s2);
-    ft_strcat(res, s3);
-    return (res);
-}
 
 char	**ft_replace_matrix_row(char ***whole, char **minus, int n)
 {
