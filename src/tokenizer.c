@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 21:24:44 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/29 15:55:44 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/29 16:17:14 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,10 @@ t_token	*identify_tokens(t_list *lexemes)
 	{
 		token = identify_redirection_tokens(lexemes->content);
 		if (!token)
+		{
+			free_tokens(&tokens);
 			return (NULL);
+		}
 		token_add_back(&tokens, token);
 		lexemes = lexemes->next;
 	}

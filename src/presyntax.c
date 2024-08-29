@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 15:12:06 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/29 16:13:32 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/29 16:30:28 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,9 @@ static char	unclosed_quote_check(char *instruction)
 	return (0);
 }
 
-static int	print_syntax_error(char invalid_char)
+static void	print_syntax_error(t_macro *macro, char invalid_char)
 {
+	macro->exit_code = 2;
     ft_putstr_fd("minishell: ", 2);
     if (invalid_char == '|')
         ft_putstr_fd("syntax error near unexpected token `|'\n", 2);
@@ -98,31 +99,21 @@ static int	print_syntax_error(char invalid_char)
         ft_putchar_fd(invalid_char, 2);
         ft_putstr_fd("'\n", 2);
     }
-    return (2);
 }
 
-int	syntax_error_check(t_macro *macro, char *instruction)
+int syntax_error_check(t_macro *macro, char *instruction)
 {
-	char	c;
+    char c;
 
-	c = invalid_char_check(instruction);
-	if (c != 0)
-	{
-		macro->exit_code = 2;
-		return (print_syntax_error(c));
-	}
-	c = valid_file_name(instruction);
-	if (c != 0)
-	{
-		macro->exit_code = 2;
-		return (print_syntax_error(c));
-	}
-	c = unclosed_quote_check(instruction);
-	if (c != 0)
-	{
-		macro->exit_code = 2;
-		return (print_syntax_error(c));
-	}
-	macro->instruction = instruction;
-	return (0);
+    if ((c = invalid_char_check(instruction)) == 0) {
+        if ((c = valid_file_name(instruction)) == 0) {
+            if ((c = unclosed_quote_check(instruction)) == 0)
+			{
+                macro->instruction = instruction;
+                return 0;
+            }
+        }
+    }
+    print_syntax_error(macro, c);
+    return -1;
 }

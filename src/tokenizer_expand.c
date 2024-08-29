@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:45:23 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/29 15:56:24 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/29 16:18:42 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,10 @@ t_token	*remove_empty_envir_tokens(t_macro *macro)
 		{
 			expanded = get_expanded_instruction(tokens->value, macro);
 			if (!expanded)
+			{
+				free_tokens(&tokens);
 				return (NULL);
+			}
 			if (*expanded == '\0')
 				remove_token(&macro->tokens, tokens);
 		}

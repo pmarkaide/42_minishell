@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 10:42:50 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/29 15:49:15 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/29 16:32:28 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,10 @@ int		clean_token_quotes(t_token *tokens)
 		{
 			clean = clean_quotes(tmp->value);
 			if(!clean)
+			{
+				free_tokens(&tokens);
 				return (-1);
+			}
 			else
 				tmp->value = clean;
 		}
