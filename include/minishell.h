@@ -142,7 +142,7 @@ void				handle_here_doc(t_cmd *cmds, t_macro *macro);
 void				close_here_doc_not_needed(t_token *tokens);
 
 /* execution */
-void					execution(t_macro *macro);
+void				execution(t_macro *macro);
 
 /* execution utils */
 char				**build_cmd_args_array(t_token *cmd_args, t_macro *macro);
@@ -160,7 +160,8 @@ void				search_executable(t_macro *macro, t_cmd *cmd);
 /* validation utils */
 bool				is_directory(const char *path);
 char				**parse_paths(char **env);
-char				*get_executable_path(char **paths, char *executable, t_macro *macro);
+char				*get_executable_path(char **paths, char *executable,
+						t_macro *macro);
 int					open_file(t_token *token, t_macro *macro);
 
 /* expand */
@@ -181,9 +182,9 @@ bool				is_in_quote(char *str, int index);
 void				free_string(char **str);
 void				free_array(char ***array);
 void				free_tokens(t_token **tokens);
-void 				free_ins(t_macro *macro);
-void 				free_macro(t_macro *macro);
-void 				free_cmds(t_cmd **cmds);
+void				free_ins(t_macro *macro);
+void				free_macro(t_macro *macro);
+void				free_cmds(t_cmd **cmds);
 
 /* others */
 void				ft_signal_handler(int signum);
@@ -212,10 +213,19 @@ int					ft_unset2(char **args, t_macro *macro);
 int					ft_export2(char **args, t_macro *macro);
 int					ft_echo2(char **args);
 int					ft_cd2(char **args, t_macro *macro);
-char				*ft_strjoin3(const char *s1, const char *s2, const char *s3);
+char				*ft_strjoin3(const char *s1, const char *s2,
+						const char *s3);
+void				free_2_strings(char **str1, char **str2);
+char				*get_home_directory(t_macro *macro);
+char				*parse_arguments(char **args, t_macro *macro, char *home);
+int					change_directory(char *path, char *home);
+void				check_save_env(char *var, t_macro *macro, int size);
+void				update_environment(t_macro *macro, char *oldpwd,
+						char *path);
 
 /* error */
 int					error_msg(char *msg, int exit_code);
-void 				exit_error(char *file, char *msg, t_macro *macro, int exit_code);
+void				exit_error(char *file, char *msg, t_macro *macro,
+						int exit_code);
 
 #endif /* MINISHELL_H */
