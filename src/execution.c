@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:23:53 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/29 13:42:46 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/29 15:14:28 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ int	execute_single_builtin(t_macro *macro)
 	saved_stdin = dup(STDIN_FILENO);
 	if(validate_redirections(macro->cmds->redir, macro) == -1)
 		return(-1);
-	dup_file_descriptors(macro, macro->cmds, 0);
-	cmd_array = build_cmd_args_array(macro->cmds->cmd_arg, macro); //TODO: protect
+	dup_file_descriptors(macro, macro->cmds, 0); // TODO: protect
+	cmd_array = build_cmd_args_array(macro->cmds->cmd_arg, macro); // TODO: protect
 	macro->exit_code = execute_builtin(macro, cmd_array);
 	dup2(saved_stdout, STDOUT_FILENO);
 	dup2(saved_stdin, STDIN_FILENO);
@@ -55,14 +55,14 @@ static void	execute_child_process(t_macro *macro, int index, int read_end)
 	while (cmd != NULL && i++ < index)
 		cmd = cmd->next;
 	validation(macro, cmd);
-	dup_file_descriptors(macro, cmd, read_end);
+	dup_file_descriptors(macro, cmd, read_end); // TODO: protect
 	cmd_array = build_cmd_args_array(cmd->cmd_arg, macro);
 	if (cmd->type == BUILTIN)
 		macro->exit_code = execute_builtin(macro, cmd_array);
 	else
 		execve(cmd_array[0], cmd_array, macro->env);
 	status = macro->exit_code;
-	if (index == macro->num_cmds - 1)
+	if (index == macro->num_cmds - 1)  // TODO: split into function
 	{
 		close(macro->pipe_exit[0]);
 		write(macro->pipe_exit[1], &status, sizeof(int));

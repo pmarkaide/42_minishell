@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:35:57 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/29 13:22:05 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/29 15:10:56 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,17 +65,14 @@ void	search_executable(t_macro *macro, t_cmd *cmd)
 	full_path = NULL;
 	paths = parse_paths(macro->env);
 	if (!paths)
-	{
-		macro->exit_code = 127;
 		exit_error(cmd->cmd_arg->value, "No such file or directory", macro, 127);
-	}
 	full_path = get_executable_path(paths, cmd->cmd_arg->value, macro);
 	free_array(&paths);
 	if (!full_path)
 	{
 		ft_putstr_fd(cmd->cmd_arg->value, 2);
 		ft_putstr_fd(": command not found\n", 2);
-		free_macro(macro);
+		free_ins(macro);
 		exit(127);
 	}
 	else
@@ -85,13 +82,15 @@ void	search_executable(t_macro *macro, t_cmd *cmd)
 	}
 }
 
-void	validation(t_macro *macro, t_cmd *cmd)
+void validation(t_macro *macro, t_cmd *cmd)
 {
-	if (cmd && cmd->type == CMD)
+	
+	if (ft_strchr("./", cmd->cmd_arg->value[0]) == NULL)
+		search_executable(macro, cmd);
+	validate_access(cmd->cmd_arg->value, macro);
+	if(validate_redirections(cmd->redir, macro) == -1)
 	{
-		if (ft_strchr("./", cmd->cmd_arg->value[0]) == NULL)
-			search_executable(macro, cmd);
-		validate_access(cmd->cmd_arg->value, macro);
+		free_ins(macro);
+		exit(1);
 	}
-	validate_redirections(cmd->redir, macro);
 }

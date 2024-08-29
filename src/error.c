@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:00:20 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/28 04:12:07 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/29 15:06:15 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,6 @@ void exit_error(char *file, char *msg, t_macro *macro, int exit_code)
 	ft_putstr_fd(msg, 2);
 	ft_putstr_fd("\n", 2);
 	macro->exit_code = exit_code;
+	free_ins(macro);
 	exit(exit_code);
 }
