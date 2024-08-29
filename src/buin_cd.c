@@ -6,11 +6,23 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:04:29 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/29 13:24:43 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/29 23:51:12 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static int	count_args(char **args)
+{
+	int	i;
+
+	i = 0;
+	while (args[i])
+		i++;
+	if (i > 2)
+		ft_putendl_fd("minishell: cd: too many arguments", STDERR_FILENO);
+	return (i);
+}
 
 int	ft_cd2(char **args, t_macro *macro)
 {
@@ -20,12 +32,12 @@ int	ft_cd2(char **args, t_macro *macro)
 	int		argc;
 
 	home = get_home_directory(macro);
-	argc = 0;
-	while (args[argc])
-		argc++;
+	argc = count_args(args);
 	if (argc > 2)
+		return (1);
+	if (home == NULL && (!args[1] || args[1][0] == '\0'))
 	{
-		ft_putendl_fd("minishell: cd: too many arguments", STDERR_FILENO);
+		ft_putendl_fd("minishell: cd: HOME not set", STDERR_FILENO);
 		return (1);
 	}
 	path = parse_arguments(args, macro, home);
