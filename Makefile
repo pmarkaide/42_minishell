@@ -43,8 +43,9 @@ SRCS_FILES = \
 	buin_pwd.c \
 	buin_unset.c \
 	tokenizer_expand.c \
-	general_utils.c
-
+	general_utils.c \
+	buin_cd_utils.c \
+	free_strings.c
 
 SRC_DIR = src/
 SRCS = $(addprefix $(SRC_DIR), $(SRCS_FILES))

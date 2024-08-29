@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:35:57 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/28 03:30:55 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/29 13:22:05 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,12 +70,13 @@ void	search_executable(t_macro *macro, t_cmd *cmd)
 		exit_error(cmd->cmd_arg->value, "No such file or directory", macro, 127);
 	}
 	full_path = get_executable_path(paths, cmd->cmd_arg->value, macro);
-	free(paths);
+	free_array(&paths);
 	if (!full_path)
 	{
 		ft_putstr_fd(cmd->cmd_arg->value, 2);
 		ft_putstr_fd(": command not found\n", 2);
-		exit(macro->exit_code);
+		free_macro(macro);
+		exit(127);
 	}
 	else
 	{
