@@ -6,103 +6,87 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:04:44 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/28 18:09:17 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/29 22:32:26 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	export_argless(t_macro *macro)
+static void	handle_invalid_identifier(char *arg, int *exit_flag)
 {
-	int		i;
-	char	*var;
-	char	*value;
-
-	i = 0;
-	while (macro->env[i])
-	{
-		if (ft_strchr(macro->env[i], '='))
-		{
-			var = ft_substr(macro->env[i], 0, ft_strchr_i(macro->env[i], '='));
-			value = ft_substr(macro->env[i], ft_strchr_i(macro->env[i], '=')
-					+ 1, ft_strlen(macro->env[i]));
-			ft_putstr_fd("declare -x ", STDOUT_FILENO);
-			ft_putstr_fd(var, STDOUT_FILENO);
-			if (value)
-			{
-				ft_putstr_fd("=\"", STDOUT_FILENO);
-				ft_putstr_fd(value, STDOUT_FILENO);
-				ft_putstr_fd("\"\n", STDOUT_FILENO);
-			}
-			else
-				ft_putchar_fd('\n', STDOUT_FILENO);
-			free(var);
-			free(value);
-		}
-		else
-		{
-			ft_putstr_fd("declare -x ", STDOUT_FILENO);
-			ft_putendl_fd(macro->env[i], STDOUT_FILENO);
-		}
-		i++;
-	}
+	ft_putstr_fd("minishell: export: `", STDERR_FILENO);
+	ft_putstr_fd(remove_quotes(arg), STDERR_FILENO);
+	ft_putendl_fd("': not a valid identifier", STDERR_FILENO);
+	*exit_flag = 1;
 }
 
-static int	check_export(char *arg)
+static void	update_env(char *clean_value, t_macro *macro, int j)
 {
-	int	i;
-	int	len;
-
-	i = 0;
-	if (arg[i] != '_' && !ft_isalpha(arg[i]))
-		return (0);
-	len = ft_strchr_i(arg, '=');
-	while (arg[i] && arg[i] != '=' && (i < len || len == -1))
-	{
-		if (!ft_isalnum(arg[i]) && arg[i] != '_')
-			return (0);
-		i++;
-	}
-	return (1);
+	free(macro->env[j]);
+	macro->env[j] = ft_strdup(clean_value);
+	free(clean_value);
 }
 
-static char	*remove_quotes(char *str)
+static void	add_env(char *clean_value, t_macro *macro)
 {
-	int		i;
 	int		j;
-	int		len;
-	char	*clean;
+	char	**new_env;
+	int		k;
 
-	i = 0;
 	j = 0;
-	len = ft_strlen(str);
-	clean = malloc(sizeof(char) * len + 1);
-	if (!clean)
-		return (NULL);
-	while (str[i])
+	while (macro->env[j])
+		j++;
+	new_env = malloc((j + 2) * sizeof(char *));
+	if (new_env == NULL)
 	{
-		if (str[i] != '\'' && str[i] != '\"')
-		{
-			clean[j] = str[i];
-			j++;
-		}
-		i++;
+		perror("malloc");
+		exit(1);
 	}
-	clean[j] = '\0';
-	return (clean);
+	k = 0;
+	while (k < j)
+	{
+		new_env[k] = macro->env[k];
+		k++;
+	}
+	new_env[j] = ft_strdup(clean_value);
+	new_env[j + 1] = NULL;
+	free(macro->env);
+	macro->env = new_env;
+	free_string(&clean_value);
+}
+
+static void	process_argument(char *arg, t_macro *macro, int *exit_flag)
+{
+	char	*clean_value;
+	int		j;
+	int		len_var;
+
+	if (check_export(arg) == 0)
+	{
+		handle_invalid_identifier(arg, exit_flag);
+		return ;
+	}
+	clean_value = remove_quotes(arg);
+	j = 0;
+	while (macro->env[j])
+	{
+		len_var = ft_strchr_i(macro->env[j], '=');
+		if (ft_strncmp(clean_value, macro->env[j], len_var) == 0)
+		{
+			update_env(clean_value, macro, j);
+			return ;
+		}
+		j++;
+	}
+	add_env(clean_value, macro);
 }
 
 int	ft_export2(char **args, t_macro *macro)
 {
 	int		i;
-	int		j;
-	int		len_var;
 	int		argc;
-	char	*clean_value;
 	int		exit_flag;
-	int 	k;
-	char 	**new_env;
-	
+
 	exit_flag = 0;
 	argc = 0;
 	while (args[argc])
@@ -115,49 +99,8 @@ int	ft_export2(char **args, t_macro *macro)
 	i = 1;
 	while (args[i])
 	{
-		if (check_export(args[i]) == 0)
-		{
-			ft_putstr_fd("minishell: export: `", STDERR_FILENO);
-			ft_putstr_fd(remove_quotes(args[i]), STDERR_FILENO);
-			ft_putendl_fd("': not a valid identifier", STDERR_FILENO);
-			i++;
-			exit_flag = 1;
-			continue ;
-		}
-		clean_value = remove_quotes(args[i]);
-		j = 0;
-		while (macro->env[j])
-		{
-			len_var = ft_strchr_i(macro->env[j], '=');
-			if (ft_strncmp(clean_value, macro->env[j], len_var) == 0)
-			{
-				free(macro->env[j]);
-				macro->env[j] = ft_strdup(clean_value);
-				break ;
-			}
-			j++;
-		}
-		if (!macro->env[j])
-		{
-			macro->env[j] = ft_strdup(clean_value);
-			new_env = malloc((j + 2) * sizeof(char *));
-			if (new_env == NULL) {
-				perror("malloc");
-				exit(1);
-			}
-			k = 0;
-			while (k <= j) {
-				new_env[k] = macro->env[k];
-				k++;
-			}
-			new_env[j + 1] = NULL;
-			free(macro->env);
-			macro->env = new_env;
-		}
-		free(clean_value);
+		process_argument(args[i], macro, &exit_flag);
 		i++;
 	}
-	if (exit_flag == 1)
-		return (1);
-	return (0);
+	return (exit_flag);
 }

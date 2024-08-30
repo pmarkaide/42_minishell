@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 20:03:14 by pmarkaid          #+#    #+#             */
 /*   Updated: 2024/08/29 23:59:14 by pmarkaid         ###   ########.fr       */
@@ -81,9 +81,9 @@ int	wait_processes(pid_t pid)
 
 char	**build_cmd_args_array(t_token *cmd_args)
 {
-    char	**cmd_array;
-    int		i;
-
+	char	**cmd_array;
+	int		i;
+		
     if (!cmd_args)
         return (NULL);
     cmd_array = (char **)malloc(sizeof(char *) * (tokens_size(cmd_args) + 1));

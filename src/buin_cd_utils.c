@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 13:15:25 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/29 13:34:47 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/29 23:54:48 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,17 @@ char	*parse_arguments(char **args, t_macro *macro, char *home)
 
 	if (!args[1] || args[1][0] == '\0')
 		path = ft_strdup(home);
-	else if (ft_strncmp(args[1], "~", 1) == 0)
+	else if (ft_strncmp(args[1], "~", 1) == 0 && args[1][1] == '\0')
 		path = ft_strdup(macro->m_home);
+	else if (ft_strncmp(args[1], "~/", 2) == 0)
+		path = ft_strjoin(macro->m_home, args[1] + 1, NULL);
 	else if (ft_strncmp(args[1], "-", 1) == 0)
 	{
 		path = grab_env("OLDPWD", macro->env, 6);
 		if (!path)
 		{
 			ft_putendl_fd("minishell: cd: OLDPWD not set", STDERR_FILENO);
-			free(home);
+			free_string(&home);
 			return (NULL);
 		}
 	}

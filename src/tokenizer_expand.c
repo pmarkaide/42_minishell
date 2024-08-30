@@ -66,6 +66,7 @@ static t_token	*retokenize(t_token *token, t_macro *macro)
 	if (!expanded)
 		return (NULL);
 	lexemes = split_args_by_quotes(expanded);
+	free(expanded);
 	if (!lexemes)
 		return (NULL);
 	retokens = build_retokens(lexemes, token->type);
@@ -97,6 +98,7 @@ t_token	*expand_arg_tokens(t_macro *macro)
 					return (NULL);
 				plug_retokens(tokens, retokens, macro);
 			}
+			free(expanded);
 		}
 		tokens = tokens->next;
 	}
@@ -121,6 +123,7 @@ t_token	*remove_empty_envir_tokens(t_macro *macro)
 			}
 			if (*expanded == '\0')
 				remove_token(&macro->tokens, tokens);
+			free(expanded);
 		}
 		tokens = tokens->next;
 	}

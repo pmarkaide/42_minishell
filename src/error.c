@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 13:00:20 by pmarkaid          #+#    #+#             */
 /*   Updated: 2024/08/29 16:59:53 by pmarkaid         ###   ########.fr       */
@@ -21,7 +21,7 @@ int	error_msg(t_macro *macro, char *file, int exit_code)
 	return (exit_code);
 }
 
-void exit_error(char *file, char *msg, t_macro *macro, int exit_code)
+void	exit_error(char *file, char *msg, t_macro *macro, int exit_code)
 {
 	macro->exit_code = exit_code;
 	ft_putstr_fd("minishell: ", 2);

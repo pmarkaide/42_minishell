@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
 /*   Updated: 2024/08/29 23:38:40 by pmarkaid         ###   ########.fr       */
@@ -223,6 +223,17 @@ int					change_directory(char *path, char *home);
 void				check_save_env(char *var, t_macro *macro, int size);
 void				update_environment(t_macro *macro, char *oldpwd,
 						char *path);
+void				print_export_var(char *var, char *value);
+void				export_argless(t_macro *macro);
+int					check_export(char *arg);
+char				*remove_quotes(char *str);
+t_macro				*init_macro(char **envp, char **argv);
+char				*grab_home(t_macro *macro);
+t_macro				*start_env(t_macro *macro, char **argv);
+int					in_root(char *path);
+int					in_home(t_macro *macro);
+char				*upper_than_home(t_macro *macro);
+char				*create_path(t_macro *macro);
 
 /* error */
 int					error_msg(t_macro *macro,char *msg, int exit_code);
