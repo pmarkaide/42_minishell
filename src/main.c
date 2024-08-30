@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 14:49:38 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/29 16:14:07 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/30 13:57:28 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,44 +30,34 @@ static char	*read_line(t_macro *macro)
 	return (line);
 }
 
-static int	process_line(char *line, t_macro *macro)
+static int	evaluate_line(char *line, t_macro *macro)
 {
 	if (line == NULL || *line == EOF)
 	{
 		printf("exit\n");
-		return (0);
+		return (-1);
 	}
 	if (ft_str_empty(line))
-	{
-		free(line);
 		return (1);
-	}
 	if (line[0] != '\0')
 		add_history(line);
-	if (syntax_error_check(line))
-	{
-		macro->exit_code = 2;
-		free(line);
+	if (syntax_error_check(macro, line))
 		return (1);
-	}
 	if (g_exit > 0)
 	{
 		macro->exit_code = g_exit;
 		g_exit = 0;
 	}
 	macro->instruction = line;
-	return (2);
+	return (0);
 }
 
-static void	execute_commands(t_macro *macro, char *line)
+static void	execute_commands(t_macro *macro)
 {
-	tokenizer(macro);
-	macro->cmds = parsing(macro);
-	if (macro->cmds == NULL)
-	{
-		free_string(&line);
-		return ;
-	}
+	if(tokenizer(macro) == -1)
+		return;
+	if(parsing(macro) == -1)
+		return;
 	execution(macro);
 	free_ins(macro);
 }
@@ -86,12 +76,15 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		line = read_line(macro);
-		status = process_line(line, macro);
-		if (status == 0)
+		status = evaluate_line(line, macro);
+		if (status == -1)
 			break ;
 		else if (status == 1)
+		{
+			free_string(&line);
 			continue ;
-		execute_commands(macro, line);
+		}
+		execute_commands(macro);
 	}
 	free_macro(macro);
 	exit(0);
