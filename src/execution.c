@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:23:53 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/30 14:47:21 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/30 15:40:38 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,8 +160,7 @@ void	execution(t_macro *macro)
 		if (macro->pid != 0) //is this correct and need? you are in the parent
 			read_pipe_exit(macro->pipe_exit, &status);
 		macro->exit_code = status;
-		free(macro->pid);
-		macro->pid = NULL;
+		ft_free((void **)&macro->pid);
 		close_fds(macro, read_end);
 	}
 	return ;

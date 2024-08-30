@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:35:57 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/30 00:03:12 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/30 15:39:24 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,9 +84,12 @@ void	search_executable(t_macro *macro, t_cmd *cmd)
 
 void	validation(t_macro *macro, t_cmd *cmd)
 {
-	if (ft_strchr("./", cmd->cmd_arg->value[0]) == NULL)
-		search_executable(macro, cmd);
-	validate_access(cmd->cmd_arg->value, macro);
+	if (cmd->cmd_arg)
+	{
+		if(ft_strchr("./", cmd->cmd_arg->value[0]) == NULL)
+			search_executable(macro, cmd);
+		validate_access(cmd->cmd_arg->value, macro);
+	}
 	if (validate_redirections(cmd->redir, macro) == -1)
 	{
 		free_ins(macro);
