@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 20:03:14 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/29 13:35:32 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/29 23:59:14 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,31 @@ void	close_fds(t_macro *macro, int read_end)
 		close(read_end);
 }
 
-void	catch_parent_exit(int *pipe_exit, int *exit_code)
+void	read_pipe_exit(int *pipe_exit, int *status)
 {
-	close(pipe_exit[1]);
-	read(pipe_exit[0], exit_code, sizeof(int));
-	close(pipe_exit[0]);
+	if (pipe_exit == NULL || status == NULL)
+    {
+        perror("read_pipe_exit :: invalid arguments");
+        return;
+    }
+    close(pipe_exit[1]);
+    read(pipe_exit[0], status, sizeof(int));
+    // if (read(pipe_exit[0], status, sizeof(int)) == -1)
+    //     perror("read_pipe_exit :: read error");
+    close(pipe_exit[0]);
+}
+
+void	write_pipe_exit(int *pipe_exit, int status)
+{
+	if (pipe_exit == NULL)
+    {
+        perror("write_pipe_exit :: invalid arguments");
+        return;
+    }
+    close(pipe_exit[0]);
+    if (write(pipe_exit[1], &status, sizeof(int)) == -1)
+        perror("write_pipe_exit :: write error");
+    close(pipe_exit[1]);
 }
 
 int	wait_processes(pid_t pid)
@@ -59,16 +79,16 @@ int	wait_processes(pid_t pid)
 	return (exit_code);
 }
 
-char	**build_cmd_args_array(t_token *cmd_args, t_macro *macro)
+char	**build_cmd_args_array(t_token *cmd_args)
 {
-    char	**cmd_array;
-    int		i;
-
+	char	**cmd_array;
+	int		i;
+		
     if (!cmd_args)
         return (NULL);
     cmd_array = (char **)malloc(sizeof(char *) * (tokens_size(cmd_args) + 1));
     if (!cmd_array)
-        exit_error("build_cmd_args_array", "malloc error", macro, -1);
+        return(NULL);
     i = 0;
     while (cmd_args)
     {
@@ -76,7 +96,7 @@ char	**build_cmd_args_array(t_token *cmd_args, t_macro *macro)
         if (!cmd_array[i])
         {
             free_array(&cmd_array);
-            exit_error("build_cmd_args_array", "malloc error", macro, -1);
+            return(NULL);
         }
         i++;
         cmd_args = cmd_args->next;

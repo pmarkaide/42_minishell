@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:52:58 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/28 02:21:09 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/30 14:25:25 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,13 +67,14 @@ char	*build_expanded_instruction(char *clean, char *ins, t_macro *macro)
 		else
 			clean[j++] = ins[i++];
 	}
-	free(exit_str);
+	free_string(&exit_str);
 	return (clean);
 }
 
 size_t	expanded_envir_len(char *ins, t_macro *macro)
 {
 	size_t	envir_len;
+	char 	*exit_code;
 	int		i;
 	char	*envir_name;
 	char	*envir_value;
@@ -95,7 +96,9 @@ size_t	expanded_envir_len(char *ins, t_macro *macro)
 			if (ins[i] == '?')
 			{
 				i++;
-				envir_len += ft_strlen(ft_itoa(macro->exit_code));
+				exit_code = ft_itoa(macro->exit_code);
+				envir_len += ft_strlen(exit_code);
+				free_string(&exit_code);
 			}
 			else
 			{
@@ -106,7 +109,7 @@ size_t	expanded_envir_len(char *ins, t_macro *macro)
 					if (envir_value)
 						envir_len += ft_strlen(envir_value);
 					i += ft_strlen(envir_name);
-					free(envir_name);
+					free_2_strings(&envir_name, &envir_value);
 				}
 			}
 		}

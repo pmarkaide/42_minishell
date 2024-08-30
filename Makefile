@@ -6,7 +6,7 @@
 #    By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/01 15:11:43 by pmarkaid          #+#    #+#              #
-#    Updated: 2024/08/29 14:36:47 by pmarkaid         ###   ########.fr        #
+#    Updated: 2024/08/30 14:46:29 by pmarkaid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,9 @@ SRCS_FILES = \
 	tokenizer_expand.c \
 	general_utils.c \
 	buin_cd_utils.c \
-	free_strings.c
+	free_strings.c \
+	buin_export_utils.c \
+	main_path.c
 
 SRC_DIR = src/
 SRCS = $(addprefix $(SRC_DIR), $(SRCS_FILES))
@@ -71,7 +73,7 @@ LIBS = -lreadline
 all: makelibft $(NAME)
 
 makelibft:
-	make -C $(LIBFT_DIR)
+	@make -C $(LIBFT_DIR) > /dev/null
 
 %.o: %.c
 	$(CC) $(CFLAGS) $(LIBFT_INCLUDE) $(INCLUDE) -c $< -o $@

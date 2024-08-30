@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:00:43 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/28 18:41:48 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/29 22:05:57 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	ft_pwd2(t_macro *macro)
 {
 	char	*path;
 
-	path = getcwd(NULL, 0);	
+	path = getcwd(NULL, 0);
 	if (path == NULL)
 	{
 		path = ft_strdup(macro->m_pwd);
@@ -46,7 +46,7 @@ int	ft_pwd2(t_macro *macro)
 char	*char_pwd(void)
 {
 	char	*path;
-	
+
 	path = getcwd(NULL, 0);
 	if (path == NULL)
 	{

@@ -6,15 +6,17 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 15:43:32 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/01/17 15:43:51 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/29 20:37:20 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_free(char **str)
+void	ft_free(void **ptr)
 {
-	free(*str);
-	*str = NULL;
-	return (NULL);
+	if (ptr != NULL && *ptr != NULL)
+	{
+		free(*ptr);
+		*ptr = NULL;
+	}
 }

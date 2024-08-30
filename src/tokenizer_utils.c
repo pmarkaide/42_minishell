@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 10:42:50 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/28 17:58:55 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/29 16:32:28 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,15 +102,26 @@ char	*clean_quotes(char *str)
 	return (result);
 }
 
-void	clean_token_quotes(t_token *tokens)
+int		clean_token_quotes(t_token *tokens)
 {
 	t_token	*tmp;
+	char *clean;
 
 	tmp = tokens;
 	while (tmp)
 	{
 		if (tmp->type != HERE_DOC)
-			tmp->value = clean_quotes(tmp->value);
+		{
+			clean = clean_quotes(tmp->value);
+			if(!clean)
+			{
+				free_tokens(&tokens);
+				return (-1);
+			}
+			else
+				tmp->value = clean;
+		}
 		tmp = tmp->next;
 	}
+	return(0);
 }

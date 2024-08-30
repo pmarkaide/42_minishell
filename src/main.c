@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 14:49:38 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/29 14:37:34 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/30 14:46:23 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,243 +14,80 @@
 
 int			g_exit;
 
-t_macro	*start_env(t_macro *macro, char **argv)
+static char	*read_line(t_macro *macro)
 {
-	char	*num;
-	char	*str;
+	char	*line;
+	char	*path;
 
-	str = getcwd(NULL, 0);
-	macro->env = fix_env("PWD", str, macro->env, 3);
-	free(str);
-	str = grab_env("SHLVL", macro->env, 5);
-	if (!str || ft_atoi(str) <= 0)
-		num = ft_strdup("1");
+	if (g_exit == 130)
+		line = readline("");
 	else
-		num = ft_itoa(ft_atoi(str) + 1);
-	free(str);
-	macro->env = fix_env("SHLVL", num, macro->env, 5);
-	free(num);
-	str = grab_env("PATH", macro->env, 4);
-	if (!str)
-		macro->env = fix_env("PATH",
-				"/usr/local/sbin:/usr/local/bin:/usr/bin:/bin", macro->env, 4);
-	free(str);
-	str = grab_env("_", macro->env, 1);
-	if (!str)
-		macro->env = fix_env("_", argv[0], macro->env, 1);
-	free(str);
-	return (macro);
-}
-
-static char	*grab_home(t_macro *macro)
-{
-	char	*home;
-
-	home = grab_env("HOME", macro->env, 4);
-	if (home == NULL)
 	{
-		return (NULL);
+		path = create_path(macro);
+		line = readline(path);
+		free(path);
 	}
-	return (home);
+	return (line);
 }
 
-t_macro	*init_macro(char **envp, char **argv)
+static int	evaluate_line(char *line, t_macro *macro)
 {
-	t_macro	*macro;
-
-	macro = malloc(sizeof(t_macro));
-	if (!macro)
+	if (line == NULL || *line == EOF)
 	{
-		ft_putstr_fd("Error: Malloc failed creating macro structure\n", 2);
-		exit(1);
+		printf("exit\n");
+		return (-1);
 	}
-	ft_bzero(macro, sizeof(t_macro));macro->pipe_fd[0] = -1;
-	macro->envp = envp;
-	macro->env = copy_env(envp);
-	macro->history = NULL;
-	macro->instruction = NULL;
-	macro->tokens = NULL;
-	macro->cmds = NULL;
-	macro->pid = NULL;
-	macro = start_env(macro, argv);
-	macro->m_pwd = char_pwd();
-	macro->m_home = grab_home(macro);
-	macro->exit_code = 0;
-	macro->pipe_fd[0] = -1;
-	macro->pipe_fd[1] = -1;
-	macro->pipe_exit[0] = -1;
-	macro->pipe_exit[1] = -1;
-	return (macro);
-}
-
-
-static int	in_root(char *path)
-{
-	if (ft_strcmp(path, "/") == 0)
+	if (ft_str_empty(line))
 		return (1);
+	if (line[0] != '\0')
+		add_history(line);
+	if (syntax_error_check(macro, line))
+		return (1);
+	if (g_exit > 0)
+	{
+		macro->exit_code = g_exit;
+		g_exit = 0;
+	}
+	macro->instruction = line;
 	return (0);
 }
 
-static int	in_home(t_macro *macro)
+static void	execute_commands(t_macro *macro)
 {
-	char	*home;
-
-	home = grab_env("HOME", macro->env, 4);
-	if (home == NULL)
-		return (0);
-	if (ft_strcmp(macro->m_pwd, home) == 0)
-	{
-		free(home);
-		return (1);
-	}
-	free(home);
-	return (0);
-}
-
-static char	*upper_than_home(t_macro *macro)
-{
-	char	*home;
-	char	*path;
-	char	*tmp;
-	int		len;
-
-	home = grab_env("HOME", macro->env, 4);
-	if (home == NULL)
-		return (NULL);
-	len = ft_strlen(home);
-	if (ft_strncmp(macro->m_pwd, home, len) == 0)
-	{
-		tmp = ft_strdup(macro->m_pwd);
-		path = ft_strjoin3("minishell:~", tmp + len, "$ ");
-		free(home);
-		free(tmp);
-		return (path);
-	}
-	else
-	{
-		free(home);
-		return (NULL);
-	}	
-}
-
-static char	*create_path(t_macro *macro)
-{
-	char	*path;
-	char	*up_home;
-	
-	up_home = upper_than_home(macro);
-	if (in_root(macro->m_pwd))
-		path = ft_strdup("minishell:/$ ");
-	else if (in_home(macro))
-		path = ft_strdup("minishell:~$ ");
-	else if (up_home)
-		path = upper_than_home(macro);
-	else
-		path = ft_strjoin3("minishell:", macro->m_pwd, "$ ");
-	free(up_home);
-	return (path);
+	if(tokenizer(macro) == -1)
+		return;
+	if(parsing(macro) == -1)
+		return;
+	execution(macro);
+	free_ins(macro);
 }
 
 int main(int argc, char **argv, char **envp)
 {
-    t_macro *macro;
-    char *line;
-    char *path;
+	t_macro	*macro;
+	char	*line;
+	int		status;
 
-    g_exit = 0;
-    macro = init_macro(envp, argv);
-    signal(SIGINT, ft_signal_handler);
-    signal(SIGQUIT, SIG_IGN);
-
-    if (argc == 3 && strcmp(argv[1], "-c") == 0)
-    {
-        // Handle command passed via -c option
-        line = argv[2];
-
-        if (line && !ft_str_empty(line))
-        {
-            macro->instruction = line;
-            tokenizer(macro);
-            macro->cmds = parsing(macro);
-            if (macro->cmds)
-            {
-                execution(macro);
-                free_ins(macro);
-            }
-        }
-
-        free_macro(macro);
-        exit(0);
-    }
-
-    while (1)
-    {
-        if (isatty(fileno(stdin)))
-        {
-            if (g_exit == 130)
-                line = readline("");
-            else
-            { 
-                path = create_path(macro);
-                line = readline(path);
-                free(path);
-            }
-        }
-        else
-        {
-            line = get_next_line(fileno(stdin));
-            if (line)
-            {
-                char *trimmed_line = ft_strtrim(line, "\n");
-                free(line);
-                line = trimmed_line;
-            }
-        }
-
-        if (line == NULL || *line == EOF)
-        {
-            g_exit = 0;
-            break;
-        }
-
-        if (ft_str_empty(line))
-        {
-            free(line);
-            continue;
-        }
-
-        if (line[0] != '\0')
-            add_history(line);
-
-        if (syntax_error_check(line))
-        {
-            macro->exit_code = 2;
-            free(line);
-            continue;
-        }
-
-        if (g_exit > 0)
-        {
-            macro->exit_code = g_exit;
-            g_exit = 0;
-        }
-
-        macro->instruction = line;
-        tokenizer(macro);
-        macro->cmds = parsing(macro);
-
-        if (macro->cmds == NULL)
-        {
-            free(line);
-            continue;
-        }
-
-        execution(macro);
-        free_ins(macro);
-    }
-
-    free_macro(macro);
-    exit(0);
+	(void)argc;
+	g_exit = 0;
+	macro = init_macro(envp, argv);
+	signal(SIGINT, ft_signal_handler);
+	signal(SIGQUIT, SIG_IGN);
+	while (1)
+	{
+		line = read_line(macro);
+		status = evaluate_line(line, macro);
+		if (status == -1)
+			break ;
+		else if (status == 1)
+		{
+			free_string(&line);
+			continue ;
+		}
+		execute_commands(macro);
+	}
+	free_macro(macro);
+	exit(0);
 }
 
 

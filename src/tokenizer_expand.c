@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_expand.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:45:23 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/27 11:35:32 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/30 14:20:22 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,12 @@ static t_token	*retokenize(t_token *token, t_macro *macro)
 	if (!expanded)
 		return (NULL);
 	lexemes = split_args_by_quotes(expanded);
+	free(expanded);
 	if (!lexemes)
 		return (NULL);
 	retokens = build_retokens(lexemes, token->type);
+	if (!retokens)
+		return (NULL);
 	return (retokens);
 }
 
@@ -87,7 +90,10 @@ t_token	*expand_arg_tokens(t_macro *macro)
 			if (!expanded || *expanded == '\0')
 				return (NULL);
 			if (ft_strchr("\"", tokens->value[0]))
+			{
+				free_string(&tokens->value);
 				tokens->value = expanded;
+			}
 			else
 			{
 				retokens = retokenize(tokens, macro);
@@ -113,9 +119,13 @@ t_token	*remove_empty_envir_tokens(t_macro *macro)
 		{
 			expanded = get_expanded_instruction(tokens->value, macro);
 			if (!expanded)
+			{
+				free_tokens(&tokens);
 				return (NULL);
+			}
 			if (*expanded == '\0')
 				remove_token(&macro->tokens, tokens);
+			free(expanded);
 		}
 		tokens = tokens->next;
 	}
