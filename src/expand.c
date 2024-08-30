@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:52:58 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/28 02:21:09 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/30 01:06:35 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ size_t	expanded_envir_len(char *ins, t_macro *macro)
 					if (envir_value)
 						envir_len += ft_strlen(envir_value);
 					i += ft_strlen(envir_name);
-					free(envir_name);
+					free_2_strings(&envir_name, &envir_value);
 				}
 			}
 		}
