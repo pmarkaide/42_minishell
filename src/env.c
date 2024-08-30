@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 09:11:22 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/25 12:49:36 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/30 01:04:39 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,9 @@ void	ft_export_do(t_macro *macro, char *name, char *value)
 
 char	*ft_getenv(char *var, char **env)
 {
-	int	i;
-	int	m;
+	int		i;
+	int		m;
+	char	*value;
 
 	i = 0;
 	m = 0;
@@ -79,7 +80,10 @@ char	*ft_getenv(char *var, char **env)
 	{
 		m = ft_strchr_i(env[i], '=');
 		if (!ft_strncmp(env[i], var, ft_strlen(var)))
-			return (ft_substr(env[i], m + 1, ft_strlen(env[i])));
+		{
+			value = ft_substr(env[i], m + 1, ft_strlen(env[i]));
+			return (value);
+		}
 		i++;
 	}
 	return (NULL);

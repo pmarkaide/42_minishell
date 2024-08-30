@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:45:23 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/27 11:35:32 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/30 01:14:39 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ static t_token	*retokenize(t_token *token, t_macro *macro)
 	if (!expanded)
 		return (NULL);
 	lexemes = split_args_by_quotes(expanded);
+	free(expanded);
 	if (!lexemes)
 		return (NULL);
 	retokens = build_retokens(lexemes, token->type);
@@ -95,6 +96,7 @@ t_token	*expand_arg_tokens(t_macro *macro)
 					return (NULL);
 				plug_retokens(tokens, retokens, macro);
 			}
+			free(expanded);
 		}
 		tokens = tokens->next;
 	}
@@ -116,6 +118,7 @@ t_token	*remove_empty_envir_tokens(t_macro *macro)
 				return (NULL);
 			if (*expanded == '\0')
 				remove_token(&macro->tokens, tokens);
+			free(expanded);
 		}
 		tokens = tokens->next;
 	}
