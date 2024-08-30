@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 12:08:37 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/27 09:18:51 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/29 20:43:18 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char				*ft_strtrim(char const *s1, char const *set);
 char				**ft_split(char const *s, char c);
 
 char				*get_next_line(int fd);
-char				*ft_free(char **str);
+void				ft_free(void **ptr);
 size_t				ft_strlenc(const char *s, char c);
 void				ft_print_char_array(char **array);
 void				ft_print_int_array(int **array);

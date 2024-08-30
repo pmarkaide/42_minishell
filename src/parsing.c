@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 09:53:20 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/28 02:19:05 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/29 15:55:28 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ static char	parsing_error_check(t_token *tokens, t_macro *macro)
 	return (c);
 }
 
-t_cmd	*parsing(t_macro *macro)
+int parsing(t_macro *macro)
 {
 	char	c;
 	int		n;
@@ -134,12 +134,19 @@ t_cmd	*parsing(t_macro *macro)
 	cmds = NULL;
 	c = parsing_error_check(macro->tokens, macro);
 	if (c != 0)
-		return (NULL);
+	{
+		free_ins(macro);
+		return (-1);
+	}
 	else
 		cmds = parse_tokens(macro->tokens, &n);
 	if (!cmds)
-		return (NULL);
+	{
+		free_ins(macro);
+		return (-1);
+	}
 	macro->num_cmds = n - 1;
 	handle_here_doc(cmds, macro);
-	return (cmds);
+	macro->cmds = cmds;
+	return (0);
 }

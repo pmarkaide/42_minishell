@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_expand.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:45:23 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/30 01:14:39 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/29 16:18:42 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ static t_token	*retokenize(t_token *token, t_macro *macro)
 	if (!lexemes)
 		return (NULL);
 	retokens = build_retokens(lexemes, token->type);
+	if (!retokens)
+		return (NULL);
 	return (retokens);
 }
 
@@ -115,7 +117,10 @@ t_token	*remove_empty_envir_tokens(t_macro *macro)
 		{
 			expanded = get_expanded_instruction(tokens->value, macro);
 			if (!expanded)
+			{
+				free_tokens(&tokens);
 				return (NULL);
+			}
 			if (*expanded == '\0')
 				remove_token(&macro->tokens, tokens);
 			free(expanded);

@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:47:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/21 18:51:59 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/29 15:41:55 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,10 +101,10 @@ static int	process_token(char *ins, int *pos, t_list **tokens)
 
 t_list	*split_args_by_quotes(char *ins)
 {
-	t_list	*tokens;
+	t_list	*lexemes;
 	int		pos;
 
-	tokens = NULL;
+	lexemes = NULL;
 	pos = 0;
 	while (ins[pos])
 	{
@@ -112,12 +112,12 @@ t_list	*split_args_by_quotes(char *ins)
 			pos++;
 		if (ins[pos])
 		{
-			if (process_token(ins, &pos, &tokens) == -1)
+			if (process_token(ins, &pos, &lexemes) == -1)
 			{
-				ft_lstclear(&tokens, ft_del);
+				ft_lstclear(&lexemes, ft_del);
 				return (NULL);
 			}
 		}
 	}
-	return (tokens);
+	return (lexemes);
 }
