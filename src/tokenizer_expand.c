@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:45:23 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/29 16:18:42 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/30 14:20:22 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,10 @@ t_token	*expand_arg_tokens(t_macro *macro)
 			if (!expanded || *expanded == '\0')
 				return (NULL);
 			if (ft_strchr("\"", tokens->value[0]))
+			{
+				free_string(&tokens->value);
 				tokens->value = expanded;
+			}
 			else
 			{
 				retokens = retokenize(tokens, macro);
@@ -98,7 +101,6 @@ t_token	*expand_arg_tokens(t_macro *macro)
 					return (NULL);
 				plug_retokens(tokens, retokens, macro);
 			}
-			free(expanded);
 		}
 		tokens = tokens->next;
 	}
