@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 13:02:09 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/29 14:37:56 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/30 15:09:12 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	free_macro(t_macro *macro)
 	free_ins(macro);
 	free_array(&macro->env);
 	free_array(&macro->history);
-	free_string(&macro->instruction);
+	//free_string(&macro->instruction);
 	free_string(&macro->m_pwd);
 	free_string(&macro->m_home);
 	free(macro);
