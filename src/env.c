@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 09:11:22 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/30 01:04:39 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/30 10:03:08 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,8 @@ char	*ft_getenv(char *var, char **env)
 	while (!ft_strchr(var, '=') && env && env[i])
 	{
 		m = ft_strchr_i(env[i], '=');
-		if (!ft_strncmp(env[i], var, ft_strlen(var)))
+		if (!ft_strncmp(env[i], var, ft_strlen(var))
+			&& m == (int)ft_strlen(var))
 		{
 			value = ft_substr(env[i], m + 1, ft_strlen(env[i]));
 			return (value);
