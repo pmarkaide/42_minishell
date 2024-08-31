@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:45:23 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/31 14:49:35 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/31 15:37:02 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,9 @@ static t_token	*build_retokens(t_list *lexemes, t_type type)
 		}
 		else
 			token->type = ARG;
-		token->value = lexemes->content;
+		token->value = ft_strdup(lexemes->content);
+		if(!token->value)
+			return(free_tokens(&token));
 		token_add_back(&retokens, token);
 		lexemes = lexemes->next;
 	}
@@ -70,6 +72,7 @@ static t_token	*retokenize(char *expanded, t_token *token)
 	retokens = build_retokens(lexemes, token->type);
 	if (!retokens)
 		return (NULL);
+	ft_lstclear(&lexemes, ft_del);
 	return (retokens);
 }
 
@@ -91,7 +94,7 @@ t_token	*expand_arg_tokens(t_macro *macro)
 			if (ft_strchr("\"", tokens->value[0]))
 			{
 				free_string(&tokens->value);
-				tokens->value = expanded;
+				tokens->value = ft_strdup(expanded);
 			}
 			else
 			{
@@ -101,6 +104,7 @@ t_token	*expand_arg_tokens(t_macro *macro)
 				last_retokens = plug_retokens(tokens, retokens, macro);
 				tokens = last_retokens;
 			}
+			free_string(&expanded);
 		}
 		tokens = tokens->next;
 	}

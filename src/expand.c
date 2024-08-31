@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:52:58 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/31 14:36:33 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/31 15:27:28 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,12 +138,10 @@ char	*get_expanded_instruction(char *ins, t_macro *macro)
 			return(free_string(&clean));
 		build_expanded_instruction(temp, clean, macro);
 		if (ft_strcmp(temp, clean) == 0)
-		{
-			free_string(&temp);
 			break;
-		}
-		free(clean);
+		free_string(&clean);
 		clean = temp;
 	}
+	free_string(&temp);
 	return (clean);
 }

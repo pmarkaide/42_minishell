@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/31 14:35:51 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/31 15:20:51 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,6 @@ char				*clean_quotes(char *str);
 t_token				*init_token(void);
 void				token_add_back(t_token **tokens, t_token *new);
 t_token				*last_token(t_token *token);
-void				free_tokens(t_token **tokens);
 void				print_tokens(t_token *tokens);
 t_cmd				*init_cmd(void);
 void				cmd_add_back(t_cmd **cmds, t_cmd *new);
@@ -181,11 +180,11 @@ bool				is_in_quote(char *str, int index);
 
 /* free */
 char				*free_string(char **str);
-void				free_array(char ***array);
-void				free_tokens(t_token **tokens);
-void				free_ins(t_macro *macro);
-void				free_macro(t_macro *macro);
-void				free_cmds(t_cmd **cmds);
+char				*free_array(char ***array);
+t_token				*free_tokens(t_token **tokens);
+t_macro				*free_ins(t_macro *macro);
+t_macro				*free_macro(t_macro *macro);
+t_cmd				*free_cmds(t_cmd **cmds);
 
 /* others */
 void				ft_signal_handler(int signum);
