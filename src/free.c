@@ -6,13 +6,13 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 13:02:09 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/30 15:09:12 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/31 15:13:07 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_tokens(t_token **tokens)
+char	*free_tokens(t_token **tokens)
 {
 	t_token	*tmp;
 
@@ -24,15 +24,16 @@ void	free_tokens(t_token **tokens)
 		free(tmp);
 	}
 	*tokens = NULL;
+	return(NULL);
 }
 
-void	free_cmds(t_cmd **cmds)
+char	*free_cmds(t_cmd **cmds)
 {
 	t_cmd	*tmp;
 	t_cmd	*next;
 
 	if (cmds == NULL || *cmds == NULL)
-		return ;
+		return(NULL);
 	tmp = *cmds;
 	while (tmp != NULL)
 	{
@@ -43,24 +44,27 @@ void	free_cmds(t_cmd **cmds)
 		tmp = next;
 	}
 	*cmds = NULL;
+	return(NULL);
 }
 
-void	free_ins(t_macro *macro)
+char	*free_ins(t_macro *macro)
 {
 	free_tokens(&macro->tokens);
 	free_cmds(&macro->cmds);
 	free(macro->pid);
 	close_fds(macro, 0);
 	macro->num_cmds = 0;
+	return(NULL);
 }
 
-void	free_macro(t_macro *macro)
+char	*free_macro(t_macro *macro)
 {
 	free_ins(macro);
 	free_array(&macro->env);
 	free_array(&macro->history);
-	//free_string(&macro->instruction);
+	free_string(&macro->instruction);
 	free_string(&macro->m_pwd);
 	free_string(&macro->m_home);
 	free(macro);
+	return(NULL);
 }
