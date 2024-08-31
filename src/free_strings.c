@@ -6,13 +6,13 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 13:22:21 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/31 14:35:01 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/31 15:52:26 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_2_strings(char **str1, char **str2)
+char	*free_2_strings(char **str1, char **str2)
 {
 	if (str1 != NULL && *str1 != NULL)
 	{
@@ -24,14 +24,15 @@ void	free_2_strings(char **str1, char **str2)
 		free(*str2);
 		*str2 = NULL;
 	}
+	return(NULL);
 }
 
-void	free_array(char ***array)
+char	*free_array(char ***array)
 {
 	size_t	i;
 
 	if (*array == NULL)
-		return ;
+		return(NULL);
 	i = 0;
 	while ((*array)[i] != NULL)
 	{
@@ -41,6 +42,7 @@ void	free_array(char ***array)
 	}
 	free(*array);
 	*array = NULL;
+	return(NULL);
 }
 
 char	*free_string(char **str)

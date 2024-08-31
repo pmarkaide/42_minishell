@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/31 15:20:51 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/31 15:52:05 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,7 +215,7 @@ int					ft_echo2(char **args);
 int					ft_cd2(char **args, t_macro *macro);
 char				*ft_strjoin3(const char *s1, const char *s2,
 						const char *s3);
-void				free_2_strings(char **str1, char **str2);
+char				*free_2_strings(char **str1, char **str2);
 char				*get_home_directory(t_macro *macro);
 char				*parse_arguments(char **args, t_macro *macro, char *home);
 int					change_directory(char *path, char *home);
