@@ -6,13 +6,13 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 13:02:09 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/31 15:13:07 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/31 15:20:14 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*free_tokens(t_token **tokens)
+t_token	*free_tokens(t_token **tokens)
 {
 	t_token	*tmp;
 
@@ -27,7 +27,7 @@ char	*free_tokens(t_token **tokens)
 	return(NULL);
 }
 
-char	*free_cmds(t_cmd **cmds)
+t_cmd	*free_cmds(t_cmd **cmds)
 {
 	t_cmd	*tmp;
 	t_cmd	*next;
@@ -47,7 +47,7 @@ char	*free_cmds(t_cmd **cmds)
 	return(NULL);
 }
 
-char	*free_ins(t_macro *macro)
+t_macro	*free_ins(t_macro *macro)
 {
 	free_tokens(&macro->tokens);
 	free_cmds(&macro->cmds);
@@ -57,7 +57,7 @@ char	*free_ins(t_macro *macro)
 	return(NULL);
 }
 
-char	*free_macro(t_macro *macro)
+t_macro	*free_macro(t_macro *macro)
 {
 	free_ins(macro);
 	free_array(&macro->env);
