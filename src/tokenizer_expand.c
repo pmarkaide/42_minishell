@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:45:23 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/30 14:20:22 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/31 14:49:35 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static t_token	*build_retokens(t_list *lexemes, t_type type)
 	return (retokens);
 }
 
-static void	plug_retokens(t_token *token, t_token *retokens, t_macro *macro)
+static t_token	*plug_retokens(t_token *token, t_token *retokens, t_macro *macro)
 {
 	t_token	*next;
 	t_token	*prev;
@@ -54,19 +54,17 @@ static void	plug_retokens(t_token *token, t_token *retokens, t_macro *macro)
 	last = last_token(retokens);
 	if (last)
 		last->next = next;
+	token->next = NULL;
+	free_tokens(&token);
+	return last;
 }
 
-static t_token	*retokenize(t_token *token, t_macro *macro)
+static t_token	*retokenize(char *expanded, t_token *token)
 {
 	t_list	*lexemes;
 	t_token	*retokens;
-	char	*expanded;
 
-	expanded = get_expanded_instruction(token->value, macro);
-	if (!expanded)
-		return (NULL);
 	lexemes = split_args_by_quotes(expanded);
-	free(expanded);
 	if (!lexemes)
 		return (NULL);
 	retokens = build_retokens(lexemes, token->type);
@@ -79,6 +77,7 @@ t_token	*expand_arg_tokens(t_macro *macro)
 {
 	t_token	*tokens;
 	t_token	*retokens;
+	t_token *last_retokens;
 	char	*expanded;
 
 	tokens = macro->tokens;
@@ -96,10 +95,11 @@ t_token	*expand_arg_tokens(t_macro *macro)
 			}
 			else
 			{
-				retokens = retokenize(tokens, macro);
+				retokens = retokenize(expanded, tokens);
 				if (!retokens)
 					return (NULL);
-				plug_retokens(tokens, retokens, macro);
+				last_retokens = plug_retokens(tokens, retokens, macro);
+				tokens = last_retokens;
 			}
 		}
 		tokens = tokens->next;
@@ -125,7 +125,7 @@ t_token	*remove_empty_envir_tokens(t_macro *macro)
 			}
 			if (*expanded == '\0')
 				remove_token(&macro->tokens, tokens);
-			free(expanded);
+			free_string(&expanded);
 		}
 		tokens = tokens->next;
 	}
