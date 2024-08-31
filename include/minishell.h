@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/29 23:38:40 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/31 14:35:51 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,7 +180,7 @@ bool				envir_must_be_expanded(char *instruction, int index);
 bool				is_in_quote(char *str, int index);
 
 /* free */
-void				free_string(char **str);
+char				*free_string(char **str);
 void				free_array(char ***array);
 void				free_tokens(t_token **tokens);
 void				free_ins(t_macro *macro);

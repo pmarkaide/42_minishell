@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_strings.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 13:22:21 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/29 13:23:06 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/08/31 14:35:01 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,12 @@ void	free_array(char ***array)
 	*array = NULL;
 }
 
-void	free_string(char **str)
+char	*free_string(char **str)
 {
 	if (str != NULL && *str != NULL)
 	{
 		free(*str);
 		*str = NULL;
 	}
+	return(NULL);
 }
