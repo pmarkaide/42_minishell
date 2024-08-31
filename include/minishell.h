@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/29 23:38:40 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/31 15:52:05 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,6 @@ char				*clean_quotes(char *str);
 t_token				*init_token(void);
 void				token_add_back(t_token **tokens, t_token *new);
 t_token				*last_token(t_token *token);
-void				free_tokens(t_token **tokens);
 void				print_tokens(t_token *tokens);
 t_cmd				*init_cmd(void);
 void				cmd_add_back(t_cmd **cmds, t_cmd *new);
@@ -180,12 +179,12 @@ bool				envir_must_be_expanded(char *instruction, int index);
 bool				is_in_quote(char *str, int index);
 
 /* free */
-void				free_string(char **str);
-void				free_array(char ***array);
-void				free_tokens(t_token **tokens);
-void				free_ins(t_macro *macro);
-void				free_macro(t_macro *macro);
-void				free_cmds(t_cmd **cmds);
+char				*free_string(char **str);
+char				*free_array(char ***array);
+t_token				*free_tokens(t_token **tokens);
+t_macro				*free_ins(t_macro *macro);
+t_macro				*free_macro(t_macro *macro);
+t_cmd				*free_cmds(t_cmd **cmds);
 
 /* others */
 void				ft_signal_handler(int signum);
@@ -216,7 +215,7 @@ int					ft_echo2(char **args);
 int					ft_cd2(char **args, t_macro *macro);
 char				*ft_strjoin3(const char *s1, const char *s2,
 						const char *s3);
-void				free_2_strings(char **str1, char **str2);
+char				*free_2_strings(char **str1, char **str2);
 char				*get_home_directory(t_macro *macro);
 char				*parse_arguments(char **args, t_macro *macro, char *home);
 int					change_directory(char *path, char *home);

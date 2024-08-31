@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:52:58 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/30 14:25:25 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/31 15:27:28 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,15 +122,26 @@ size_t	expanded_envir_len(char *ins, t_macro *macro)
 char	*get_expanded_instruction(char *ins, t_macro *macro)
 {
 	char	*clean;
+	char	*temp;
 	size_t	envir_len;
 	size_t	total_len;
 
-	envir_len = expanded_envir_len(ins, macro);
-	total_len = envir_len + ft_strlen(ins);
-	clean = ft_calloc(1, sizeof(char) * total_len + 1);
+	clean = ft_strdup(ins);
 	if (!clean)
 		return (NULL);
-	clean = build_expanded_instruction(clean, ins, macro);
-	clean[total_len] = '\0';
+	while (1)
+	{
+		envir_len = expanded_envir_len(clean, macro);
+		total_len = envir_len + ft_strlen(clean);
+		temp = ft_calloc(1, sizeof(char) * total_len + 1);
+		if (!temp)
+			return(free_string(&clean));
+		build_expanded_instruction(temp, clean, macro);
+		if (ft_strcmp(temp, clean) == 0)
+			break;
+		free_string(&clean);
+		clean = temp;
+	}
+	free_string(&temp);
 	return (clean);
 }
