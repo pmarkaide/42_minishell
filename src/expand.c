@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:52:58 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/31 22:40:15 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/31 22:59:53 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,30 +70,30 @@ void	handle_delimiter_after_dollar(char **clean, char *ins, size_t *i)
 	(*i)++;
 }
 
-void handle_envir(char **clean, char *ins, size_t *i, t_macro *macro)
+void	handle_envir(char **clean, char *ins, size_t *i, t_macro *macro)
 {
-    size_t start;
-    size_t len;
-    char *envir_name;
-    char *envir_value;
+	size_t	start;
+	size_t	len;
+	char	*envir_name;
+	char	*envir_value;
 
-    start = *i + 1;
-    while (ft_isalpha(ins[start]) || ins[start] == '_')
-        start++;
-    len = start - (*i + 1);
-    envir_name = ft_substr(ins, *i + 1, len);
-    if (!envir_name)
-        return (set_clean_to_null(*clean));
-    envir_value = ft_getenv(envir_name, macro->env);
-    free_string(&envir_name);
-    if (envir_value)
-    {
-        *clean = ft_strjoin(*clean, envir_value, NULL);
-        if (!*clean)
-            return(set_clean_to_null(*clean));
-    }
-    free_string(&envir_value);
-    *i = start;
+	start = *i + 1;
+	while (ft_isalnum(ins[start]) || ins[start] == '_')
+		start++;
+	len = start - (*i + 1);
+	envir_name = ft_substr(ins, *i + 1, len);
+	if (!envir_name)
+		return (set_clean_to_null(*clean));
+	envir_value = ft_getenv(envir_name, macro->env);
+	free_string(&envir_name);
+	if (envir_value)
+	{
+		*clean = ft_strjoin(*clean, envir_value, NULL);
+		if (!*clean)
+			return (set_clean_to_null(*clean));
+	}
+	free_string(&envir_value);
+	*i = start;
 }
 
 void	handle_quoted_literal(char **clean, char *ins, size_t *i)
@@ -113,8 +113,8 @@ void	handle_quoted_literal(char **clean, char *ins, size_t *i)
 	{
 		quote_len = quote_end - quote_start;
 		literal = ft_substr(ins, *i - 2, quote_len + 2);
-        if(!literal)
-            return (set_clean_to_null(*clean));
+		if (!literal)
+			return (set_clean_to_null(*clean));
 		temp = ft_strjoin(*clean, literal, NULL);
 		if (!temp)
 			return (set_clean_to_null(*clean));
@@ -141,7 +141,7 @@ void	handle_unexpected_case(char **clean, char *ins, size_t *i)
 
 	temp = ft_strjoin(*clean, str, NULL);
 	if (!temp)
-        return (set_clean_to_null(*clean));
+		return (set_clean_to_null(*clean));
 	free_string(clean);
 	*clean = temp;
 	(*i)++;
@@ -166,8 +166,8 @@ char	*get_expanded_instruction(char *ins, t_macro *macro)
 			handle_quoted_literal(&clean, ins, &i);
 		else if (ins[i] == '$' && ft_isdelim(ins[i + 1]))
 			handle_delimiter_after_dollar(&clean, ins, &i);
-		else if (ins[i] == '$' && (ft_isalpha(ins[i + 1]) || ins[i + 1] == '_'))
-            handle_envir(&clean, ins, &i, macro);
+		else if (ins[i] == '$' && (ft_isalnum(ins[i + 1]) || ins[i + 1] == '_'))
+			handle_envir(&clean, ins, &i, macro);
 		else
 			handle_unexpected_case(&clean, ins, &i);
 		if (!clean)
