@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:52:58 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/31 22:59:53 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/01 13:34:26 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,7 @@ void	handle_unexpected_case(char **clean, char *ins, size_t *i)
 	(*i)++;
 }
 
-char	*get_expanded_instruction(char *ins, t_macro *macro)
+char	*get_expanded_ins(char *ins, t_macro *macro)
 {
 	char	*clean;
 	size_t	i;

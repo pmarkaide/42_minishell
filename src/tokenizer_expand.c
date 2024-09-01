@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:45:23 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/01 13:22:41 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/01 13:34:26 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ char	*expand_token(t_token *token, t_macro *macro)
 {
 	char	*expanded;
 
-	expanded = get_expanded_instruction(token->value, macro);
+	expanded = get_expanded_ins(token->value, macro);
 	if (!expanded || *expanded == '\0')
 		return (NULL);
 	if (ft_strchr("\"", token->value[0]))
@@ -152,7 +152,7 @@ t_token	*remove_empty_envir_tokens(t_macro *macro)
 	{
 		if (ft_strchr(tokens->value, '$'))
 		{
-			expanded = get_expanded_instruction(tokens->value, macro);
+			expanded = get_expanded_ins(tokens->value, macro);
 			if (!expanded)
 			{
 				free_tokens(&tokens);

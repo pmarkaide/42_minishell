@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/31 15:52:05 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/01 13:34:26 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ typedef struct s_macro
 	char			**envp;
 	char			**env;
 	char			**history;
-	char			*instruction;
+	char			*ins;
 	t_token			*tokens;
 	t_cmd			*cmds;
 	int				num_cmds;
@@ -99,7 +99,7 @@ typedef struct s_macro
 }					t_macro;
 
 /* presyntax*/
-int				syntax_error_check(t_macro *macro, char *instruction);
+int				syntax_error_check(t_macro *macro, char *ins);
 
 /* tokenizer */
 int				tokenizer(t_macro *macro);
@@ -110,11 +110,11 @@ t_token				*expand_arg_tokens(t_macro *macro);
 void				ensure_at_least_one_cmd(t_token **tokens);
 
 /* tokenizer_utils */
-char				*expand_envir(char *clean, char *instruction,
+char				*expand_envir(char *clean, char *ins,
 						t_macro *macro);
 bool				is_builtin(t_token *token);
 bool				is_redir(t_token *token, char *redir_type);
-void				fix_redirections(char *instruction);
+void				fix_redirections(char *ins);
 int					clean_token_quotes(t_token *tokens);
 char				*clean_quotes(char *str);
 
@@ -165,7 +165,7 @@ char				*get_executable_path(char **paths, char *executable,
 int					open_file(t_token *token, t_macro *macro);
 
 /* expand */
-char				*get_expanded_instruction(char *instruction,
+char				*get_expanded_ins(char *ins,
 						t_macro *macro);
 
 /* dup */
@@ -175,7 +175,7 @@ int				dup_file_descriptors(t_macro *macro, t_cmd *cmd,
 /* clean utils*/
 char				*get_envir_name(char *str);
 char				*get_envir_value(char *str, t_macro *macro);
-bool				envir_must_be_expanded(char *instruction, int index);
+bool				envir_must_be_expanded(char *ins, int index);
 bool				is_in_quote(char *str, int index);
 
 /* free */

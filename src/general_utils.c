@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   general_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 13:43:00 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/29 22:08:24 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/01 13:33:48 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ t_macro	*init_macro(char **envp, char **argv)
 	macro->envp = envp;
 	macro->env = copy_env(envp);
 	macro->history = NULL;
-	macro->instruction = NULL;
+	macro->ins = NULL;
 	macro->tokens = NULL;
 	macro->cmds = NULL;
 	macro->pid = NULL;

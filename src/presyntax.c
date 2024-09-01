@@ -6,53 +6,54 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 15:12:06 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/29 16:30:28 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/01 13:35:47 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	invalid_char_check(char *instruction)
+static int	invalid_char_check(char *ins)
 {
 	int	i;
 
 	i = 0;
-	while (instruction[i])
+	while (ins[i])
 	{
-		if (!is_in_quote(instruction, i))
+		if (!is_in_quote(ins, i))
 		{
-			if (instruction[i] == ';')
-				return (instruction[i]);
-			if (instruction[i] == '&')
-				return (instruction[i]);
-			if (instruction[i] == '|' && instruction[i + 1] == '|')
-				return (instruction[i]);
+			if (ins[i] == ';')
+				return (ins[i]);
+			if (ins[i] == '&')
+				return (ins[i]);
+			if (ins[i] == '|' && ins[i + 1] == '|')
+				return (ins[i]);
 		}
 		i++;
 	}
 	return (0);
 }
 
-static char	valid_file_name(char *instruction)
+static char	valid_file_name(char *ins)
 {
 	int		i;
 	char	next_char;
 
 	i = 0;
-	while (instruction[i])
+	while (ins[i])
 	{
-		if (!is_in_quote(instruction, i))
+		if (!is_in_quote(ins, i))
 		{
-			if (instruction[i] == '>' || instruction[i] == '<')
+			if (ins[i] == '>' || ins[i] == '<')
 			{
-				if (instruction[i + 1] == '>' || instruction[i + 1] == '<')
+				if (ins[i + 1] == '>' || ins[i + 1] == '<')
 					i++;
-				while (instruction[i + 1] == ' ')
+				while (ins[i + 1] == ' ')
 					i++;
-				if (instruction[i + 1] == '\0')
+				if (ins[i + 1] == '\0')
 					return ('\n');
-				next_char = instruction[i + 1];
-				if (!ft_isalnum(next_char) && !strchr("$~+-./\'\"", next_char))
+				next_char = ins[i + 1];
+				if (!ft_isalnum(next_char) && !ft_strchr("$~+-./\'\"",
+						next_char))
 					return (next_char);
 			}
 		}
@@ -61,7 +62,7 @@ static char	valid_file_name(char *instruction)
 	return (0);
 }
 
-static char	unclosed_quote_check(char *instruction)
+static char	unclosed_quote_check(char *ins)
 {
 	int		in_single_quote;
 	int		in_double_quote;
@@ -69,7 +70,7 @@ static char	unclosed_quote_check(char *instruction)
 
 	in_single_quote = 0;
 	in_double_quote = 0;
-	ptr = instruction;
+	ptr = ins;
 	while (*ptr)
 	{
 		if (*ptr == '"' && !in_single_quote)
@@ -88,32 +89,37 @@ static char	unclosed_quote_check(char *instruction)
 static void	print_syntax_error(t_macro *macro, char invalid_char)
 {
 	macro->exit_code = 2;
-    ft_putstr_fd("minishell: ", 2);
-    if (invalid_char == '|')
-        ft_putstr_fd("syntax error near unexpected token `|'\n", 2);
-    else if (invalid_char == '\n')
-        ft_putstr_fd("syntax error near unexpected token `newline'\n", 2);
-    else
-    {
-        ft_putstr_fd("syntax error near unexpected token `", 2);
-        ft_putchar_fd(invalid_char, 2);
-        ft_putstr_fd("'\n", 2);
-    }
+	ft_putstr_fd("minishell: ", 2);
+	if (invalid_char == '|')
+		ft_putstr_fd("syntax error near unexpected token `|'\n", 2);
+	else if (invalid_char == '\n')
+		ft_putstr_fd("syntax error near unexpected token `newline'\n", 2);
+	else
+	{
+		ft_putstr_fd("syntax error near unexpected token `", 2);
+		ft_putchar_fd(invalid_char, 2);
+		ft_putstr_fd("'\n", 2);
+	}
 }
 
-int syntax_error_check(t_macro *macro, char *instruction)
+int	syntax_error_check(t_macro *macro, char *ins)
 {
-    char c;
+	char	c;
 
-    if ((c = invalid_char_check(instruction)) == 0) {
-        if ((c = valid_file_name(instruction)) == 0) {
-            if ((c = unclosed_quote_check(instruction)) == 0)
+	c = invalid_char_check(ins);
+	if (c == 0)
+	{
+		c = valid_file_name(ins);
+		if (c == 0)
+		{
+			c = unclosed_quote_check(ins);
+			if (c == 0)
 			{
-                macro->instruction = instruction;
-                return 0;
-            }
-        }
-    }
-    print_syntax_error(macro, c);
-    return -1;
+				macro->ins = ins;
+				return (0);
+			}
+		}
+	}
+	print_syntax_error(macro, c);
+	return (-1);
 }

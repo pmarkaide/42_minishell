@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 10:42:44 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/01 12:55:01 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/01 13:34:26 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static int	read_here_doc(t_token *token, t_macro *macro)
 			break ;
 		}
 		if (!ft_isquote(token->value[0]))
-			line = get_expanded_instruction(line, macro);
+			line = get_expanded_ins(line, macro);
 		write(pipe_fd[1], line, ft_strlen(line));
 		write(pipe_fd[1], "\n", 1);
 		free_string(&line);
