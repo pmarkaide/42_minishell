@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:45:23 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/31 15:37:02 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/01 13:22:41 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,16 @@ static t_token	*build_retokens(t_list *lexemes, t_type type)
 		else
 			token->type = ARG;
 		token->value = ft_strdup(lexemes->content);
-		if(!token->value)
-			return(free_tokens(&token));
+		if (!token->value)
+			return (free_tokens(&token));
 		token_add_back(&retokens, token);
 		lexemes = lexemes->next;
 	}
 	return (retokens);
 }
 
-static t_token	*plug_retokens(t_token *token, t_token *retokens, t_macro *macro)
+static t_token	*plug_retokens(t_token *token, t_token *retokens,
+		t_macro *macro)
 {
 	t_token	*next;
 	t_token	*prev;
@@ -58,7 +59,7 @@ static t_token	*plug_retokens(t_token *token, t_token *retokens, t_macro *macro)
 		last->next = next;
 	token->next = NULL;
 	free_tokens(&token);
-	return last;
+	return (last);
 }
 
 static t_token	*retokenize(char *expanded, t_token *token)
@@ -76,36 +77,66 @@ static t_token	*retokenize(char *expanded, t_token *token)
 	return (retokens);
 }
 
+char	*handle_literal_string(t_token *token, char *expanded)
+{
+	char	*copy;
+
+	free_string(&token->value);
+	copy = ft_strdup(expanded);
+	if (!copy)
+		return (NULL);
+	return (copy);
+}
+
+t_token	*handle_retokenize(char *expanded, t_token *tokens, t_macro *macro)
+{
+	t_token	*retokens;
+	t_token	*last_retokens;
+
+	retokens = retokenize(expanded, tokens);
+	if (!retokens)
+		return (NULL);
+	last_retokens = plug_retokens(tokens, retokens, macro);
+	return (last_retokens);
+}
+
+char	*expand_token(t_token *token, t_macro *macro)
+{
+	char	*expanded;
+
+	expanded = get_expanded_instruction(token->value, macro);
+	if (!expanded || *expanded == '\0')
+		return (NULL);
+	if (ft_strchr("\"", token->value[0]))
+	{
+		token->value = handle_literal_string(token, expanded);
+		if (!token->value)
+			return (free_string(&expanded));
+	}
+	else
+	{
+		token = handle_retokenize(expanded, token, macro);
+		if (!token)
+			return (free_string(&expanded));
+	}
+	free_string(&expanded);
+	return (token->value);
+}
+
 t_token	*expand_arg_tokens(t_macro *macro)
 {
 	t_token	*tokens;
-	t_token	*retokens;
-	t_token *last_retokens;
-	char	*expanded;
 
 	tokens = macro->tokens;
 	while (tokens && tokens->type != HERE_DOC)
 	{
 		if (ft_strchr(tokens->value, '$'))
 		{
-			expanded = get_expanded_instruction(tokens->value, macro);
-			if (!expanded || *expanded == '\0')
+			if (!expand_token(tokens, macro))
 				return (NULL);
-			if (ft_strchr("\"", tokens->value[0]))
-			{
-				free_string(&tokens->value);
-				tokens->value = ft_strdup(expanded);
-			}
-			else
-			{
-				retokens = retokenize(expanded, tokens);
-				if (!retokens)
-					return (NULL);
-				last_retokens = plug_retokens(tokens, retokens, macro);
-				tokens = last_retokens;
-			}
-			free_string(&expanded);
 		}
+		if (tokens == NULL || tokens->next == NULL)
+			return (NULL);
 		tokens = tokens->next;
 	}
 	return (macro->tokens);

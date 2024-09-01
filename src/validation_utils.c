@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validation_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 23:25:19 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/29 22:42:50 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/01 12:51:38 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ char	*get_executable_path(char **paths, char *executable, t_macro *macro)
 			return (NULL);
 		if (!access(full_path, F_OK))
 			return (full_path);
-		free(full_path);
+		free_string(&full_path);
 		i++;
 	}
 	macro->exit_code = 127;

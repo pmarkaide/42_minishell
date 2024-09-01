@@ -67,7 +67,7 @@ t_token	*identify_tokens(t_list *lexemes)
 {
 	t_token	*tokens;
 	t_token	*token;
-	t_list 	*tmp;
+	t_list	*tmp;
 
 	tokens = NULL;
 	tmp = lexemes;
@@ -88,7 +88,7 @@ t_token	*identify_tokens(t_list *lexemes)
 	return (tokens);
 }
 
-int tokenizer(t_macro *macro)
+int	tokenizer(t_macro *macro)
 {
 	t_list	*lexemes;
 
@@ -109,7 +109,7 @@ int tokenizer(t_macro *macro)
 		free_tokens(&macro->tokens);
 		return (-1);
 	}
-	if(clean_token_quotes(macro->tokens) == (-1))
+	if (clean_token_quotes(macro->tokens) == (-1))
 		return (-1);
 	return (0);
 }
