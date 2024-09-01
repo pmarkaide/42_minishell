@@ -6,69 +6,13 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:52:58 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/01 13:34:26 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/01 14:01:06 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	set_clean_to_null(char *clean)
-{
-	free_string(&clean);
-}
 
-void	handle_normal_char(char **clean, char *ins, size_t *i)
-{
-	char	str[2] = {ins[*i], '\0'};
-	char	*temp;
-
-	temp = ft_strjoin(*clean, str, NULL);
-	if (!temp)
-		return (set_clean_to_null(*clean));
-	free_string(clean);
-	*clean = temp;
-	(*i)++;
-}
-
-char	*expand_exit_code(t_macro *macro)
-{
-	char	*exit_code;
-
-	exit_code = ft_itoa(macro->exit_code);
-	if (!exit_code)
-		return (NULL);
-	return (exit_code);
-}
-
-void	handle_exit_code(char **clean, size_t *i, t_macro *macro)
-{
-	char	*substr;
-	char	*temp;
-
-	substr = expand_exit_code(macro);
-	if (!substr)
-		return (set_clean_to_null(*clean));
-	temp = ft_strjoin(*clean, substr, NULL);
-	if (!temp)
-		return (set_clean_to_null(*clean));
-	free_string(clean);
-	*clean = temp;
-	*i += 2;
-	free_string(&substr);
-}
-
-void	handle_delimiter_after_dollar(char **clean, char *ins, size_t *i)
-{
-	char	str[2] = {ins[*i], '\0'};
-	char	*temp;
-
-	temp = ft_strjoin(*clean, str, NULL);
-	if (!temp)
-		return (set_clean_to_null(*clean));
-	free_string(clean);
-	*clean = temp;
-	(*i)++;
-}
 
 void	handle_envir(char **clean, char *ins, size_t *i, t_macro *macro)
 {
@@ -83,14 +27,14 @@ void	handle_envir(char **clean, char *ins, size_t *i, t_macro *macro)
 	len = start - (*i + 1);
 	envir_name = ft_substr(ins, *i + 1, len);
 	if (!envir_name)
-		return (set_clean_to_null(*clean));
+		return (free(*clean));
 	envir_value = ft_getenv(envir_name, macro->env);
 	free_string(&envir_name);
 	if (envir_value)
 	{
 		*clean = ft_strjoin(*clean, envir_value, NULL);
 		if (!*clean)
-			return (set_clean_to_null(*clean));
+			return (free(*clean));
 	}
 	free_string(&envir_value);
 	*i = start;
@@ -114,10 +58,10 @@ void	handle_quoted_literal(char **clean, char *ins, size_t *i)
 		quote_len = quote_end - quote_start;
 		literal = ft_substr(ins, *i - 2, quote_len + 2);
 		if (!literal)
-			return (set_clean_to_null(*clean));
+			return (free(*clean));
 		temp = ft_strjoin(*clean, literal, NULL);
 		if (!temp)
-			return (set_clean_to_null(*clean));
+			return (free(*clean));
 		free_string(clean);
 		*clean = temp;
 		*i += quote_len + 1;
@@ -127,7 +71,7 @@ void	handle_quoted_literal(char **clean, char *ins, size_t *i)
 	{
 		temp = ft_strjoin(*clean, &ins[*i - 2], NULL);
 		if (!temp)
-			return (set_clean_to_null(*clean));
+			return (free(*clean));
 		free_string(clean);
 		*clean = temp;
 		*i += ft_strlen(&ins[*i]);
@@ -141,7 +85,7 @@ void	handle_unexpected_case(char **clean, char *ins, size_t *i)
 
 	temp = ft_strjoin(*clean, str, NULL);
 	if (!temp)
-		return (set_clean_to_null(*clean));
+		return (free(*clean));
 	free_string(clean);
 	*clean = temp;
 	(*i)++;

@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 20:53:07 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/31 22:29:12 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/01 13:57:43 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,3 +75,12 @@ bool	is_in_quote(char *str, int index)
 	return (false);
 }
 
+char	*expand_exit_code(t_macro *macro)
+{
+	char	*exit_code;
+
+	exit_code = ft_itoa(macro->exit_code);
+	if (!exit_code)
+		return (NULL);
+	return (exit_code);
+}
