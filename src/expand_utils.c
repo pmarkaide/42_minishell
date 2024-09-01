@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 20:53:07 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/27 22:42:24 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/08/31 22:29:12 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,31 +75,3 @@ bool	is_in_quote(char *str, int index)
 	return (false);
 }
 
-char	*get_envir_name(char *str)
-{
-	int		i;
-	char	*envir_name;
-
-	i = 0;
-	while (str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
-		i++;
-	envir_name = ft_substr(str, 0, i);
-	if (!envir_name)
-		return (NULL);
-	return (envir_name);
-}
-
-char	*get_envir_value(char *str, t_macro *macro)
-{
-	char	*envir_name;
-	char	*envir_value;
-
-	envir_name = get_envir_name(str);
-	if (!envir_name)
-		return (NULL);
-	envir_value = ft_getenv(envir_name, macro->env);
-	free(envir_name);
-	if (!envir_value)
-		return (NULL);
-	return (envir_value);
-}
