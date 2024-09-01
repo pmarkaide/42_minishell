@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:45:23 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/01 13:34:26 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/01 22:04:35 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,7 @@ t_token	*expand_arg_tokens(t_macro *macro)
 			if (!expand_token(tokens, macro))
 				return (NULL);
 		}
-		if (tokens == NULL || tokens->next == NULL)
+		if (tokens == NULL || tokens->value == NULL)
 			return (NULL);
 		tokens = tokens->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 21:24:44 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/01 13:33:48 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/01 22:01:29 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ int	tokenizer(t_macro *macro)
 	if (!macro->tokens)
 		return (-1);
 	ensure_at_least_one_cmd(&macro->tokens);
+	print_tokens(macro->tokens);
 	macro->tokens = expand_arg_tokens(macro);
 	if (!macro->tokens)
 	{
