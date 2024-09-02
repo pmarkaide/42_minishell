@@ -3,14 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   buin_export_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 21:38:08 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/09/02 16:11:55 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/02 22:02:48 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	handle_invalid_identifier(char *arg, int *exit_flag)
+{
+	ft_putstr_fd("minishell: export: `", STDERR_FILENO);
+	ft_putstr_fd(arg, STDERR_FILENO);
+	ft_putendl_fd("': not a valid identifier", STDERR_FILENO);
+	*exit_flag = 1;
+}
 
 void	print_export_var(char *var, char *value)
 {
@@ -19,6 +27,16 @@ void	print_export_var(char *var, char *value)
 	ft_putstr_fd("=\"", STDOUT_FILENO);
 	ft_putstr_fd(value, STDOUT_FILENO);
 	ft_putstr_fd("\"\n", STDOUT_FILENO);
+}
+
+int	validate_and_clean_argument(char *arg, int *exit_flag)
+{
+	if (check_export(arg) == 0)
+	{
+		handle_invalid_identifier(arg, exit_flag);
+		return (-1);
+	}
+	return (0);
 }
 
 void	export_argless(t_macro *macro)

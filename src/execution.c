@@ -12,22 +12,24 @@
 
 #include "minishell.h"
 
-int restore_fds(int saved_stdout, int saved_stdin) {
-    
-	int result;
-	
+int	restore_fds(int saved_stdout, int saved_stdin)
+{
+	int	result;
+
 	result = 0;
-    if (dup2(saved_stdout, STDOUT_FILENO) == -1) {
-        perror("dup2 :: restore_fds");
-        result = -1;
-    }
-    if (dup2(saved_stdin, STDIN_FILENO) == -1) {
-        perror("dup2 :: restore_fds");
-        result = -1;
-    }
-    close(saved_stdout);
-    close(saved_stdin);
-    return (result);
+	if (dup2(saved_stdout, STDOUT_FILENO) == -1)
+	{
+		perror("dup2 :: restore_fds");
+		result = -1;
+	}
+	if (dup2(saved_stdin, STDIN_FILENO) == -1)
+	{
+		perror("dup2 :: restore_fds");
+		result = -1;
+	}
+	close(saved_stdout);
+	close(saved_stdin);
+	return (result);
 }
 
 static void	execute_child_process(t_macro *macro, int index, int read_end)
