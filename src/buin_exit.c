@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:04:40 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/29 13:55:11 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/02 15:50:59 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,11 @@ int	ft_exit2(char **args)
 	if (argc > 2)
 	{
 		ft_putendl_fd("minishell: exit: too many arguments", STDERR_FILENO);
-		return (1);
+		exit (1);
 	}
 	validation_result = validate_numeric_argument(args[1]);
 	if (validation_result != 0)
-		return (validation_result);
+		exit (validation_result);
 	code = ft_atoi(args[1]);
 	if (code > 255 || code < 0)
 		code = code % 256;

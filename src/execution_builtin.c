@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 09:15:15 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/02 10:45:11 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/02 15:45:04 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,11 @@ int	execute_single_builtin(t_macro *macro)
 	else
 		execute_builtin(macro, cmd_array);
 	restore_fds(saved_stdout, saved_stdin);
-	return (0);
+	return (macro->exit_code);
 }
 
 void	execute_builtin(t_macro *macro, char **cmd_array)
 {
-	char	*builtin;
-
-	builtin = remove_path(cmd_array[0]);
-	macro->exit_code = select_and_run_builtin(builtin, cmd_array, macro);
+	macro->exit_code = select_and_run_builtin(cmd_array[0], cmd_array, macro);
 	free_array(&cmd_array);
 }
