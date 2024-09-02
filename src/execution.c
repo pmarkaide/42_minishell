@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:23:53 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/02 10:46:12 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/02 12:10:05 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,8 @@ void	execution(t_macro *macro)
 		i = 0;
 		while (i < num_cmds_executed)
 			status = wait_processes(macro->pid[i++]);
-		read_pipe_exit(macro->pipe_exit, &status);
+		if(macro->pid != 0)
+			read_pipe_exit(macro->pipe_exit, &status);
 		macro->exit_code = status;
 		ft_free((void **)&macro->pid);
 		close_fds(macro, read_end);

@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 23:24:13 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/02 09:19:38 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/02 12:41:29 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ static int	dup_stdout(t_macro *macro, t_cmd *cmd)
 			return (-1);
 		}
 		close(fd);
-		return (0);
 	}
 	else if (cmd->n < macro->num_cmds)
 	{

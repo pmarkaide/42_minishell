@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:35:57 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/01 12:50:16 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/02 12:08:24 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	search_executable(t_macro *macro, t_cmd *cmd)
 	else
 	{
 		free_string(&exec);
-		exec = full_path;
+		cmd->cmd_arg->value = full_path;
 	}
 }
 
