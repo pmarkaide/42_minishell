@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 13:43:00 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/29 22:08:24 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/02 07:31:50 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,7 @@ char	*grab_home(t_macro *macro)
 
 	home = grab_env("HOME", macro->env, 4);
 	if (home == NULL)
-	{
-		return (NULL);
-	}
+		home = ft_strdup("/home/");
 	return (home);
 }
 
