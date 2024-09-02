@@ -6,27 +6,11 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 20:53:07 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/31 22:29:12 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/01 21:47:26 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-bool	is_inside_double_quotes(char *str, int index)
-{
-	bool	inside_double_quotes;
-	int		i;
-
-	inside_double_quotes = false;
-	i = 0;
-	while (i <= index && str[i] != '\0')
-	{
-		if (str[i] == '\"')
-			inside_double_quotes = !inside_double_quotes;
-		i++;
-	}
-	return (inside_double_quotes);
-}
 
 bool	envir_must_be_expanded(char *str, int index)
 {
@@ -75,3 +59,32 @@ bool	is_in_quote(char *str, int index)
 	return (false);
 }
 
+void	handle_delimiter_after_dollar(char **clean, char *ins, size_t *i)
+{
+	char	str[2];
+	char	*temp;
+
+	str[0] = ins[*i];
+	str[1] = '\0';
+	temp = ft_strjoin(*clean, str, NULL);
+	if (!temp)
+		return (free(*clean));
+	free_string(clean);
+	*clean = temp;
+	(*i)++;
+}
+
+void	handle_unexpected_case(char **clean, char *ins, size_t *i)
+{
+	char	str[2];
+	char	*temp;
+
+	str[0] = ins[*i];
+	str[1] = '\0';
+	temp = ft_strjoin(*clean, str, NULL);
+	if (!temp)
+		return (free(*clean));
+	free_string(clean);
+	*clean = temp;
+	(*i)++;
+}

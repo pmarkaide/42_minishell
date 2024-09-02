@@ -14,7 +14,7 @@
 
 int	error_msg(t_macro *macro, char *file, int exit_code)
 {
-	if(macro)
+	if (macro)
 		macro->exit_code = exit_code;
 	ft_putstr_fd("minishell: ", 2);
 	perror(file);

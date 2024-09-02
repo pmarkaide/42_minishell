@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_path.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 22:10:13 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/29 22:11:18 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/01 21:53:44 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,10 @@ int	in_home(t_macro *macro)
 		return (0);
 	if (ft_strcmp(macro->m_pwd, home) == 0)
 	{
-		free(home);
+		free_string(&home);
 		return (1);
 	}
-	free(home);
+	free_string(&home);
 	return (0);
 }
 
