@@ -6,7 +6,7 @@
 #    By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/01 15:11:43 by pmarkaid          #+#    #+#              #
-#    Updated: 2024/09/02 09:47:10 by pmarkaid         ###   ########.fr        #
+#    Updated: 2024/09/02 21:59:26 by pmarkaid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,6 +43,7 @@ SRCS_FILES = \
 	buin_pwd.c \
 	buin_unset.c \
 	tokenizer_expand.c \
+	tokenizer_retokenize.c \
 	general_utils.c \
 	buin_cd_utils.c \
 	free_utils.c \
