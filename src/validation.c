@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:35:57 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/02 12:08:24 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/02 15:44:30 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void	search_executable(t_macro *macro, t_cmd *cmd)
 
 void	validation(t_macro *macro, t_cmd *cmd)
 {
-	if (cmd->cmd_arg)
+	if (cmd->cmd_arg && cmd->cmd_arg->type == CMD)
 	{
 		if (ft_strchr("./", cmd->cmd_arg->value[0]) == NULL)
 			search_executable(macro, cmd);
