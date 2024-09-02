@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 20:03:14 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/02 12:42:13 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/02 12:58:06 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,46 +24,8 @@ void	close_fds(t_macro *macro, int read_end)
 		close(macro->pipe_fd[1]);
 		macro->pipe_fd[1] = -1;
 	}
-	if (macro->pipe_exit[0] != -1)
-	{
-		close(macro->pipe_exit[0]);
-		macro->pipe_exit[0] = -1;
-	}
-	if (macro->pipe_exit[1] != -1)
-	{
-		close(macro->pipe_exit[1]);
-		macro->pipe_exit[1] = -1;
-	}
 	if (read_end > 0)
 		close(read_end);
-}
-
-void	read_pipe_exit(int *pipe_exit, int *status)
-{
-	if (pipe_exit == NULL || status == NULL)
-	{
-		perror("read_pipe_exit :: invalid arguments");
-		return ;
-	}
-	close(pipe_exit[1]);
-	read(pipe_exit[0], status, sizeof(int));
-	// if (read(pipe_exit[0], status, sizeof(int)) == -1)
-	// 	perror("read_pipe_exit :: read error");
-	close(pipe_exit[0]);
-}
-
-void	write_pipe_exit(int *pipe_exit, int status)
-{
-	if (pipe_exit == NULL)
-	{
-		perror("write_pipe_exit :: invalid arguments");
-		return ;
-	}
-	close(pipe_exit[0]);
-	write(pipe_exit[1], &status, sizeof(int));
-	// if (write(pipe_exit[1], &status, sizeof(int)) == -1)
-	// 	perror("write_pipe_exit :: write error");
-	close(pipe_exit[1]);
 }
 
 int	wait_processes(pid_t pid)
