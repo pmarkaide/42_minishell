@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 13:43:00 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/29 22:08:24 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/02 12:58:20 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,7 @@ char	*grab_home(t_macro *macro)
 
 	home = grab_env("HOME", macro->env, 4);
 	if (home == NULL)
-	{
-		return (NULL);
-	}
+		home = ft_strdup("/home/");
 	return (home);
 }
 
@@ -86,7 +84,7 @@ t_macro	*init_macro(char **envp, char **argv)
 	macro->envp = envp;
 	macro->env = copy_env(envp);
 	macro->history = NULL;
-	macro->instruction = NULL;
+	macro->ins = NULL;
 	macro->tokens = NULL;
 	macro->cmds = NULL;
 	macro->pid = NULL;
@@ -96,7 +94,5 @@ t_macro	*init_macro(char **envp, char **argv)
 	macro->exit_code = 0;
 	macro->pipe_fd[0] = -1;
 	macro->pipe_fd[1] = -1;
-	macro->pipe_exit[0] = -1;
-	macro->pipe_exit[1] = -1;
 	return (macro);
 }

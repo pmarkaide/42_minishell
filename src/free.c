@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 13:02:09 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/31 15:20:14 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/01 13:52:46 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@ t_token	*free_tokens(t_token **tokens)
 	{
 		tmp = *tokens;
 		*tokens = (*tokens)->next;
-		free(tmp->value);
+		free_string(&tmp->value);
 		free(tmp);
 	}
 	*tokens = NULL;
-	return(NULL);
+	return (NULL);
 }
 
 t_cmd	*free_cmds(t_cmd **cmds)
@@ -33,7 +33,7 @@ t_cmd	*free_cmds(t_cmd **cmds)
 	t_cmd	*next;
 
 	if (cmds == NULL || *cmds == NULL)
-		return(NULL);
+		return (NULL);
 	tmp = *cmds;
 	while (tmp != NULL)
 	{
@@ -44,7 +44,7 @@ t_cmd	*free_cmds(t_cmd **cmds)
 		tmp = next;
 	}
 	*cmds = NULL;
-	return(NULL);
+	return (NULL);
 }
 
 t_macro	*free_ins(t_macro *macro)
@@ -54,7 +54,7 @@ t_macro	*free_ins(t_macro *macro)
 	free(macro->pid);
 	close_fds(macro, 0);
 	macro->num_cmds = 0;
-	return(NULL);
+	return (NULL);
 }
 
 t_macro	*free_macro(t_macro *macro)
@@ -62,9 +62,9 @@ t_macro	*free_macro(t_macro *macro)
 	free_ins(macro);
 	free_array(&macro->env);
 	free_array(&macro->history);
-	free_string(&macro->instruction);
+	free_string(&macro->ins);
 	free_string(&macro->m_pwd);
 	free_string(&macro->m_home);
 	free(macro);
-	return(NULL);
+	return (NULL);
 }

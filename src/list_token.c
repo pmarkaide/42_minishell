@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   list_utils.c                                       :+:      :+:    :+:   */
+/*   list_token.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/03 21:43:43 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/27 11:32:34 by dbejar-s         ###   ########.fr       */
+/*   Created: 2024/09/01 13:44:14 by pmarkaid          #+#    #+#             */
+/*   Updated: 2024/09/01 13:45:26 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	remove_token(t_token **tokens, t_token *token)
 				prev->next = current->next;
 			else
 				*tokens = current->next;
-			free(current->value);
+			free_string(&current->value);
 			free(current);
 			return ;
 		}
@@ -64,50 +64,6 @@ t_token	*last_token(t_token *token)
 	while (token->next)
 		token = token->next;
 	return (token);
-}
-
-t_cmd	*init_cmd(void)
-{
-	t_cmd	*cmd;
-
-	cmd = malloc(sizeof(t_cmd));
-	if (!cmd)
-		return (NULL);
-	ft_bzero(cmd, sizeof(t_cmd));
-	return (cmd);
-}
-
-void	cmd_add_back(t_cmd **cmds, t_cmd *new)
-{
-	if (!cmds || !new)
-		return ;
-	if (!*cmds)
-		*cmds = new;
-	else
-		(last_cmd(*cmds))->next = new;
-}
-
-t_cmd	*last_cmd(t_cmd *cmd)
-{
-	if (!cmd)
-		return (NULL);
-	while (cmd->next)
-		cmd = cmd->next;
-	return (cmd);
-}
-
-bool	is_last_of_type(t_token *tokens, t_type type)
-{
-	t_token	*tmp;
-
-	tmp = tokens->next;
-	while (tmp)
-	{
-		if (tmp->type == type)
-			return (false);
-		tmp = tmp->next;
-	}
-	return (true);
 }
 
 int	tokens_size(t_token *tokens)

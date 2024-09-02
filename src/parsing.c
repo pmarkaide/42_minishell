@@ -124,7 +124,7 @@ static char	parsing_error_check(t_token *tokens, t_macro *macro)
 	return (c);
 }
 
-int parsing(t_macro *macro)
+int	parsing(t_macro *macro)
 {
 	char	c;
 	int		n;

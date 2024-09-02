@@ -24,7 +24,7 @@ char	*free_2_strings(char **str1, char **str2)
 		free(*str2);
 		*str2 = NULL;
 	}
-	return(NULL);
+	return (NULL);
 }
 
 char	*free_array(char ***array)
@@ -32,7 +32,7 @@ char	*free_array(char ***array)
 	size_t	i;
 
 	if (*array == NULL)
-		return(NULL);
+		return (NULL);
 	i = 0;
 	while ((*array)[i] != NULL)
 	{
@@ -42,7 +42,7 @@ char	*free_array(char ***array)
 	}
 	free(*array);
 	*array = NULL;
-	return(NULL);
+	return (NULL);
 }
 
 char	*free_string(char **str)
@@ -52,5 +52,5 @@ char	*free_string(char **str)
 		free(*str);
 		*str = NULL;
 	}
-	return(NULL);
+	return (NULL);
 }

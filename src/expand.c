@@ -6,65 +6,22 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:52:58 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/31 22:59:53 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/01 21:53:23 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	set_clean_to_null(char *clean)
-{
-	free_string(&clean);
-}
-
 void	handle_normal_char(char **clean, char *ins, size_t *i)
 {
-	char	str[2] = {ins[*i], '\0'};
+	char	str[2];
 	char	*temp;
 
+	str[0] = ins[*i];
+	str[1] = '\0';
 	temp = ft_strjoin(*clean, str, NULL);
 	if (!temp)
-		return (set_clean_to_null(*clean));
-	free_string(clean);
-	*clean = temp;
-	(*i)++;
-}
-
-char	*expand_exit_code(t_macro *macro)
-{
-	char	*exit_code;
-
-	exit_code = ft_itoa(macro->exit_code);
-	if (!exit_code)
-		return (NULL);
-	return (exit_code);
-}
-
-void	handle_exit_code(char **clean, size_t *i, t_macro *macro)
-{
-	char	*substr;
-	char	*temp;
-
-	substr = expand_exit_code(macro);
-	if (!substr)
-		return (set_clean_to_null(*clean));
-	temp = ft_strjoin(*clean, substr, NULL);
-	if (!temp)
-		return (set_clean_to_null(*clean));
-	free_string(clean);
-	*clean = temp;
-	*i += 2;
-	free_string(&substr);
-}
-
-void	handle_delimiter_after_dollar(char **clean, char *ins, size_t *i)
-{
-	char	str[2] = {ins[*i], '\0'};
-	char	*temp;
-
-	temp = ft_strjoin(*clean, str, NULL);
-	if (!temp)
-		return (set_clean_to_null(*clean));
+		return (free(*clean));
 	free_string(clean);
 	*clean = temp;
 	(*i)++;
@@ -83,14 +40,14 @@ void	handle_envir(char **clean, char *ins, size_t *i, t_macro *macro)
 	len = start - (*i + 1);
 	envir_name = ft_substr(ins, *i + 1, len);
 	if (!envir_name)
-		return (set_clean_to_null(*clean));
+		return (free(*clean));
 	envir_value = ft_getenv(envir_name, macro->env);
 	free_string(&envir_name);
 	if (envir_value)
 	{
 		*clean = ft_strjoin(*clean, envir_value, NULL);
 		if (!*clean)
-			return (set_clean_to_null(*clean));
+			return (free(*clean));
 	}
 	free_string(&envir_value);
 	*i = start;
@@ -101,53 +58,45 @@ void	handle_quoted_literal(char **clean, char *ins, size_t *i)
 	char	quote_char;
 	char	*quote_start;
 	char	*quote_end;
-	size_t	quote_len;
-	char	*literal;
 	char	*temp;
 
 	quote_char = ins[*i + 1];
-	(*i) += 2;
-	quote_start = &ins[*i];
-	quote_end = strchr(quote_start, quote_char);
-	if (quote_end != NULL)
+	quote_start = &ins[*i + 2];
+	quote_end = ft_strchr(quote_start, quote_char);
+	if (quote_end)
 	{
-		quote_len = quote_end - quote_start;
-		literal = ft_substr(ins, *i - 2, quote_len + 2);
-		if (!literal)
-			return (set_clean_to_null(*clean));
-		temp = ft_strjoin(*clean, literal, NULL);
-		if (!temp)
-			return (set_clean_to_null(*clean));
-		free_string(clean);
-		*clean = temp;
-		*i += quote_len + 1;
-		free_string(&literal);
+		temp = ft_substr(ins, *i, quote_end - ins - *i + 1);
+		*i += (quote_end - quote_start) + 2;
 	}
 	else
 	{
-		temp = ft_strjoin(*clean, &ins[*i - 2], NULL);
-		if (!temp)
-			return (set_clean_to_null(*clean));
-		free_string(clean);
-		*clean = temp;
+		temp = ft_strdup(&ins[*i]);
 		*i += ft_strlen(&ins[*i]);
 	}
+	if (!temp)
+		return (free(*clean));
+	*clean = ft_strjoin(*clean, temp, NULL);
+	free_string(&temp);
 }
 
-void	handle_unexpected_case(char **clean, char *ins, size_t *i)
+void	handle_exit_code(char **clean, size_t *i, t_macro *macro)
 {
-	char	str[2] = {ins[*i], '\0'};
+	char	*substr;
 	char	*temp;
 
-	temp = ft_strjoin(*clean, str, NULL);
+	substr = ft_itoa(macro->exit_code);
+	if (!substr)
+		free_string(clean);
+	temp = ft_strjoin(*clean, substr, NULL);
 	if (!temp)
-		return (set_clean_to_null(*clean));
+		return (free(*clean));
 	free_string(clean);
 	*clean = temp;
-	(*i)++;
+	*i += 2;
+	free_string(&substr);
 }
 
-char	*get_expanded_instruction(char *ins, t_macro *macro)
+char	*get_expanded_ins(char *ins, t_macro *macro)
 {
 	char	*clean;
 	size_t	i;

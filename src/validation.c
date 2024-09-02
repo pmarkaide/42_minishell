@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:35:57 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/30 15:39:24 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/02 15:44:30 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,32 +61,35 @@ void	search_executable(t_macro *macro, t_cmd *cmd)
 {
 	char	**paths;
 	char	*full_path;
+	char	*exec;
 
 	full_path = NULL;
+	exec = cmd->cmd_arg->value;
 	paths = parse_paths(macro->env);
 	if (!paths)
-		exit_error(cmd->cmd_arg->value, "No such file or directory", macro, 127);
-	full_path = get_executable_path(paths, cmd->cmd_arg->value, macro);
+		exit_error(exec, "No such file or directory", macro, 127);
+	full_path = get_executable_path(paths, exec, macro);
 	free_array(&paths);
 	if (!full_path)
 	{
-		ft_putstr_fd(cmd->cmd_arg->value, 2);
+		ft_putstr_fd(exec, 2);
 		ft_putstr_fd(": command not found\n", 2);
 		free_ins(macro);
+		macro->exit_code = 127;
 		exit(127);
 	}
 	else
 	{
-		free(cmd->cmd_arg->value);
+		free_string(&exec);
 		cmd->cmd_arg->value = full_path;
 	}
 }
 
 void	validation(t_macro *macro, t_cmd *cmd)
 {
-	if (cmd->cmd_arg)
+	if (cmd->cmd_arg && cmd->cmd_arg->type == CMD)
 	{
-		if(ft_strchr("./", cmd->cmd_arg->value[0]) == NULL)
+		if (ft_strchr("./", cmd->cmd_arg->value[0]) == NULL)
 			search_executable(macro, cmd);
 		validate_access(cmd->cmd_arg->value, macro);
 	}

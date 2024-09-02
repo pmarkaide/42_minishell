@@ -6,18 +6,18 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:47:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/31 15:24:20 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/02 16:37:09 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	create_and_add_node(char *start, size_t length, t_list **tokens)
+static int	create_and_add_node(char *str, size_t length, t_list **tokens)
 {
 	char	*token;
 	t_list	*new_node;
 
-	token = ft_strndup(start, length);
+	token = ft_strndup(str, length);
 	if (!token)
 		return (-1);
 	new_node = ft_lstnew(token);
@@ -30,94 +30,58 @@ static int	create_and_add_node(char *start, size_t length, t_list **tokens)
 	return (0);
 }
 
-static void	process_quote(char *ins, int *pos, int *len)
+static int	get_next_token_len(char *str)
 {
+	int		len;
 	char	quote_char;
 
-	quote_char = ins[*pos];
-	(*pos)++;
-	(*len)++;
-	while (ins[*pos] && ins[*pos] != quote_char)
-	{
-		(*len)++;
-		(*pos)++;
-	}
-	if (ins[*pos] == quote_char)
-	{
-		(*len)++;
-		(*pos)++;
-	}
-}
-
-static int	process_pipe(char *ins, int *pos, t_list **tokens, char **start,
-		int *len)
-{
-	if (*len > 0)
-	{
-		if (create_and_add_node(*start, *len, tokens) == -1)
-			return (-1);
-	}
-	if (create_and_add_node("|", 1, tokens) == -1)
-		return (-1);
-	(*pos)++;
-	*start = &ins[*pos];
-	*len = 0;
-	return (0);
-}
-
-static void	process_character(int *pos, int *len)
-{
-	(*len)++;
-	(*pos)++;
-}
-
-static int	process_token(char *ins, int *pos, t_list **tokens)
-{
-	char	*start;
-	int		len;
-	int		result;
-
-	start = &ins[*pos];
 	len = 0;
-	result = 0;
-	while (ins[*pos] && !ft_isdelim(ins[*pos]))
+	if (!str || !*str)
+		return (0);
+	if (*str == '|')
+		return (1);
+	else
 	{
-		if (ft_isquote(ins[*pos]))
-			process_quote(ins, pos, &len);
-		else if (ins[*pos] == '|')
-			result = process_pipe(ins, pos, tokens, &start, &len);
-		else
-			process_character(pos, &len);
-		if (result == -1)
-			return (-1);
+		while (str[len] && !ft_isdelim(str[len]) && str[len] != '|')
+		{
+			if (str[len] == '\'' || str[len] == '\"')
+			{
+				quote_char = str[len++];
+				while (str[len] && str[len] != quote_char)
+					len++;
+				len++;
+			}
+			else
+				len++;
+		}
 	}
-	if (len > 0)
-	{
-		if (create_and_add_node(start, len, tokens) == -1)
-			return (-1);
-	}
-	return (0);
+	return (len);
 }
 
 t_list	*split_args_by_quotes(char *ins)
 {
 	t_list	*lexemes;
-	int		pos;
+	int		len;
 
 	lexemes = NULL;
-	pos = 0;
-	while (ins[pos])
+	while (*ins)
 	{
-		while (ins[pos] && ft_isdelim(ins[pos]))
-			pos++;
-		if (ins[pos])
+		len = get_next_token_len(ins);
+		if (len <= 0)
 		{
-			if (process_token(ins, &pos, &lexemes) == -1)
-			{
-				ft_lstclear(&lexemes, ft_del);
-				return (NULL);
-			}
+			ft_lstclear(&lexemes, ft_del);
+			return (NULL);
 		}
+		if (len == 0)
+			break ;
+		if (create_and_add_node(ins, len, &lexemes) == -1)
+		{
+			ft_lstclear(&lexemes, ft_del);
+			return (NULL);
+		}
+		ins += len;
+		while (*ins && ft_isdelim(*ins))
+			ins++;
 	}
 	return (lexemes);
 }
