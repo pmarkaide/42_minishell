@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:23:53 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/02 12:10:05 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/02 12:58:59 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ static void	execute_child_process(t_macro *macro, int index, int read_end)
 	char	**cmd_array;
 	int		status;
 
-	close(macro->pipe_exit[0]);
 	cmd = macro->cmds;
 	i = 0;
 	while (cmd != NULL && i++ < index)
@@ -53,15 +52,12 @@ static void	execute_child_process(t_macro *macro, int index, int read_end)
 	else
 		execve(cmd_array[0], cmd_array, macro->env);
 	status = macro->exit_code;
-	if (index == macro->num_cmds - 1)
-		write_pipe_exit(macro->pipe_exit, status);
 	exit(status);
 }
 
 static int	execute_cmds(t_macro *macro, int read_end)
 {
 	int	i;
-	int	status;
 
 	i = 0;
 	while (i < macro->num_cmds)
@@ -82,18 +78,11 @@ static int	execute_cmds(t_macro *macro, int read_end)
 		close(macro->pipe_fd[1]);
 		i++;
 	}
-	if (macro->pid != 0)
-		read_pipe_exit(macro->pipe_exit, &status);
 	return (i);
 }
 
 int	prepare_execution(t_macro *macro, int *read_end)
 {
-	if (pipe(macro->pipe_exit) == -1)
-	{
-		error_msg(macro, "pipe failed", 0);
-		return (-1);
-	}
 	*read_end = 0;
 	macro->pid = malloc(sizeof(pid_t) * macro->num_cmds);
 	if (macro->pid == NULL)
@@ -123,8 +112,6 @@ void	execution(t_macro *macro)
 		i = 0;
 		while (i < num_cmds_executed)
 			status = wait_processes(macro->pid[i++]);
-		if(macro->pid != 0)
-			read_pipe_exit(macro->pipe_exit, &status);
 		macro->exit_code = status;
 		ft_free((void **)&macro->pid);
 		close_fds(macro, read_end);

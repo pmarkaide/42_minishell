@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   general_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 13:43:00 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/09/01 13:33:48 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/02 12:58:20 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,5 @@ t_macro	*init_macro(char **envp, char **argv)
 	macro->exit_code = 0;
 	macro->pipe_fd[0] = -1;
 	macro->pipe_fd[1] = -1;
-	macro->pipe_exit[0] = -1;
-	macro->pipe_exit[1] = -1;
 	return (macro);
 }
