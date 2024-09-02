@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 13:02:41 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/01 13:32:19 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/02 18:28:44 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void	print_tokens(t_token *tokens)
 		ft_printf("%s: %s\n", enum_to_char(tokens->type), tokens->value);
 		tokens = tokens->next;
 	}
+	ft_printf("\n");
 }
 
 void	print_cmds(t_cmd *cmds)

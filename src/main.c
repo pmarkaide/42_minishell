@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 14:49:38 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/02 17:17:48 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/02 22:00:03 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ static void	execute_commands(t_macro *macro)
 		return ;
 	if (parsing(macro) == -1)
 		return ;
-	//print_tokens(macro->tokens);
 	execution(macro);
 	free_ins(macro);
 }
