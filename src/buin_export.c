@@ -3,22 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   buin_export.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:04:44 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/09/02 16:12:23 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/02 22:02:39 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static void	handle_invalid_identifier(char *arg, int *exit_flag)
-{
-	ft_putstr_fd("minishell: export: `", STDERR_FILENO);
-	ft_putstr_fd(arg, STDERR_FILENO);
-	ft_putendl_fd("': not a valid identifier", STDERR_FILENO);
-	*exit_flag = 1;
-}
 
 static void	update_env(char *clean_value, t_macro *macro, int j)
 {
@@ -57,16 +49,6 @@ static void	add_env(char *clean_value, t_macro *macro)
 	new_env[j + 1] = NULL;
 	free(macro->env);
 	macro->env = new_env;
-}
-
-static int	validate_and_clean_argument(char *arg, int *exit_flag)
-{
-	if (check_export(arg) == 0)
-	{
-		handle_invalid_identifier(arg, exit_flag);
-		return (-1);
-	}
-	return (0);
 }
 
 static void	update_or_add_env(char *clean_value, t_macro *macro)

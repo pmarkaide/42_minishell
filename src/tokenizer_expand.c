@@ -12,8 +12,6 @@
 
 #include "minishell.h"
 
-
-
 char	*handle_literal_string(t_token *token, char *expanded)
 {
 	char	*copy;
@@ -24,8 +22,6 @@ char	*handle_literal_string(t_token *token, char *expanded)
 		return (NULL);
 	return (copy);
 }
-
-
 
 char	*expand_token(t_token *token, t_macro *macro)
 {

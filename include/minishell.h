@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/02 21:58:55 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/02 22:03:02 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ typedef struct s_macro
 }					t_macro;
 
 /* presyntax*/
-int				syntax_error_check(t_macro *macro, char *ins);
+int					syntax_error_check(t_macro *macro, char *ins);
 
 /* tokenizer */
 int					tokenizer(t_macro *macro);
@@ -109,7 +109,8 @@ t_token				*expand_arg_tokens(t_macro *macro);
 void				ensure_at_least_one_cmd(t_token **tokens);
 
 /* tokenizer_retokenize */
-t_token				*handle_retokenize(char *expanded, t_token *token, t_macro *macro);
+t_token				*handle_retokenize(char *expanded, t_token *token,
+						t_macro *macro);
 
 /* tokenizer_utils */
 bool				is_builtin(t_token *token);
@@ -133,7 +134,7 @@ void				remove_token(t_token **tokens, t_token *token);
 t_token				*remove_empty_envir_tokens(t_macro *macro);
 
 /* parsing */
-int				parsing(t_macro *macro);
+int					parsing(t_macro *macro);
 
 /* parsing utils */
 void				handle_here_doc(t_cmd *cmds, t_macro *macro);
@@ -145,7 +146,6 @@ void				execution(t_macro *macro);
 /* execution builtin */
 int					execute_single_builtin(t_macro *macro);
 void				execute_builtin(t_macro *macro, char **cmd_array);
-
 
 /* execution utils */
 char				**build_cmd_args_array(t_token *cmd_args);
@@ -167,15 +167,15 @@ char				*get_executable_path(char **paths, char *executable,
 int					open_file(t_token *token, t_macro *macro);
 
 /* expand */
-char				*get_expanded_ins(char *ins,
-						t_macro *macro);
+char				*get_expanded_ins(char *ins, t_macro *macro);
 
 /* expand utils */
-void	handle_delimiter_after_dollar(char **clean, char *ins, size_t *i);
-void	handle_unexpected_case(char **clean, char *ins, size_t *i);
+void				handle_delimiter_after_dollar(char **clean, char *ins,
+						size_t *i);
+void				handle_unexpected_case(char **clean, char *ins, size_t *i);
 
 /* dup */
-int				dup_file_descriptors(t_macro *macro, t_cmd *cmd,
+int					dup_file_descriptors(t_macro *macro, t_cmd *cmd,
 						int read_end);
 
 /* clean utils*/
@@ -237,9 +237,11 @@ int					in_root(char *path);
 int					in_home(t_macro *macro);
 char				*upper_than_home(t_macro *macro);
 char				*create_path(t_macro *macro);
+int					validate_and_clean_argument(char *arg, int *exit_flag);
 
 /* error */
-int					error_msg(t_macro *macro,char *msg, int exit_code);
-void				exit_error(char *file, char *msg, t_macro *macro, int exit_code);
+int					error_msg(t_macro *macro, char *msg, int exit_code);
+void				exit_error(char *file, char *msg, t_macro *macro,
+						int exit_code);
 
 #endif /* MINISHELL_H */
