@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:04:44 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/29 22:32:26 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/02 07:46:13 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,8 @@ static void	process_argument(char *arg, t_macro *macro, int *exit_flag)
 	while (macro->env[j])
 	{
 		len_var = ft_strchr_i(macro->env[j], '=');
-		if (ft_strncmp(clean_value, macro->env[j], len_var) == 0)
+		if (ft_strncmp(clean_value, macro->env[j], len_var) == 0
+			&& len_var == (int)ft_strlen(clean_value))
 		{
 			update_env(clean_value, macro, j);
 			return ;
