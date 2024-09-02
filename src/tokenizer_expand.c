@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:45:23 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/01 22:04:35 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/02 17:13:43 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,12 +183,7 @@ void	ensure_at_least_one_cmd(t_token **tokens)
 			cmd_found = 0;
 			first_token = 0;
 		}
-		if (is_redir(current, "infile") || is_redir(current, "outfile"))
-		{
-			current = current->next;
-			continue ;
-		}
-		if (current->type == CMD)
+		if (current->type == CMD || current->type == BUILTIN)
 			cmd_found = 1;
 		if (!cmd_found && current->type == ARG)
 		{
