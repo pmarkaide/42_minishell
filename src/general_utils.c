@@ -66,9 +66,7 @@ char	*grab_home(t_macro *macro)
 
 	home = grab_env("HOME", macro->env, 4);
 	if (home == NULL)
-	{
-		return (NULL);
-	}
+		home = ft_strdup("/home/");
 	return (home);
 }
 
