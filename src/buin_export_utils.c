@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 21:38:08 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/29 21:39:33 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/02 16:11:55 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,30 +66,4 @@ int	check_export(char *arg)
 		i++;
 	}
 	return (1);
-}
-
-char	*remove_quotes(char *str)
-{
-	int		i;
-	int		j;
-	int		len;
-	char	*clean;
-
-	i = 0;
-	j = 0;
-	len = ft_strlen(str);
-	clean = malloc(sizeof(char) * len + 1);
-	if (!clean)
-		return (NULL);
-	while (str[i])
-	{
-		if (str[i] != '\'' && str[i] != '\"')
-		{
-			clean[j] = str[i];
-			j++;
-		}
-		i++;
-	}
-	clean[j] = '\0';
-	return (clean);
 }
