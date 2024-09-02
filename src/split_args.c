@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:47:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/02 14:54:16 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/02 16:03:47 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,12 @@ static int	get_next_token_len(char *str)
 	{
 		quote_char = *str;
 		len++;
-		str++;
 		while (str[len] && str[len] != quote_char)
+            len++;
+		if(str[len] == quote_char)
 			len++;
-		len += 2;
+		while (str[len] && !ft_isdelim(str[len]) && str[len] != '|')
+            len++;
 	}
 	else if (*str == '|')
 		return (1);
@@ -72,7 +74,6 @@ t_list *split_args_by_quotes(char *ins)
         }
         if (len == 0)
             break;
-		ft_printf("len is: %d\n", len);
         if (create_and_add_node(ins, len, &lexemes) == -1)
         {
             ft_lstclear(&lexemes, ft_del);
