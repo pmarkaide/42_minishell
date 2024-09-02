@@ -23,7 +23,7 @@ static void	handle_invalid_identifier(char *arg, int *exit_flag)
 static void	update_env(char *clean_value, t_macro *macro, int j)
 {
 	int	value_flag;
-	
+
 	value_flag = ft_strchr_i(clean_value, '=');
 	if (value_flag != -1)
 	{
@@ -59,56 +59,54 @@ static void	add_env(char *clean_value, t_macro *macro)
 	macro->env = new_env;
 }
 
-static int validate_and_clean_argument(char *arg, int *exit_flag)
+static int	validate_and_clean_argument(char *arg, int *exit_flag)
 {
-
-    if (check_export(arg) == 0)
-    {
-        handle_invalid_identifier(arg, exit_flag);
-        return (-1);
-    } 
-	return 0;
+	if (check_export(arg) == 0)
+	{
+		handle_invalid_identifier(arg, exit_flag);
+		return (-1);
+	}
+	return (0);
 }
 
-static void update_or_add_env(char *clean_value, t_macro *macro)
+static void	update_or_add_env(char *clean_value, t_macro *macro)
 {
-    int j;
-    int len_var;
-    int len;
+	int	j;
+	int	len_var;
+	int	len;
 
-    len = ft_strchr_i(clean_value, '=');
-    if (len == -1)
-        len = ft_strlen(clean_value);
-
-    j = 0;
-    while (macro->env[j])
-    {
-        len_var = ft_strchr_i(macro->env[j], '=');
-        if (len_var == -1)
-            len_var = ft_strlen(macro->env[j]);
-        if (ft_strncmp(clean_value, macro->env[j], len_var) == 0
-            && len_var == len)
-        {
-            update_env(clean_value, macro, j);
-            return;
-        }
-        j++;
-    }
-    add_env(clean_value, macro);
+	len = ft_strchr_i(clean_value, '=');
+	if (len == -1)
+		len = ft_strlen(clean_value);
+	j = 0;
+	while (macro->env[j])
+	{
+		len_var = ft_strchr_i(macro->env[j], '=');
+		if (len_var == -1)
+			len_var = ft_strlen(macro->env[j]);
+		if (ft_strncmp(clean_value, macro->env[j], len_var) == 0
+			&& len_var == len)
+		{
+			update_env(clean_value, macro, j);
+			return ;
+		}
+		j++;
+	}
+	add_env(clean_value, macro);
 }
 
-static void process_argument(char *arg, t_macro *macro, int *exit_flag)
+static void	process_argument(char *arg, t_macro *macro, int *exit_flag)
 {
-    if (validate_and_clean_argument(arg, exit_flag) == -1)
-		return;
-    update_or_add_env(arg, macro);
+	if (validate_and_clean_argument(arg, exit_flag) == -1)
+		return ;
+	update_or_add_env(arg, macro);
 }
 
 int	ft_export2(char **args, t_macro *macro)
 {
-	int		i;
-	int		argc;
-	int		exit_flag;
+	int	i;
+	int	argc;
+	int	exit_flag;
 
 	exit_flag = 0;
 	argc = 0;
