@@ -16,17 +16,17 @@ echo "Merging $PRODUCTION_BRANCH into $TEST_BRANCH..."
 git merge origin/$PRODUCTION_BRANCH
 
 # Check for merge conflicts
-if git diff --name-only --diff-filter=U | grep -q "^main.c$"; then
-  echo "Conflict detected in main.c. Resolving conflict by keeping the test branch's version..."
+if git diff --name-only --diff-filter=U | grep -q "^src/main.c$"; then
+  echo "Conflict detected in src/main.c. Resolving conflict by keeping the test branch's version..."
 
-  # Checkout the test branch's version of main.c
-  git checkout --ours main.c
+  # Checkout the test branch's version of src/main.c
+  git checkout --ours src/main.c
 
   # Stage the resolved file
-  git add main.c
+  git add src/main.c
 
   # Commit the merge with a message
-  git commit -m "Merged $PRODUCTION_BRANCH into $TEST_BRANCH, keeping the test branch's main.c"
+  git commit -m "Merged $PRODUCTION_BRANCH into $TEST_BRANCH, keeping the test branch's src/main.c"
 else
   echo "Merge completed without conflicts."
 fi

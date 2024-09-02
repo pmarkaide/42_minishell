@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 14:49:38 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/31 23:29:16 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/02 16:57:46 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int main(int argc, char **argv, char **envp)
 
         if (line && !ft_str_empty(line))
         {
-            macro->instruction = line;
+            macro->ins = line;
             tokenizer(macro);
             parsing(macro);
             if (macro->cmds)
@@ -98,7 +98,7 @@ int main(int argc, char **argv, char **envp)
             g_exit = 0;
         }
 
-        macro->instruction = line;
+        macro->ins = line;
         tokenizer(macro);
         parsing(macro);
         if (macro->cmds == NULL)
