@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:04:44 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/09/02 13:30:27 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/02 16:12:23 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static void	handle_invalid_identifier(char *arg, int *exit_flag)
 {
 	ft_putstr_fd("minishell: export: `", STDERR_FILENO);
-	ft_putstr_fd(remove_quotes(arg), STDERR_FILENO);
+	ft_putstr_fd(arg, STDERR_FILENO);
 	ft_putendl_fd("': not a valid identifier", STDERR_FILENO);
 	*exit_flag = 1;
 }
@@ -29,7 +29,6 @@ static void	update_env(char *clean_value, t_macro *macro, int j)
 	{
 		free(macro->env[j]);
 		macro->env[j] = ft_strdup(clean_value);
-		free(clean_value);
 	}
 }
 
@@ -58,20 +57,17 @@ static void	add_env(char *clean_value, t_macro *macro)
 	new_env[j + 1] = NULL;
 	free(macro->env);
 	macro->env = new_env;
-	free_string(&clean_value);
 }
 
-static char *validate_and_clean_argument(char *arg, int *exit_flag)
+static int validate_and_clean_argument(char *arg, int *exit_flag)
 {
-    char *clean_value;
 
     if (check_export(arg) == 0)
     {
         handle_invalid_identifier(arg, exit_flag);
-        return NULL;
-    }
-    clean_value = remove_quotes(arg);
-    return clean_value;
+        return (-1);
+    } 
+	return 0;
 }
 
 static void update_or_add_env(char *clean_value, t_macro *macro)
@@ -103,13 +99,9 @@ static void update_or_add_env(char *clean_value, t_macro *macro)
 
 static void process_argument(char *arg, t_macro *macro, int *exit_flag)
 {
-    char *clean_value;
-
-    clean_value = validate_and_clean_argument(arg, exit_flag);
-    if (clean_value == NULL)
-        return;
-
-    update_or_add_env(clean_value, macro);
+    if (validate_and_clean_argument(arg, exit_flag) == -1)
+		return;
+    update_or_add_env(arg, macro);
 }
 
 int	ft_export2(char **args, t_macro *macro)
