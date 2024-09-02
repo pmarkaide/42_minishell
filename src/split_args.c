@@ -43,11 +43,11 @@ static int	get_next_token_len(char *str)
 		quote_char = *str;
 		len++;
 		while (str[len] && str[len] != quote_char)
-            len++;
-		if(str[len] == quote_char)
+			len++;
+		if (str[len] == quote_char)
 			len++;
 		while (str[len] && !ft_isdelim(str[len]) && str[len] != '|')
-            len++;
+			len++;
 	}
 	else if (*str == '|')
 		return (1);
@@ -59,30 +59,30 @@ static int	get_next_token_len(char *str)
 	return (len);
 }
 
-t_list *split_args_by_quotes(char *ins)
+t_list	*split_args_by_quotes(char *ins)
 {
-    t_list *lexemes = NULL;
-    int len;
+	t_list	*lexemes;
+	int		len;
 
-    while (*ins)
-    {
-        len = get_next_token_len(ins);
-        if (len <= 0)
-        {
-            ft_lstclear(&lexemes, ft_del);
-            return NULL;
-        }
-        if (len == 0)
-            break;
-        if (create_and_add_node(ins, len, &lexemes) == -1)
-        {
-            ft_lstclear(&lexemes, ft_del);
-            return NULL;
-        }
+	lexemes = NULL;
+	while (*ins)
+	{
+		len = get_next_token_len(ins);
+		if (len <= 0)
+		{
+			ft_lstclear(&lexemes, ft_del);
+			return (NULL);
+		}
+		if (len == 0)
+			break ;
+		if (create_and_add_node(ins, len, &lexemes) == -1)
+		{
+			ft_lstclear(&lexemes, ft_del);
+			return (NULL);
+		}
 		ins += len;
-        while (*ins && ft_isdelim(*ins))
-            ins++;
-    }
-    return lexemes;
+		while (*ins && ft_isdelim(*ins))
+			ins++;
+	}
+	return (lexemes);
 }
-
