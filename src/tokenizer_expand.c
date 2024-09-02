@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:45:23 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/02 17:13:43 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/02 21:42:52 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,15 +88,15 @@ char	*handle_literal_string(t_token *token, char *expanded)
 	return (copy);
 }
 
-t_token	*handle_retokenize(char *expanded, t_token *tokens, t_macro *macro)
+t_token	*handle_retokenize(char *expanded, t_token *token, t_macro *macro)
 {
 	t_token	*retokens;
 	t_token	*last_retokens;
 
-	retokens = retokenize(expanded, tokens);
+	retokens = retokenize(expanded, token);
 	if (!retokens)
 		return (NULL);
-	last_retokens = plug_retokens(tokens, retokens, macro);
+	last_retokens = plug_retokens(token, retokens, macro);
 	return (last_retokens);
 }
 
@@ -111,7 +111,10 @@ char	*expand_token(t_token *token, t_macro *macro)
 	{
 		token->value = handle_literal_string(token, expanded);
 		if (!token->value)
+		{
+			token = NULL;
 			return (free_string(&expanded));
+		}
 	}
 	else
 	{
@@ -135,7 +138,7 @@ t_token	*expand_arg_tokens(t_macro *macro)
 			if (!expand_token(tokens, macro))
 				return (NULL);
 		}
-		if (tokens == NULL || tokens->value == NULL)
+		if (tokens == NULL)
 			return (NULL);
 		tokens = tokens->next;
 	}
