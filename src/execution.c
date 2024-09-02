@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:23:53 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/02 07:46:59 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/02 10:36:27 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,12 @@ int	execute_single_builtin(t_macro *macro)
 	if(saved_stdin == -1 || saved_stdout == -1)
 	{
 		error_msg(macro, "dup", -1);
-		return(-1); //ESTO VA DIRECTO AL EXIT_CODE
+		return (-1);
 	}
 	if(validate_redirections(macro->cmds->redir, macro) == -1)
-		return(1); //ESTO VA DIRECTO AL EXIT_CODE
+		return (1);
 	if(dup_file_descriptors(macro, macro->cmds, 0) == -1)
-		return(-1); //ESTO VA DIRECTO AL EXIT_CODE
+		return (-1);
 	cmd_array = build_cmd_args_array(macro->cmds->cmd_arg);
 	if(cmd_array == NULL)
 	{
@@ -65,7 +65,7 @@ int	execute_single_builtin(t_macro *macro)
 	else
 		execute_builtin(macro, cmd_array);
 	restore_fds(saved_stdout, saved_stdin);
-	return(macro->exit_code);
+	return (0);
 }
 
 static void	execute_child_process(t_macro *macro, int index, int read_end)
