@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 20:03:14 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/29 23:59:14 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/02 08:48:32 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ void	read_pipe_exit(int *pipe_exit, int *status)
     }
     close(pipe_exit[1]);
     read(pipe_exit[0], status, sizeof(int));
-    // if (read(pipe_exit[0], status, sizeof(int)) == -1)
-    //     perror("read_pipe_exit :: read error");
+    if (read(pipe_exit[0], status, sizeof(int)) == -1)
+        perror("read_pipe_exit :: read error");
     close(pipe_exit[0]);
 }
 
