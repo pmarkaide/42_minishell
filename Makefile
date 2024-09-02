@@ -6,7 +6,7 @@
 #    By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/01 15:11:43 by pmarkaid          #+#    #+#              #
-#    Updated: 2024/09/01 21:31:50 by pmarkaid         ###   ########.fr        #
+#    Updated: 2024/09/02 09:47:10 by pmarkaid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,7 @@ SRCS_FILES = \
 	validation_utils.c \
 	execution.c \
 	execution_utils.c \
+	execution_builtin.c \
 	error.c \
 	dup.c \
 	expand.c \

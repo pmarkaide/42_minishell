@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/01 21:51:52 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/02 09:46:25 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,11 @@ void				close_here_doc_not_needed(t_token *tokens);
 
 /* execution */
 void				execution(t_macro *macro);
+
+/* execution builtin */
+int					execute_single_builtin(t_macro *macro);
+void				execute_builtin(t_macro *macro, char **cmd_array);
+
 
 /* execution utils */
 char				**build_cmd_args_array(t_token *cmd_args);

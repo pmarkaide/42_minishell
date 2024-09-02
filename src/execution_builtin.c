@@ -6,22 +6,13 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 09:15:15 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/02 09:15:21 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/02 09:46:56 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	execute_builtin(t_macro *macro, char **cmd_array)
-{
-	char	*builtin;
-
-	builtin = remove_path(cmd_array[0]);
-	macro->exit_code = select_and_run_builtin(builtin, cmd_array, macro);
-	free_array(&cmd_array);
-}
-
-int	restore_fds(int saved_stdout, int saved_stdin)
+static int	restore_fds(int saved_stdout, int saved_stdin)
 {
 	int	result;
 
@@ -68,4 +59,13 @@ int	execute_single_builtin(t_macro *macro)
 		execute_builtin(macro, cmd_array);
 	restore_fds(saved_stdout, saved_stdin);
 	return (0);
+}
+
+void	execute_builtin(t_macro *macro, char **cmd_array)
+{
+	char	*builtin;
+
+	builtin = remove_path(cmd_array[0]);
+	macro->exit_code = select_and_run_builtin(builtin, cmd_array, macro);
+	free_array(&cmd_array);
 }
