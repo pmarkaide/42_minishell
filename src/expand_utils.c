@@ -12,13 +12,12 @@
 
 #include "minishell.h"
 
-bool type_is_redirection(t_type type)
+bool	type_is_redirection(t_type type)
 {
 	if (type == INRED || type == OUTRED || type == APPEND || type == HERE_DOC)
 		return (true);
 	return (false);
 }
-
 
 bool	envir_must_be_expanded(char *str, int index)
 {

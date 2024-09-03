@@ -48,11 +48,11 @@ int	ft_exit2(char **args)
 	if (argc > 2)
 	{
 		ft_putendl_fd("minishell: exit: too many arguments", STDERR_FILENO);
-		exit (1);
+		exit(1);
 	}
 	validation_result = validate_numeric_argument(args[1]);
 	if (validation_result != 0)
-		exit (validation_result);
+		exit(validation_result);
 	code = ft_atoi(args[1]);
 	if (code > 255 || code < 0)
 		code = code % 256;

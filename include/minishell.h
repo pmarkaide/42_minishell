@@ -173,7 +173,7 @@ char				*get_expanded_ins(char *ins, t_macro *macro);
 void				handle_delimiter_after_dollar(char **clean, char *ins,
 						size_t *i);
 void				handle_unexpected_case(char **clean, char *ins, size_t *i);
-bool 				type_is_redirection(t_type type);
+bool				type_is_redirection(t_type type);
 
 /* dup */
 int					dup_file_descriptors(t_macro *macro, t_cmd *cmd,
