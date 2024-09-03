@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 20:53:07 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/01 21:47:26 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/03 09:29:49 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,9 @@ void	handle_delimiter_after_dollar(char **clean, char *ins, size_t *i)
 
 	str[0] = ins[*i];
 	str[1] = '\0';
-	temp = ft_strjoin(*clean, str, NULL);
+	temp = ft_strjoin(*clean, str, NULL, 1);
 	if (!temp)
-		return (free(*clean));
-	free_string(clean);
+		return ;
 	*clean = temp;
 	(*i)++;
 }
@@ -81,10 +80,9 @@ void	handle_unexpected_case(char **clean, char *ins, size_t *i)
 
 	str[0] = ins[*i];
 	str[1] = '\0';
-	temp = ft_strjoin(*clean, str, NULL);
+	temp = ft_strjoin(*clean, str, NULL, 1);
 	if (!temp)
-		return (free(*clean));
-	free_string(clean);
+		return ;
 	*clean = temp;
 	(*i)++;
 }
