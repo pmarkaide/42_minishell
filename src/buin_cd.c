@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   buin_cd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:04:29 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/29 23:51:12 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/03 09:30:13 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	ft_cd2(char **args, t_macro *macro)
 		return (1);
 	if (change_directory(path, home) != 0)
 		return (1);
-	oldpwd = ft_strjoin(macro->m_pwd, "/", NULL);
+	oldpwd = ft_strjoin(macro->m_pwd, "/", NULL, 0);
 	update_environment(macro, oldpwd, path);
 	free_2_strings(&home, &oldpwd);
 	free(path);

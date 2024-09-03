@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:52:58 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/01 21:53:23 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/03 10:46:40 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,7 @@ void	handle_normal_char(char **clean, char *ins, size_t *i)
 
 	str[0] = ins[*i];
 	str[1] = '\0';
-	temp = ft_strjoin(*clean, str, NULL);
-	if (!temp)
-		return (free(*clean));
-	free_string(clean);
+	temp = ft_strjoin(*clean, str, NULL, 1);
 	*clean = temp;
 	(*i)++;
 }
@@ -44,12 +41,7 @@ void	handle_envir(char **clean, char *ins, size_t *i, t_macro *macro)
 	envir_value = ft_getenv(envir_name, macro->env);
 	free_string(&envir_name);
 	if (envir_value)
-	{
-		*clean = ft_strjoin(*clean, envir_value, NULL);
-		if (!*clean)
-			return (free(*clean));
-	}
-	free_string(&envir_value);
+		*clean = ft_strjoin(*clean, envir_value, NULL, 3);
 	*i = start;
 }
 
@@ -74,26 +66,23 @@ void	handle_quoted_literal(char **clean, char *ins, size_t *i)
 		*i += ft_strlen(&ins[*i]);
 	}
 	if (!temp)
-		return (free(*clean));
-	*clean = ft_strjoin(*clean, temp, NULL);
-	free_string(&temp);
+	{
+		free(*clean);
+		*clean = NULL;
+		return;
+	}
+	*clean = ft_strjoin(*clean, temp, NULL, 3);
 }
 
 void	handle_exit_code(char **clean, size_t *i, t_macro *macro)
 {
 	char	*substr;
-	char	*temp;
 
 	substr = ft_itoa(macro->exit_code);
 	if (!substr)
 		free_string(clean);
-	temp = ft_strjoin(*clean, substr, NULL);
-	if (!temp)
-		return (free(*clean));
-	free_string(clean);
-	*clean = temp;
+	*clean = ft_strjoin(*clean, substr, NULL, 3);
 	*i += 2;
-	free_string(&substr);
 }
 
 char	*get_expanded_ins(char *ins, t_macro *macro)

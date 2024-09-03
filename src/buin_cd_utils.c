@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   buin_cd_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 13:15:25 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/29 23:54:48 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/03 09:31:42 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	*parse_arguments(char **args, t_macro *macro, char *home)
 	else if (ft_strncmp(args[1], "~", 1) == 0 && args[1][1] == '\0')
 		path = ft_strdup(macro->m_home);
 	else if (ft_strncmp(args[1], "~/", 2) == 0)
-		path = ft_strjoin(macro->m_home, args[1] + 1, NULL);
+		path = ft_strjoin(macro->m_home, args[1] + 1, NULL, 0);
 	else if (ft_strncmp(args[1], "-", 1) == 0)
 	{
 		path = grab_env("OLDPWD", macro->env, 6);
@@ -60,10 +60,9 @@ int	change_directory(char *path, char *home)
 	}
 	if (access(path, X_OK) != 0)
 	{
-		path = ft_strjoin("minishell: cd: ", path, NULL);
+		path = ft_strjoin("minishell: cd: ", path, NULL, 2);
 		perror(path);
 		free(home);
-		free(path);
 		return (1);
 	}
 	if (chdir(path) == -1)
@@ -99,7 +98,7 @@ void	update_environment(t_macro *macro, char *oldpwd, char *path)
 		ft_putstr_fd("cd: error retrieving current directory:", STDERR_FILENO);
 		ft_putstr_fd(" getcwd: cannot access parent ", STDERR_FILENO);
 		ft_putendl_fd("directories: No such file or directory", STDERR_FILENO);
-		macro->m_pwd = ft_strjoin(oldpwd, path, NULL);
+		macro->m_pwd = ft_strjoin(oldpwd, path, NULL, 0);
 		check_save_env("PWD", macro, 3);
 		return ;
 	}

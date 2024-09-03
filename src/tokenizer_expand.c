@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:45:23 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/02 21:57:13 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/03 10:42:02 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,10 @@ char	*handle_literal_string(t_token *token, char *expanded)
 	return (copy);
 }
 
-char	*expand_token(t_token *token, t_macro *macro)
+t_token *expand_token(t_token *token, t_macro *macro)
 {
 	char	*expanded;
+	t_token *new_token;
 
 	expanded = get_expanded_ins(token->value, macro);
 	if (!expanded || *expanded == '\0')
@@ -33,20 +34,20 @@ char	*expand_token(t_token *token, t_macro *macro)
 	if (ft_strchr("\"", token->value[0]))
 	{
 		token->value = handle_literal_string(token, expanded);
-		if (!token->value)
-		{
-			token = NULL;
-			return (free_string(&expanded));
-		}
+	    if (!token->value)
+        {
+            free_string(&expanded);
+            return (NULL);
+        }
 	}
 	else
 	{
-		token = handle_retokenize(expanded, token, macro);
-		if (!token)
-			return (free_string(&expanded));
+		new_token = handle_retokenize(expanded, token, macro);
+		free_string(&expanded);
+        return new_token;
 	}
 	free_string(&expanded);
-	return (token->value);
+	return (token);
 }
 
 t_token	*expand_arg_tokens(t_macro *macro)
@@ -58,8 +59,9 @@ t_token	*expand_arg_tokens(t_macro *macro)
 	{
 		if (ft_strchr(tokens->value, '$'))
 		{
-			if (!expand_token(tokens, macro))
-				return (NULL);
+            tokens = expand_token(tokens, macro);
+            if (!tokens)
+                return (NULL);
 		}
 		if (tokens == NULL)
 			return (NULL);

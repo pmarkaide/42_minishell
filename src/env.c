@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 09:11:22 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/30 10:03:08 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/03 09:28:24 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ void	ft_export_do(t_macro *macro, char *name, char *value)
 	int		pos;
 	char	*cmd;
 
-	cmd = ft_strjoin(name, "=", 0);
-	cmd = ft_strjoin(cmd, value, 0);
+	cmd = ft_strjoin(name, "=", 0, 0);
+	cmd = ft_strjoin(cmd, value, 0, 0);
 	ij[0] = 1;
 	pos = var_in_env(cmd, macro->env, ij);
 	if (pos == 1)
