@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   buin_export.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:04:44 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/09/02 22:02:39 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/03 22:26:18 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ static void	add_env(char *clean_value, t_macro *macro)
 	if (new_env == NULL)
 	{
 		perror("malloc");
+		free_macro(macro);
 		exit(1);
 	}
 	k = 0;

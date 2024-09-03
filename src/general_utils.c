@@ -6,11 +6,13 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 13:43:00 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/09/03 17:01:53 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/03 23:10:44 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+extern int	g_exit;
 
 char	*ft_strjoin3(const char *s1, const char *s2, const char *s3)
 {
@@ -74,6 +76,7 @@ t_macro	*init_macro(char **envp, char **argv)
 {
 	t_macro	*macro;
 
+	g_exit = 0;
 	macro = ft_calloc(sizeof(t_macro), 1);
 	if (!macro)
 	{
@@ -89,6 +92,7 @@ t_macro	*init_macro(char **envp, char **argv)
 	macro->m_pwd = char_pwd();
 	macro->m_home = grab_home(macro);
 	macro->exit_code = 0;
+	macro->exit_flag = 0;
 	macro->pipe_fd[0] = -1;
 	macro->pipe_fd[1] = -1;
 	return (macro);

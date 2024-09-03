@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/03 17:04:43 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/03 23:19:20 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ typedef struct s_macro
 	char			*m_pwd;
 	char			*m_home;
 	int				exit_code;
+	int				exit_flag;
 }					t_macro;
 
 /* presyntax*/
@@ -242,5 +243,6 @@ int					validate_and_clean_argument(char *arg, int *exit_flag);
 int					error_msg(t_macro *macro, char *msg, int exit_code);
 void				exit_error(char *file, char *msg, t_macro *macro,
 						int exit_code);
+void				exit_free(t_macro *macro);
 
 #endif /* MINISHELL_H */

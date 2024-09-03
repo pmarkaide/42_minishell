@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 14:49:38 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/03 12:17:44 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/03 23:39:17 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,21 @@
 
 int			g_exit;
 
-static char	*read_line(t_macro *macro)
+static char	*read_line(t_macro *macro, int *flag)
 {
 	char	*line;
 	char	*path;
 
-	if (g_exit == 130)
+	if (g_exit == 130 && *flag == 0)
+	{
 		line = readline("");
+		*flag = 1;
+	}
 	else
 	{
 		path = create_path(macro);
 		line = readline(path);
+		*flag = 0;
 		free(path);
 	}
 	return (line);
@@ -62,20 +66,17 @@ static void	execute_commands(t_macro *macro)
 	free_ins(macro);
 }
 
-int	main(int argc, char **argv, char **envp)
+static void	run_shell(t_macro *macro)
 {
-	t_macro	*macro;
 	char	*line;
 	int		status;
+	int		ctrl_c_flag;
 
-	(void)argc;
-	g_exit = 0;
-	macro = init_macro(envp, argv);
-	signal(SIGINT, ft_signal_handler);
-	signal(SIGQUIT, SIG_IGN);
+	ctrl_c_flag = 0;
 	while (1)
 	{
-		line = read_line(macro);
+		macro->exit_flag = 0;
+		line = read_line(macro, &ctrl_c_flag);
 		status = evaluate_line(line, macro);
 		if (status == -1)
 			break ;
@@ -85,7 +86,25 @@ int	main(int argc, char **argv, char **envp)
 			continue ;
 		}
 		execute_commands(macro);
+		if (macro->exit_flag == 69)
+		{
+			ft_putstr_fd("exit\n", STDOUT_FILENO);
+			break ;
+		}
 	}
+}
+
+int	main(int argc, char **argv, char **envp)
+{
+	t_macro	*macro;
+	int		status;
+
+	(void)argc;
+	macro = init_macro(envp, argv);
+	signal(SIGINT, ft_signal_handler);
+	signal(SIGQUIT, SIG_IGN);
+	run_shell(macro);
+	status = macro->exit_code;
 	free_macro(macro);
-	exit(0);
+	exit(status);
 }

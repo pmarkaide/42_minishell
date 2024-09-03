@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:04:40 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/09/03 17:11:15 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/03 23:20:54 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,28 +40,22 @@ int	ft_exit2(char **args, t_macro *macro)
 	argc = 0;
 	while (args[argc])
 		argc++;
-	if (argc == 1)
-	{
-		ft_putstr_fd("exit\n", STDOUT_FILENO);
-		free_macro(macro);
-		exit(0);
-	}
 	if (argc > 2)
 	{
 		ft_putendl_fd("minishell: exit: too many arguments", STDERR_FILENO);
-		free_macro(macro);
-		exit(1);
+		return (1);
+	}
+	if (argc == 1)
+	{
+		macro->exit_flag = 69;
+		return (0);
 	}
 	validation_result = validate_numeric_argument(args[1]);
 	if (validation_result != 0)
-	{
-		free_macro(macro);
-		exit(validation_result);
-	}
+		return (validation_result);
+	macro->exit_flag = 69;
 	code = ft_atoi(args[1]);
 	if (code > 255 || code < 0)
 		code = code % 256;
-	ft_putstr_fd("exit\n", STDOUT_FILENO);
-	free_macro(macro);
-	exit(code);
+	return (code);
 }
