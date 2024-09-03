@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:52:58 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/03 17:15:54 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/03 23:08:51 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ void	handle_quoted_literal(char **clean, char *ins, size_t *i)
 	if (!temp)
 	{
 		free(*clean);
-		*clean = NULL;
 		return ;
 	}
 	*clean = ft_strjoin(*clean, temp, NULL, 3);
@@ -98,7 +97,9 @@ char	*get_expanded_ins(char *ins, t_macro *macro)
 			handle_normal_char(&clean, ins, &i);
 		else if (ins[i] == '$' && ins[i + 1] == '?')
 			handle_exit_code(&clean, &i, macro);
-		else if (ins[i] == '$' && (ins[i + 1] == '\'' || ins[i + 1] == '\"'))
+		else if (ins[i] == '$' && ft_isquote(ins[i + 1]) && !inside_double_quotes(ins, i))
+			i++;
+		else if (ins[i] == '$' && ft_isquote(ins[i + 1]) && inside_double_quotes(ins, i))
 			handle_quoted_literal(&clean, ins, &i);
 		else if (ins[i] == '$' && ft_isdelim(ins[i + 1]))
 			handle_delimiter_after_dollar(&clean, ins, &i);

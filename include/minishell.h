@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/03 15:59:58 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/03 23:05:36 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,6 +236,7 @@ int					in_home(t_macro *macro);
 char				*upper_than_home(t_macro *macro);
 char				*create_path(t_macro *macro);
 int					validate_and_clean_argument(char *arg, int *exit_flag);
+bool 				inside_double_quotes(const char *str, int index);
 
 /* error */
 int					error_msg(t_macro *macro, char *msg, int exit_code);

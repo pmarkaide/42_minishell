@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 20:53:07 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/03 15:03:08 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/03 23:05:12 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,22 @@ bool	is_in_quote(char *str, int index)
 	if (inside_single_quotes || inside_double_quotes)
 		return (true);
 	return (false);
+}
+
+bool inside_double_quotes(const char *str, int index) {
+    bool inside_double_quotes = false;
+    bool inside_single_quotes = false;
+    int i = 0;
+
+    while (i < index && str[i] != '\0') {
+        if (str[i] == '\"' && !inside_single_quotes) {
+            inside_double_quotes = !inside_double_quotes;
+        } else if (str[i] == '\'' && !inside_double_quotes) {
+            inside_single_quotes = !inside_single_quotes;
+        }
+        i++;
+    }
+    return inside_double_quotes;
 }
 
 void	handle_delimiter_after_dollar(char **clean, char *ins, size_t *i)
