@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 13:02:09 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/01 13:52:46 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/03 16:57:49 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ t_macro	*free_macro(t_macro *macro)
 {
 	free_ins(macro);
 	free_array(&macro->env);
-	free_array(&macro->history);
 	free_string(&macro->ins);
 	free_string(&macro->m_pwd);
 	free_string(&macro->m_home);
