@@ -229,7 +229,6 @@ void				update_environment(t_macro *macro, char *oldpwd,
 void				print_export_var(char *var, char *value);
 void				export_argless(t_macro *macro);
 int					check_export(char *arg);
-char				*remove_quotes(char *str);
 t_macro				*init_macro(char **envp, char **argv);
 char				*grab_home(t_macro *macro);
 t_macro				*start_env(t_macro *macro, char **argv);
