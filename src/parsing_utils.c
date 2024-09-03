@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 10:42:44 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/01 13:34:26 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/03 15:41:16 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ static int	read_here_doc(t_token *token, t_macro *macro)
 	if (pipe(pipe_fd) == -1)
 		return (error_msg(macro, "pipe error\n", -1));
 	del = clean_quotes(token->value);
-	free_string(&token->value);
 	while (1)
 	{
 		line = readline("> ");
@@ -83,7 +82,7 @@ void	handle_here_doc(t_cmd *cmds, t_macro *macro)
 				if (token->type == HERE_DOC)
 				{
 					fd = read_here_doc(token, macro);
-					free(token->value);
+					free_string(&token->value);
 					token->value = ft_itoa(fd);
 				}
 				token = token->next;
