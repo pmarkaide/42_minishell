@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:52:58 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/03 11:20:46 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/03 16:40:37 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,13 @@ void	handle_quoted_literal(char **clean, char *ins, size_t *i)
 	quote_end = ft_strchr(quote_start, quote_char);
 	if (quote_end)
 	{
-		temp = ft_substr(ins, *i, quote_end - ins - *i + 1);
-		*i += (quote_end - quote_start) + 2;
+		temp = ft_substr(ins, *i, quote_end - quote_start + 3);
+		*i += (quote_end - quote_start) + 3;
 	}
 	else
 	{
-		temp = ft_strdup(&ins[*i]);
-		*i += ft_strlen(&ins[*i]);
+		temp = ft_strdup(quote_start);
+		*i += ft_strlen(ins);
 	}
 	if (!temp)
 	{
