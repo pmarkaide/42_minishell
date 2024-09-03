@@ -6,7 +6,7 @@
 #    By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/01 15:11:43 by pmarkaid          #+#    #+#              #
-#    Updated: 2024/09/02 21:59:26 by pmarkaid         ###   ########.fr        #
+#    Updated: 2024/09/03 23:38:53 by pmarkaid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,6 +34,7 @@ SRCS_FILES = \
 	dup.c \
 	expand.c \
 	expand_utils.c \
+	expand_cases.c \
 	split_args.c \
 	buin_cd.c \
 	buin_echo.c \
