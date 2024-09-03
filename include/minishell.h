@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/03 17:04:43 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/03 15:59:58 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,7 +228,6 @@ void				update_environment(t_macro *macro, char *oldpwd,
 void				print_export_var(char *var, char *value);
 void				export_argless(t_macro *macro);
 int					check_export(char *arg);
-char				*remove_quotes(char *str);
 t_macro				*init_macro(char **envp, char **argv);
 char				*grab_home(t_macro *macro);
 t_macro				*start_env(t_macro *macro, char **argv);
