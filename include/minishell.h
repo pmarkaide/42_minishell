@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/03 11:28:17 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/03 15:03:39 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,6 +173,7 @@ char				*get_expanded_ins(char *ins, t_macro *macro);
 void				handle_delimiter_after_dollar(char **clean, char *ins,
 						size_t *i);
 void				handle_unexpected_case(char **clean, char *ins, size_t *i);
+bool 				type_is_redirection(t_type type);
 
 /* dup */
 int					dup_file_descriptors(t_macro *macro, t_cmd *cmd,

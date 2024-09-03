@@ -6,11 +6,19 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 20:53:07 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/03 09:29:49 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/03 15:03:08 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+bool type_is_redirection(t_type type)
+{
+	if (type == INRED || type == OUTRED || type == APPEND || type == HERE_DOC)
+		return (true);
+	return (false);
+}
+
 
 bool	envir_must_be_expanded(char *str, int index)
 {

@@ -6,41 +6,60 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 21:56:54 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/03 14:45:43 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/03 15:05:48 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static t_token	*relabel_token(t_token *token, t_type *type, t_list *lexemes)
+{
+    if (*type == CMD)
+    {
+        token->type = CMD;
+        *type = ARG;
+    }
+    else if (*type == ARG)
+        token->type = ARG;
+    else if (type_is_redirection(*type))
+    {
+        token->type = *type;
+        if (lexemes->next)
+        {
+            ft_putstr_fd("minishell: ambiguous redirect\n", 2);
+            return (NULL);
+        }
+    }
+    else
+        token->type = ARG;
+    return (token);
+}
+
+
 static t_token	*build_retokens(t_list *lexemes, t_type type)
 {
-	t_token	*token;
-	t_token	*retokens;
+    t_token	*token;
+    t_token	*retokens;
 
-	retokens = NULL;
-	while (lexemes)
-	{
-		token = init_token();
-		if (!token)
-			return (NULL);
-		if (type == CMD)
-        {
-            token->type = CMD;
-            type = ARG;
-        }
-        else if (type == ARG)
-            token->type = ARG;
-		else if(type == INRED || type == OUTRED || type == APPEND)
-			token->type = type;
-		else
-            token->type = ARG;
-		token->value = ft_strdup(lexemes->content);
-		if (!token->value)
-			return (free_tokens(&token));
-		token_add_back(&retokens, token);
-		lexemes = lexemes->next;
-	}
-	return (retokens);
+    retokens = NULL;
+    while (lexemes)
+    {
+        token = init_token();
+        if (!token)
+            return (NULL);
+        
+        token = relabel_token(token, &type, lexemes);
+        if (!token)
+            return (free_tokens(&retokens));
+        
+        token->value = ft_strdup(lexemes->content);
+        if (!token->value)
+            return (free_tokens(&token));
+        
+        token_add_back(&retokens, token);
+        lexemes = lexemes->next;
+    }
+    return (retokens);
 }
 
 static t_token	*plug_retokens(t_token *token, t_token *retokens,
