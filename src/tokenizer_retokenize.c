@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 21:56:54 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/03 10:25:33 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/03 14:45:43 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,16 @@ static t_token	*build_retokens(t_list *lexemes, t_type type)
 		if (!token)
 			return (NULL);
 		if (type == CMD)
-		{
-			token->type = CMD;
-			type = ARG;
-		}
+        {
+            token->type = CMD;
+            type = ARG;
+        }
+        else if (type == ARG)
+            token->type = ARG;
+		else if(type == INRED || type == OUTRED || type == APPEND)
+			token->type = type;
 		else
-			token->type = ARG;
+            token->type = ARG;
 		token->value = ft_strdup(lexemes->content);
 		if (!token->value)
 			return (free_tokens(&token));
