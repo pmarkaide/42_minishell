@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 21:56:54 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/02 21:57:23 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/03 10:25:33 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,6 @@ static t_token	*plug_retokens(t_token *token, t_token *retokens,
 	last = last_token(retokens);
 	if (last)
 		last->next = next;
-	token->next = NULL;
-	free_tokens(&token);
 	return (last);
 }
 
@@ -86,5 +84,7 @@ t_token	*handle_retokenize(char *expanded, t_token *token, t_macro *macro)
 	if (!retokens)
 		return (NULL);
 	last_retokens = plug_retokens(token, retokens, macro);
+	free_string(&token->value);
+    free(token);
 	return (last_retokens);
 }

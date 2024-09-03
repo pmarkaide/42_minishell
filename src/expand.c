@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:52:58 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/03 09:25:34 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/03 10:46:40 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,14 +77,11 @@ void	handle_quoted_literal(char **clean, char *ins, size_t *i)
 void	handle_exit_code(char **clean, size_t *i, t_macro *macro)
 {
 	char	*substr;
-	char	*temp;
 
 	substr = ft_itoa(macro->exit_code);
 	if (!substr)
 		free_string(clean);
-	temp = ft_strjoin(*clean, substr, NULL, 3);
-	if (!temp)
-		return ;
+	*clean = ft_strjoin(*clean, substr, NULL, 3);
 	*i += 2;
 }
 
