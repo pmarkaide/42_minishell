@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 13:44:14 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/01 13:45:26 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/03 11:27:32 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	token_add_back(t_token **tokens, t_token *new)
 		(last_token(*tokens))->next = new;
 }
 
-void	remove_token(t_token **tokens, t_token *token)
+t_token	*remove_token(t_token **tokens, t_token *token)
 {
 	t_token	*current;
 	t_token	*prev;
@@ -50,11 +50,12 @@ void	remove_token(t_token **tokens, t_token *token)
 				*tokens = current->next;
 			free_string(&current->value);
 			free(current);
-			return ;
+			return (*tokens);
 		}
 		prev = current;
 		current = current->next;
 	}
+	return (*tokens);
 }
 
 t_token	*last_token(t_token *token)

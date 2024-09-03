@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:52:58 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/03 10:46:40 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/03 11:20:46 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,10 @@
 void	handle_normal_char(char **clean, char *ins, size_t *i)
 {
 	char	str[2];
-	char	*temp;
 
 	str[0] = ins[*i];
 	str[1] = '\0';
-	temp = ft_strjoin(*clean, str, NULL, 1);
-	*clean = temp;
+	*clean = ft_strjoin(*clean, str, NULL, 1);
 	(*i)++;
 }
 
