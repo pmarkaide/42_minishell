@@ -6,21 +6,11 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:52:58 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/03 23:08:51 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/03 23:28:57 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	handle_normal_char(char **clean, char *ins, size_t *i)
-{
-	char	str[2];
-
-	str[0] = ins[*i];
-	str[1] = '\0';
-	*clean = ft_strjoin(*clean, str, NULL, 1);
-	(*i)++;
-}
 
 void	handle_envir(char **clean, char *ins, size_t *i, t_macro *macro)
 {
@@ -43,34 +33,6 @@ void	handle_envir(char **clean, char *ins, size_t *i, t_macro *macro)
 	*i = start;
 }
 
-void	handle_quoted_literal(char **clean, char *ins, size_t *i)
-{
-	char	quote_char;
-	char	*quote_start;
-	char	*quote_end;
-	char	*temp;
-
-	quote_char = ins[*i + 1];
-	quote_start = &ins[*i + 2];
-	quote_end = ft_strchr(quote_start, quote_char);
-	if (quote_end)
-	{
-		temp = ft_substr(ins, *i, quote_end - quote_start + 3);
-		*i += (quote_end - quote_start) + 3;
-	}
-	else
-	{
-		temp = ft_strdup(&ins[*i]);
-		*i += ft_strlen(&ins[*i]);
-	}
-	if (!temp)
-	{
-		free(*clean);
-		return ;
-	}
-	*clean = ft_strjoin(*clean, temp, NULL, 3);
-}
-
 void	handle_exit_code(char **clean, size_t *i, t_macro *macro)
 {
 	char	*substr;
@@ -80,6 +42,31 @@ void	handle_exit_code(char **clean, size_t *i, t_macro *macro)
 		free_string(clean);
 	*clean = ft_strjoin(*clean, substr, NULL, 3);
 	*i += 2;
+}
+
+static void	literal_cases(char **clean, char *ins, size_t *i)
+{
+	if (ins[*i] != '$' || !envir_must_be_expanded(ins, *i))
+		handle_normal_char(clean, ins, i);
+	else if (ins[*i] == '$' && ft_isquote(ins[*i + 1]))
+	{
+		if (inside_double_quotes(ins, *i))
+			handle_quoted_literal(clean, ins, i);
+		else
+			(*i)++;
+	}
+	else if (ins[*i] == '$' && ft_isdelim(ins[*i + 1]))
+		handle_delimiter_after_dollar(clean, ins, i);
+}
+
+static void	dollar_cases(char **clean, char *ins, size_t *i, t_macro *macro)
+{
+	if (ins[*i] == '$' && ins[*i + 1] == '?')
+		handle_exit_code(clean, i, macro);
+	else if (ins[*i] == '$' && (ft_isalnum(ins[*i + 1]) || ins[*i + 1] == '_'))
+		handle_envir(clean, ins, i, macro);
+	else
+		handle_unexpected_case(clean, ins, i);
 }
 
 char	*get_expanded_ins(char *ins, t_macro *macro)
@@ -93,20 +80,10 @@ char	*get_expanded_ins(char *ins, t_macro *macro)
 	i = 0;
 	while (ins[i])
 	{
-		if (ins[i] != '$' || !envir_must_be_expanded(ins, i))
-			handle_normal_char(&clean, ins, &i);
-		else if (ins[i] == '$' && ins[i + 1] == '?')
-			handle_exit_code(&clean, &i, macro);
-		else if (ins[i] == '$' && ft_isquote(ins[i + 1]) && !inside_double_quotes(ins, i))
-			i++;
-		else if (ins[i] == '$' && ft_isquote(ins[i + 1]) && inside_double_quotes(ins, i))
-			handle_quoted_literal(&clean, ins, &i);
-		else if (ins[i] == '$' && ft_isdelim(ins[i + 1]))
-			handle_delimiter_after_dollar(&clean, ins, &i);
-		else if (ins[i] == '$' && (ft_isalnum(ins[i + 1]) || ins[i + 1] == '_'))
-			handle_envir(&clean, ins, &i, macro);
-		else
-			handle_unexpected_case(&clean, ins, &i);
+		literal_cases(&clean, ins, &i);
+		if (!clean)
+			return (NULL);
+		dollar_cases(&clean, ins, &i, macro);
 		if (!clean)
 			return (NULL);
 	}
