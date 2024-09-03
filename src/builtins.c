@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 15:55:31 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/28 02:09:43 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/03 17:04:14 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,6 @@ int	select_and_run_builtin(char *cmd, char **args, t_macro *macro)
 	if (ft_strncmp(cmd, "env", 3) == 0)
 		return (ft_env2(macro));
 	if (ft_strncmp(cmd, "exit", 4) == 0)
-		return (ft_exit2(args));
+		return (ft_exit2(args, macro));
 	return (0);
 }

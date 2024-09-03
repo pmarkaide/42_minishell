@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 13:43:00 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/09/02 12:58:20 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/03 17:01:53 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,16 +74,13 @@ t_macro	*init_macro(char **envp, char **argv)
 {
 	t_macro	*macro;
 
-	macro = malloc(sizeof(t_macro));
+	macro = ft_calloc(sizeof(t_macro), 1);
 	if (!macro)
 	{
 		ft_putstr_fd("Error: Malloc failed creating macro structure\n", 2);
 		exit(1);
 	}
-	ft_bzero(macro, sizeof(t_macro));
-	macro->envp = envp;
 	macro->env = copy_env(envp);
-	macro->history = NULL;
 	macro->ins = NULL;
 	macro->tokens = NULL;
 	macro->cmds = NULL;
