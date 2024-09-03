@@ -85,6 +85,6 @@ t_token	*handle_retokenize(char *expanded, t_token *token, t_macro *macro)
 		return (NULL);
 	last_retokens = plug_retokens(token, retokens, macro);
 	free_string(&token->value);
-    free(token);
+	free(token);
 	return (last_retokens);
 }

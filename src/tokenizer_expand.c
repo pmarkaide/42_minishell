@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:45:23 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/03 11:27:52 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/03 12:08:02 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ char	*handle_literal_string(t_token *token, char *expanded)
 	return (copy);
 }
 
-t_token *expand_token(t_token *token, t_macro *macro)
+t_token	*expand_token(t_token *token, t_macro *macro)
 {
 	char	*expanded;
-	t_token *new_token;
+	t_token	*new_token;
 
 	expanded = get_expanded_ins(token->value, macro);
 	if (!expanded || *expanded == '\0')
@@ -34,17 +34,17 @@ t_token *expand_token(t_token *token, t_macro *macro)
 	if (ft_strchr("\"", token->value[0]))
 	{
 		token->value = handle_literal_string(token, expanded);
-	    if (!token->value)
-        {
-            free_string(&expanded);
-            return (NULL);
-        }
+		if (!token->value)
+		{
+			free_string(&expanded);
+			return (NULL);
+		}
 	}
 	else
 	{
 		new_token = handle_retokenize(expanded, token, macro);
 		free_string(&expanded);
-        return new_token;
+		return (new_token);
 	}
 	free_string(&expanded);
 	return (token);
@@ -59,9 +59,9 @@ t_token	*expand_arg_tokens(t_macro *macro)
 	{
 		if (ft_strchr(tokens->value, '$'))
 		{
-            tokens = expand_token(tokens, macro);
-            if (!tokens)
-                return (NULL);
+			tokens = expand_token(tokens, macro);
+			if (!tokens)
+				return (NULL);
 		}
 		if (tokens == NULL)
 			return (NULL);
@@ -92,6 +92,8 @@ t_token	*remove_empty_envir_tokens(t_macro *macro)
 				free_string(&expanded);
 			}
 		}
+		if (!tokens)
+			return (NULL);
 		tokens = tokens->next;
 	}
 	return (macro->tokens);

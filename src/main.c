@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 14:49:38 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/03 11:49:29 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/03 12:17:44 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,10 @@ static int	evaluate_line(char *line, t_macro *macro)
 
 static void	execute_commands(t_macro *macro)
 {
-	if(tokenizer(macro) == -1)
-		return;
-	if(parsing(macro) == -1)
-		return;
+	if (tokenizer(macro) == -1)
+		return ;
+	if (parsing(macro) == -1)
+		return ;
 	execution(macro);
 	free_ins(macro);
 }
@@ -67,7 +67,6 @@ int	main(int argc, char **argv, char **envp)
 	t_macro	*macro;
 	char	*line;
 	int		status;
-    int     exit_code;
 
 	(void)argc;
 	g_exit = 0;
@@ -87,8 +86,6 @@ int	main(int argc, char **argv, char **envp)
 		}
 		execute_commands(macro);
 	}
-    exit_code = macro->exit_code;
 	free_macro(macro);
-	exit(exit_code);
+	exit(0);
 }
-
