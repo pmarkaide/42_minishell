@@ -67,7 +67,7 @@ void	handle_quoted_literal(char **clean, char *ins, size_t *i)
 	{
 		free(*clean);
 		*clean = NULL;
-		return;
+		return ;
 	}
 	*clean = ft_strjoin(*clean, temp, NULL, 3);
 }
