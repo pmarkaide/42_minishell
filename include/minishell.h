@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
 /*   Updated: 2024/09/03 15:59:58 by pmarkaid         ###   ########.fr       */
@@ -83,9 +83,7 @@ typedef struct s_cmd
 
 typedef struct s_macro
 {
-	char			**envp;
 	char			**env;
-	char			**history;
 	char			*ins;
 	t_token			*tokens;
 	t_cmd			*cmds;
@@ -213,7 +211,7 @@ t_macro				*start_env(t_macro *macro, char **argv);
 char				*ft_getenv(char *var, char **env);
 int					ft_pwd2(t_macro *macro);
 int					ft_env2(t_macro *macro);
-int					ft_exit2(char **args);
+int					ft_exit2(char **args, t_macro *macro);
 int					ft_unset2(char **args, t_macro *macro);
 int					ft_export2(char **args, t_macro *macro);
 int					ft_echo2(char **args);
