@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 10:42:50 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/01 12:55:39 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/04 01:05:34 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ void	fix_redirections(char *ins)
 
 	i = 0;
 	j = 0;
+	while (ft_isspace(ins[i]))
+		i++;
 	while (ins[i] != '\0')
 	{
 		if ((ins[i] == '>' || ins[i] == '<') && !is_in_quote(ins, i))
