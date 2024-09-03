@@ -12,15 +12,15 @@
 
 #include "libft.h"
 
-static void free_arg_str(char **s1, char **s2, int mode)
+static void	free_arg_str(char **s1, char **s2, int mode)
 {
-	if(mode == 0)
-		return;
-	else if(mode == 1)
+	if (mode == 0)
+		return ;
+	else if (mode == 1)
 		ft_free((void **)s1);
-	else if(mode == 2)
+	else if (mode == 2)
 		ft_free((void **)s2);
-	else if(mode == 3)
+	else if (mode == 3)
 	{
 		ft_free((void **)s1);
 		ft_free((void **)s2);
