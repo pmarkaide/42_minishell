@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 14:49:38 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/02 16:57:46 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/03 09:06:59 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,8 +110,8 @@ int main(int argc, char **argv, char **envp)
         execution(macro);
         free_ins(macro);
     }
-
+    int exit_code = macro->exit_code;
     free_macro(macro);
-    exit(macro->exit_code);
+    exit(exit_code);
 }
 
