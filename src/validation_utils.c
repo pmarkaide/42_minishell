@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 23:25:19 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/01 12:51:38 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/03 09:28:57 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ char	*get_executable_path(char **paths, char *executable, t_macro *macro)
 	i = 0;
 	while (paths[i])
 	{
-		full_path = ft_strjoin(paths[i], executable, "/");
+		full_path = ft_strjoin(paths[i], executable, "/", 0);
 		if (full_path == NULL)
 			return (NULL);
 		if (!access(full_path, F_OK))

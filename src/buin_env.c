@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   buin_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:04:37 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/28 02:09:57 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/03 09:27:09 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ char	**fix_env(char *var, char *value, char **env, int n)
 	char	*aux[2];
 
 	i[0] = -1;
-	aux[0] = ft_strjoin(var, "=", NULL);
-	aux[1] = ft_strjoin(aux[0], value, NULL);
+	aux[0] = ft_strjoin(var, "=", NULL, 0);
+	aux[1] = ft_strjoin(aux[0], value, NULL, 0);
 	free(aux[0]);
 	while (!ft_strchr(var, '=') && env && env[++i[0]])
 	{
