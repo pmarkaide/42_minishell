@@ -109,7 +109,7 @@ void	update_environment(t_macro *macro, char *oldpwd, char *path)
 		free(tmp);
 		return ;
 	}
-	free (macro->m_pwd);
+	free(macro->m_pwd);
 	macro->m_pwd = ft_strdup(cwd);
 	free_2_strings(&tmp, &cwd);
 	check_save_env("PWD", macro, 3);
