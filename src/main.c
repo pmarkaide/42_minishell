@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 14:49:38 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/03 23:39:17 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/04 12:01:42 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,11 @@ static char	*read_line(t_macro *macro, int *flag)
 	char	*line;
 	char	*path;
 
-	if (g_exit == 130 && *flag == 0)
-	{
-		line = readline("");
-		*flag = 1;
-	}
-	else
-	{
-		path = create_path(macro);
-		line = readline(path);
-		*flag = 0;
-		free(path);
-	}
+	path = create_path(macro);
+	line = readline(path);
+	*flag = 0;
+	g_exit = 0;
+	free(path);
 	return (line);
 }
 
@@ -86,6 +79,7 @@ static void	run_shell(t_macro *macro)
 			continue ;
 		}
 		execute_commands(macro);
+		g_exit = 130;
 		if (macro->exit_flag == 69)
 		{
 			ft_putstr_fd("exit\n", STDOUT_FILENO);

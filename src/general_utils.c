@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 13:43:00 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/09/04 10:15:26 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/04 11:57:49 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ t_macro	*init_macro(char **envp, char **argv)
 {
 	t_macro	*macro;
 
-	g_exit = 0;
+	g_exit = 130;
 	macro = ft_calloc(sizeof(t_macro), 1);
 	if (!macro)
 	{
