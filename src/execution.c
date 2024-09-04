@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:23:53 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/03 23:19:00 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/04 09:26:33 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ static void	execute_child_process(t_macro *macro, int index, int read_end)
 		execve(cmd_array[0], cmd_array, macro->env);
 	status = macro->exit_code;
 	free_macro(macro);
+	close(read_end);
 	exit(status);
 }
 
