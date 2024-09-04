@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   buin_cd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:04:29 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/09/03 09:30:13 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/03 23:08:03 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,10 @@ int	ft_cd2(char **args, t_macro *macro)
 	char	*oldpwd;
 	int		argc;
 
-	home = get_home_directory(macro);
 	argc = count_args(args);
 	if (argc > 2)
 		return (1);
+	home = get_home_directory(macro);
 	if (home == NULL && (!args[1] || args[1][0] == '\0'))
 	{
 		ft_putendl_fd("minishell: cd: HOME not set", STDERR_FILENO);

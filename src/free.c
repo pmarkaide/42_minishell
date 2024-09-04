@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 13:02:09 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/03 16:57:49 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/04 11:05:34 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ t_macro	*free_ins(t_macro *macro)
 	free_tokens(&macro->tokens);
 	free_cmds(&macro->cmds);
 	free(macro->pid);
-	close_fds(macro, 0);
+	close_fds(macro);
 	macro->num_cmds = 0;
 	return (NULL);
 }

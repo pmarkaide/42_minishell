@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:35:57 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/02 15:44:30 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/04 08:23:26 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,8 @@ void	search_executable(t_macro *macro, t_cmd *cmd)
 	{
 		ft_putstr_fd(exec, 2);
 		ft_putstr_fd(": command not found\n", 2);
-		free_ins(macro);
 		macro->exit_code = 127;
+		free_macro(macro);
 		exit(127);
 	}
 	else
@@ -95,7 +95,7 @@ void	validation(t_macro *macro, t_cmd *cmd)
 	}
 	if (validate_redirections(cmd->redir, macro) == -1)
 	{
-		free_ins(macro);
+		free_macro(macro);
 		exit(1);
 	}
 }

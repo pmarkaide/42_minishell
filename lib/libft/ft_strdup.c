@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 09:53:00 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/03/26 19:15:11 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/03 22:23:01 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,5 +19,6 @@ char	*ft_strdup(const char *s1)
 	copy = (char *)malloc((ft_strlen(s1) + 1) * sizeof(char));
 	if (!copy)
 		return (NULL);
-	return (ft_strcpy(copy, s1));
+	ft_memcpy(copy, s1, ft_strlen(s1) + 1);
+	return (copy);
 }
