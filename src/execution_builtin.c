@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_builtin.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 09:15:15 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/02 15:45:04 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/04 10:07:03 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,33 +32,46 @@ static int	restore_fds(int saved_stdout, int saved_stdin)
 	return (result);
 }
 
-int	execute_single_builtin(t_macro *macro)
+static int prepare_exec(t_macro *macro, char ***cmd_array, int *out, int *in)
 {
-	char	**cmd_array;
-	int		saved_stdout;
-	int		saved_stdin;
+    *out = dup(STDOUT_FILENO);
+    *in = dup(STDIN_FILENO);
+    if (*in == -1 || *out == -1)
+    {
+        error_msg(macro, "dup", -1);
+        return (-1);
+    }
+    if (validate_redirections(macro->cmds->redir, macro) == -1)
+    {
+        restore_fds(*out, *in);
+        return (1);
+    }
+    if (dup_file_descriptors(macro, macro->cmds, 0) == -1)
+    {
+        restore_fds(*out, *in);
+        return (-1);
+    }
+    *cmd_array = build_cmd_args_array(macro->cmds->cmd_arg);
+    if (*cmd_array == NULL)
+    {
+        error_msg(macro, "malloc", -1);
+        restore_fds(*out, *in);
+        return (-1);
+    }
+    return (0);
+}
 
-	saved_stdout = dup(STDOUT_FILENO);
-	saved_stdin = dup(STDIN_FILENO);
-	if (saved_stdin == -1 || saved_stdout == -1)
-	{
-		error_msg(macro, "dup", -1);
-		return (-1);
-	}
-	if (validate_redirections(macro->cmds->redir, macro) == -1)
-		return (1);
-	if (dup_file_descriptors(macro, macro->cmds, 0) == -1)
-		return (-1);
-	cmd_array = build_cmd_args_array(macro->cmds->cmd_arg);
-	if (cmd_array == NULL)
-	{
-		error_msg(macro, "malloc", -1);
-		restore_fds(saved_stdout, saved_stdin);
-	}
-	else
-		execute_builtin(macro, cmd_array);
-	restore_fds(saved_stdout, saved_stdin);
-	return (macro->exit_code);
+int execute_single_builtin(t_macro *macro)
+{
+    char **cmd_array;
+    int saved_stdout, saved_stdin, prep_status;
+
+    prep_status = prepare_exec(macro, &cmd_array, &saved_stdout, &saved_stdin);
+    if (prep_status != 0)
+        return (prep_status);
+    execute_builtin(macro, cmd_array);
+    restore_fds(saved_stdout, saved_stdin);
+    return (macro->exit_code);
 }
 
 void	execute_builtin(t_macro *macro, char **cmd_array)
