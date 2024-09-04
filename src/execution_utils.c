@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 20:03:14 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/02 12:58:06 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/04 10:20:16 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	close_fds(t_macro *macro, int read_end)
+void	close_fds(t_macro *macro)
 {
 	if (macro->pipe_fd[0] != -1)
 	{
@@ -24,8 +24,8 @@ void	close_fds(t_macro *macro, int read_end)
 		close(macro->pipe_fd[1]);
 		macro->pipe_fd[1] = -1;
 	}
-	if (read_end > 0)
-		close(read_end);
+	if (macro->read_end > 0)
+		close(macro->read_end);
 }
 
 int	wait_processes(pid_t pid)

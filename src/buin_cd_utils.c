@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   buin_cd_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 13:15:25 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/09/03 09:31:42 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/03 23:06:00 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ char	*parse_arguments(char **args, t_macro *macro, char *home)
 
 int	change_directory(char *path, char *home)
 {
+	char	*tmp;
+
 	if (home == NULL && !path)
 	{
 		ft_putendl_fd("minishell: cd: HOME not set", STDERR_FILENO);
@@ -60,8 +62,9 @@ int	change_directory(char *path, char *home)
 	}
 	if (access(path, X_OK) != 0)
 	{
-		path = ft_strjoin("minishell: cd: ", path, NULL, 2);
-		perror(path);
+		tmp = ft_strjoin("minishell: cd: ", path, NULL, 2);
+		perror(tmp);
+		free(tmp);
 		free(home);
 		return (1);
 	}

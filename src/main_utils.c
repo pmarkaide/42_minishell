@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 08:50:33 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/29 13:43:15 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/03 17:32:48 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,20 +67,20 @@ char	**ft_add_row(char **input, char *to_add)
 	return (result);
 }
 
-void	ft_free_matrix(char ***m)
+void	ft_free_matrix(char ***matrix)
 {
 	int	i;
 
-	i = 0;
-	while (m && m[0] && m[0][i])
+	if (matrix && *matrix)
 	{
-		free(m[0][i]);
-		i++;
-	}
-	if (m)
-	{
-		free(m[0]);
-		*m = NULL;
+		i = 0;
+		while ((*matrix)[i])
+		{
+			free((*matrix)[i]);
+			i++;
+		}
+		free(*matrix);
+		*matrix = NULL;
 	}
 }
 
