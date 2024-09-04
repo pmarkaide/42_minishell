@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 14:49:38 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/04 12:01:42 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/04 13:28:44 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,13 @@
 
 int			g_exit;
 
-static char	*read_line(t_macro *macro, int *flag)
+static char	*read_line(t_macro *macro)
 {
 	char	*line;
 	char	*path;
 
 	path = create_path(macro);
 	line = readline(path);
-	*flag = 0;
-	g_exit = 0;
 	free(path);
 	return (line);
 }
@@ -40,11 +38,7 @@ static int	evaluate_line(char *line, t_macro *macro)
 		add_history(line);
 	if (syntax_error_check(macro, line))
 		return (1);
-	if (g_exit > 0)
-	{
-		macro->exit_code = g_exit;
-		g_exit = 0;
-	}
+	g_exit = 0;
 	macro->ins = line;
 	return (0);
 }
@@ -63,13 +57,11 @@ static void	run_shell(t_macro *macro)
 {
 	char	*line;
 	int		status;
-	int		ctrl_c_flag;
 
-	ctrl_c_flag = 0;
 	while (1)
 	{
 		macro->exit_flag = 0;
-		line = read_line(macro, &ctrl_c_flag);
+		line = read_line(macro);
 		status = evaluate_line(line, macro);
 		if (status == -1)
 			break ;
