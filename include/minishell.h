@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/04 01:05:19 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/04 10:22:50 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,17 +54,6 @@ typedef enum e_type
 	ARG
 }					t_type;
 
-typedef enum e_builtin
-{
-	M_ECHO = 0,
-	M_CD = 1,
-	M_PWD = 2,
-	M_EXPORT = 3,
-	M_UNSET = 4,
-	M_ENV = 5,
-	M_EXIT = 6
-}					t_builtin;
-
 typedef struct s_token
 {
 	t_type			type;
@@ -89,6 +78,7 @@ typedef struct s_macro
 	t_cmd			*cmds;
 	int				num_cmds;
 	int				pipe_fd[2];
+	int				read_end;
 	pid_t			*pid;
 	char			*m_pwd;
 	char			*m_home;
@@ -150,7 +140,7 @@ void				execute_builtin(t_macro *macro, char **cmd_array);
 char				**build_cmd_args_array(t_token *cmd_args);
 char				**prepare_child_execution(t_macro *macro, t_cmd *cmd);
 int					wait_processes(pid_t pid);
-void				close_fds(t_macro *macro, int read_end);
+void				close_fds(t_macro *macro);
 
 /* validation */
 void				validation(t_macro *macro, t_cmd *cmd);
@@ -175,8 +165,7 @@ void				handle_unexpected_case(char **clean, char *ins, size_t *i);
 bool				type_is_redirection(t_type type);
 
 /* dup */
-int					dup_file_descriptors(t_macro *macro, t_cmd *cmd,
-						int read_end);
+int					dup_file_descriptors(t_macro *macro, t_cmd *cmd);
 
 /* clean utils*/
 bool				envir_must_be_expanded(char *ins, int index);

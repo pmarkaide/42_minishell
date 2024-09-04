@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 23:24:13 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/02 12:41:29 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/04 10:21:52 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static int	dup_stdout(t_macro *macro, t_cmd *cmd)
 	return (0);
 }
 
-static int	dup_stdin(t_macro *macro, t_cmd *cmd, int read_end)
+static int	dup_stdin(t_macro *macro, t_cmd *cmd)
 {
 	int	fd;
 
@@ -85,7 +85,7 @@ static int	dup_stdin(t_macro *macro, t_cmd *cmd, int read_end)
 	}
 	else if (cmd->n > 1)
 	{
-		if (dup2(read_end, STDIN_FILENO) < 0)
+		if (dup2(macro->read_end, STDIN_FILENO) < 0)
 			return (-1);
 	}
 	if (macro->pipe_fd[0] != -1)
@@ -93,7 +93,7 @@ static int	dup_stdin(t_macro *macro, t_cmd *cmd, int read_end)
 	return (0);
 }
 
-int	dup_file_descriptors(t_macro *macro, t_cmd *cmd, int read_end)
+int	dup_file_descriptors(t_macro *macro, t_cmd *cmd)
 {
 	if (dup_stdout(macro, cmd) == -1)
 	{
@@ -101,7 +101,7 @@ int	dup_file_descriptors(t_macro *macro, t_cmd *cmd, int read_end)
 		perror("dup_stdout");
 		return (-1);
 	}
-	if (dup_stdin(macro, cmd, read_end) == -1)
+	if (dup_stdin(macro, cmd) == -1)
 	{
 		macro->exit_code = errno;
 		perror("dup_stdin");

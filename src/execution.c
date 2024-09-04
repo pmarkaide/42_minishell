@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:23:53 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/04 09:26:33 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/04 10:21:18 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	restore_fds(int saved_stdout, int saved_stdin)
 	return (result);
 }
 
-static void	execute_child_process(t_macro *macro, int index, int read_end)
+static void	execute_child_process(t_macro *macro, int index)
 {
 	int		i;
 	t_cmd	*cmd;
@@ -44,7 +44,7 @@ static void	execute_child_process(t_macro *macro, int index, int read_end)
 	while (cmd != NULL && i++ < index)
 		cmd = cmd->next;
 	validation(macro, cmd);
-	if (dup_file_descriptors(macro, cmd, read_end) == -1)
+	if (dup_file_descriptors(macro, cmd) == -1)
 		exit_free(macro);
 	cmd_array = build_cmd_args_array(cmd->cmd_arg);
 	if (!cmd_array)
@@ -55,11 +55,10 @@ static void	execute_child_process(t_macro *macro, int index, int read_end)
 		execve(cmd_array[0], cmd_array, macro->env);
 	status = macro->exit_code;
 	free_macro(macro);
-	close(read_end);
 	exit(status);
 }
 
-static int	execute_cmds(t_macro *macro, int read_end)
+static int	execute_cmds(t_macro *macro)
 {
 	int	i;
 
@@ -71,23 +70,22 @@ static int	execute_cmds(t_macro *macro, int read_end)
 		macro->pid[i] = fork();
 		if (macro->pid[i] < 0)
 		{
-			close_fds(macro, read_end);
+			close_fds(macro);
 			return (error_msg(macro, "fork failed", i));
 		}
 		else if (macro->pid[i] == 0)
-			execute_child_process(macro, i, read_end);
-		if (read_end > 0)
-			close(read_end);
-		read_end = macro->pipe_fd[0];
+			execute_child_process(macro, i);
+		if (macro->read_end > 0)
+			close(macro->read_end);
+		macro->read_end = macro->pipe_fd[0];
 		close(macro->pipe_fd[1]);
 		i++;
 	}
 	return (i);
 }
 
-int	prepare_execution(t_macro *macro, int *read_end)
+int	prepare_execution(t_macro *macro)
 {
-	*read_end = 0;
 	macro->pid = malloc(sizeof(pid_t) * macro->num_cmds);
 	if (macro->pid == NULL)
 	{
@@ -99,7 +97,6 @@ int	prepare_execution(t_macro *macro, int *read_end)
 
 void	execution(t_macro *macro)
 {
-	int	read_end;
 	int	num_cmds_executed;
 	int	i;
 	int	status;
@@ -110,15 +107,15 @@ void	execution(t_macro *macro)
 		macro->exit_code = execute_single_builtin(macro);
 	else
 	{
-		if (prepare_execution(macro, &read_end) == -1)
+		if (prepare_execution(macro) == -1)
 			return ;
-		num_cmds_executed = execute_cmds(macro, read_end);
+		num_cmds_executed = execute_cmds(macro);
 		i = 0;
 		while (i < num_cmds_executed)
 			status = wait_processes(macro->pid[i++]);
 		macro->exit_code = status;
 		ft_free((void **)&macro->pid);
-		close_fds(macro, read_end);
+		close_fds(macro);
 	}
 	return ;
 }
