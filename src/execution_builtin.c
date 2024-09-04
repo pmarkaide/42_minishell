@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 09:15:15 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/04 10:07:03 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/04 11:05:52 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static int prepare_exec(t_macro *macro, char ***cmd_array, int *out, int *in)
         restore_fds(*out, *in);
         return (1);
     }
-    if (dup_file_descriptors(macro, macro->cmds, 0) == -1)
+    if (dup_file_descriptors(macro, macro->cmds) == -1)
     {
         restore_fds(*out, *in);
         return (-1);

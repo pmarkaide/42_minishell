@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/04 10:22:50 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/04 10:28:43 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,6 @@ void				execute_builtin(t_macro *macro, char **cmd_array);
 
 /* execution utils */
 char				**build_cmd_args_array(t_token *cmd_args);
-char				**prepare_child_execution(t_macro *macro, t_cmd *cmd);
 int					wait_processes(pid_t pid);
 void				close_fds(t_macro *macro);
 
