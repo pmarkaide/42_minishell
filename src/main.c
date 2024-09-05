@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 14:49:38 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/04 13:28:44 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/05 21:34:02 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ static int	evaluate_line(char *line, t_macro *macro)
 		add_history(line);
 	if (syntax_error_check(macro, line))
 		return (1);
-	g_exit = 0;
 	macro->ins = line;
 	return (0);
 }
@@ -71,12 +70,12 @@ static void	run_shell(t_macro *macro)
 			continue ;
 		}
 		execute_commands(macro);
-		g_exit = 130;
 		if (macro->exit_flag == 69)
 		{
 			ft_putstr_fd("exit\n", STDOUT_FILENO);
 			break ;
 		}
+		rl_replace_line("", 0);
 	}
 }
 

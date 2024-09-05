@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:23:53 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/05 17:00:01 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/05 21:42:16 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void	execute_child_process(t_macro *macro, int index)
 	cmd = macro->cmds;
 	i = 0;
 	signal(SIGQUIT, SIG_DFL);
-	signal(SIGINT, SIG_DFL);
+	signal(SIGINT, SIG_IGN);
 	while (cmd != NULL && i++ < index)
 		cmd = cmd->next;
 	validation(macro, cmd);
