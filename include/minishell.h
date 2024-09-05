@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/05 23:14:00 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/05 23:30:04 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,10 +179,9 @@ t_macro				*free_macro(t_macro *macro);
 t_cmd				*free_cmds(t_cmd **cmds);
 
 /* others */
-void				signals(void);
-void				sigint_handler(int sig);
-void				sigquit_handler_in_process(int sig);
-void				sigint_handler_in_process(int sig);
+void				sigint_handler_in_parent(int sig);
+void				sigquit_handler_in_child(int sig);
+void				sigint_handler_in_child(int sig);
 char				*char_pwd(void);
 char				**copy_env(char **envp);
 void				ft_free_matrix(char ***m);

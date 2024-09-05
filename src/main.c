@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 14:49:38 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/05 23:02:51 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/05 23:29:43 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	macro = init_macro(envp, argv);
-	signal(SIGINT, sigint_handler);
+	signal(SIGINT, sigint_handler_in_parent);
 	signal(SIGQUIT, SIG_IGN);
 	run_shell(macro);
 	status = macro->exit_code;

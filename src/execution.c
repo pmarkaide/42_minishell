@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:23:53 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/05 23:06:33 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/05 23:30:47 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,8 @@ static int	execute_cmds(t_macro *macro)
 	{
 		if (pipe(macro->pipe_fd) == -1)
 			return (error_msg(macro, "pipe failed", i));
-		signal(SIGINT, sigint_handler_in_process);
-		signal(SIGQUIT, sigquit_handler_in_process);
+		signal(SIGINT, sigint_handler_in_child);
+		signal(SIGQUIT, sigquit_handler_in_child);
 		macro->pid[i] = fork();
 		if (macro->pid[i] < 0)
 		{
@@ -119,7 +119,7 @@ void	execution(t_macro *macro)
 		macro->exit_code = status;
 		ft_free((void **)&macro->pid);
 		close_fds(macro);
-		signal(SIGINT, sigint_handler);
+		signal(SIGINT, sigint_handler_in_parent);
 		signal(SIGQUIT, SIG_IGN);
 	}
 	return ;
