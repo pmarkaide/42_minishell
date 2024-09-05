@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 14:49:38 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/05 21:34:02 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/05 23:02:51 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ static void	run_shell(t_macro *macro)
 			ft_putstr_fd("exit\n", STDOUT_FILENO);
 			break ;
 		}
-		rl_replace_line("", 0);
 	}
 }
 
@@ -86,7 +85,7 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	macro = init_macro(envp, argv);
-	signal(SIGINT, ft_signal_handler);
+	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, SIG_IGN);
 	run_shell(macro);
 	status = macro->exit_code;

@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:23:53 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/05 21:42:16 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/05 23:06:33 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,6 @@ static void	execute_child_process(t_macro *macro, int index)
 
 	cmd = macro->cmds;
 	i = 0;
-	signal(SIGQUIT, SIG_DFL);
-	signal(SIGINT, SIG_IGN);
 	while (cmd != NULL && i++ < index)
 		cmd = cmd->next;
 	validation(macro, cmd);
@@ -69,6 +67,8 @@ static int	execute_cmds(t_macro *macro)
 	{
 		if (pipe(macro->pipe_fd) == -1)
 			return (error_msg(macro, "pipe failed", i));
+		signal(SIGINT, sigint_handler_in_process);
+		signal(SIGQUIT, sigquit_handler_in_process);
 		macro->pid[i] = fork();
 		if (macro->pid[i] < 0)
 		{
@@ -119,6 +119,8 @@ void	execution(t_macro *macro)
 		macro->exit_code = status;
 		ft_free((void **)&macro->pid);
 		close_fds(macro);
+		signal(SIGINT, sigint_handler);
+		signal(SIGQUIT, SIG_IGN);
 	}
 	return ;
 }
