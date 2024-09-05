@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 23:24:13 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/04 10:21:52 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/05 15:28:47 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,8 @@ static int	dup_stdin(t_macro *macro, t_cmd *cmd)
 	{
 		if (dup2(macro->read_end, STDIN_FILENO) < 0)
 			return (-1);
+		close(macro->read_end);
+		macro->read_end = -1;
 	}
 	if (macro->pipe_fd[0] != -1)
 		close(macro->pipe_fd[0]);
