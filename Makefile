@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+         #
+#    By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/01 15:11:43 by pmarkaid          #+#    #+#              #
-#    Updated: 2024/09/03 23:38:53 by pmarkaid         ###   ########.fr        #
+#    Updated: 2024/09/06 13:50:19 by dbejar-s         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,7 +51,8 @@ SRCS_FILES = \
 	buin_export_utils.c \
 	main_path.c \
 	list_token.c \
-	zz_print_utils.c 
+	zz_print_utils.c \
+	parsing_here_doc.c
 
 SRC_DIR = src/
 SRCS = $(addprefix $(SRC_DIR), $(SRCS_FILES))
