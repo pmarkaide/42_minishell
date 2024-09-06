@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 09:53:20 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/08/29 15:55:28 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/06 09:16:20 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,11 @@ int	parsing(t_macro *macro)
 		return (-1);
 	}
 	macro->num_cmds = n - 1;
-	handle_here_doc(cmds, macro);
+	if (handle_here_doc(cmds, macro) == -1)
+	{
+		free_ins(macro);
+		return (-1);
+	}
 	macro->cmds = cmds;
 	return (0);
 }
