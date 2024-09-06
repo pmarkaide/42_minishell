@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:04:40 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/09/06 22:39:14 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/06 23:57:35 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,15 +47,16 @@ static int is_number(char *arg)
 	return (1);
 }
 
-int	ft_exit2(char **args, t_macro *macro)
+static void	print_msgs(char *arg)
 {
-	int	argc;
-	int	code;
-	int	validation_result;
+	ft_putstr_fd("exit\n", STDERR_FILENO);
+	ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
+	ft_putstr_fd(arg, STDERR_FILENO);
+	ft_putendl_fd(": numeric argument required", STDERR_FILENO);
+}
 
-	argc = 0;
-	while (args[argc])
-		argc++;
+static int	check_args(char **args, t_macro *macro, int argc)
+{
 	if (argc > 2 && is_number(args[1]) == 1)
 	{
 		ft_putstr_fd("exit\n", STDERR_FILENO);
@@ -64,31 +65,38 @@ int	ft_exit2(char **args, t_macro *macro)
 	}
 	if (argc > 1 && args[1][0] == '\0')
 	{
-		ft_putstr_fd("exit\n", STDERR_FILENO);
-		ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
-		ft_putstr_fd(args[1], STDERR_FILENO);
-		ft_putendl_fd(": numeric argument required", STDERR_FILENO);
+		print_msgs(args[1]);
 		macro->exit_flag = 70;
 		return (2);
 	}
 	if (argc > 2 && is_number(args[1]) == 0)
 	{
-		ft_putstr_fd("exit\n", STDERR_FILENO);
-		ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
-		ft_putstr_fd(args[1], STDERR_FILENO);
-		ft_putendl_fd(": numeric argument required", STDERR_FILENO);
+		print_msgs(args[1]);	
 		macro->exit_flag = 70;
 		return (2);
 	}
 	if (argc == 2 && is_number(args[1]) == 0)
 	{
-		ft_putstr_fd("exit\n", STDERR_FILENO);
-		ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
-		ft_putstr_fd(args[1], STDERR_FILENO);
-		ft_putendl_fd(": numeric argument required", STDERR_FILENO);
+		print_msgs(args[1]);
 		macro->exit_flag = 70;
 		return (2);
 	}
+	return (0);
+}
+
+int	ft_exit2(char **args, t_macro *macro)
+{
+	int	argc;
+	int	code;
+	int	validation_result;
+	int	status;
+
+	argc = 0;
+	while (args[argc])
+		argc++;
+	status = check_args(args, macro, argc);
+	if (status != 0)
+		return (status);
 	if (argc == 1)
 	{
 		macro->exit_flag = 69;
