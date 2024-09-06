@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 14:49:38 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/03 12:21:10 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/06 13:43:08 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int main(int argc, char **argv, char **envp)
 
     g_exit = 0;
     macro = init_macro(envp, argv);
-    signal(SIGINT, ft_signal_handler);
+    signal(SIGINT, sigint_handler_in_parent);
     signal(SIGQUIT, SIG_IGN);
 
     if (argc == 3 && strcmp(argv[1], "-c") == 0)
