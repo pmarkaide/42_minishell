@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:23:53 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/05 15:21:25 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/06 01:21:30 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ static int	execute_cmds(t_macro *macro)
 	{
 		if (pipe(macro->pipe_fd) == -1)
 			return (error_msg(macro, "pipe failed", i));
+		signal(SIGINT, sigint_handler_in_child);
+		signal(SIGQUIT, sigquit_handler_in_child);
 		macro->pid[i] = fork();
 		if (macro->pid[i] < 0)
 		{
@@ -117,6 +119,8 @@ void	execution(t_macro *macro)
 		macro->exit_code = status;
 		ft_free((void **)&macro->pid);
 		close_fds(macro);
+		signal(SIGINT, sigint_handler_in_parent);
+		signal(SIGQUIT, SIG_IGN);
 	}
 	return ;
 }
