@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/05 23:30:04 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/06 09:07:33 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ typedef struct s_macro
 	char			*m_home;
 	int				exit_code;
 	int				exit_flag;
+	int				here_doc_flag;
 }					t_macro;
 
 /* presyntax*/
@@ -126,7 +127,7 @@ t_token				*remove_empty_envir_tokens(t_macro *macro);
 int					parsing(t_macro *macro);
 
 /* parsing utils */
-void				handle_here_doc(t_cmd *cmds, t_macro *macro);
+int				handle_here_doc(t_cmd *cmds, t_macro *macro);
 void				close_here_doc_not_needed(t_token *tokens);
 
 /* execution */
@@ -233,6 +234,8 @@ void				handle_quoted_literal(char **clean, char *ins, size_t *i);
 void				handle_delimiter_after_dollar(char **clean, char *ins,
 						size_t *i);
 void				handle_unexpected_case(char **clean, char *ins, size_t *i);
+void				sigint_handler_after_here_doc(int sig);
+void				sigint_handler_here_doc(int sig);
 
 /* error */
 int					error_msg(t_macro *macro, char *msg, int exit_code);

@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 10:42:44 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/03 15:41:16 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/06 13:31:15 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+extern int	g_exit;
 
 void	close_here_doc_not_needed(t_token *tokens)
 {
@@ -31,7 +33,8 @@ void	close_here_doc_not_needed(t_token *tokens)
 		if (tmp->type == HERE_DOC && tmp != last)
 		{
 			fd = ft_atoi(tmp->value);
-			close(fd);
+			if (fd != -1)
+				close(fd);
 		}
 		tmp = tmp->next;
 	}
@@ -48,7 +51,20 @@ static int	read_here_doc(t_token *token, t_macro *macro)
 	del = clean_quotes(token->value);
 	while (1)
 	{
+		signal(SIGINT, sigint_handler_here_doc);
 		line = readline("> ");
+		if (g_exit == SIGINT)
+		{
+			open("/dev/tty", O_RDONLY);
+			g_exit = 0;
+			macro->exit_code = 130;
+			macro->here_doc_flag = 1;
+			close(pipe_fd[1]);
+			free_string(&line);
+			free_string(&del);
+			signal(SIGINT, sigint_handler_in_parent);
+			return (-1);
+		}
 		if (!line || ft_strcmp(line, del) == 0)
 		{
 			close(pipe_fd[1]);
@@ -61,11 +77,13 @@ static int	read_here_doc(t_token *token, t_macro *macro)
 		write(pipe_fd[1], "\n", 1);
 		free_string(&line);
 	}
+	free_string(&del);
 	close(pipe_fd[1]);
+	signal(SIGINT, sigint_handler_in_parent);
 	return (pipe_fd[0]);
 }
 
-void	handle_here_doc(t_cmd *cmds, t_macro *macro)
+int	handle_here_doc(t_cmd *cmds, t_macro *macro)
 {
 	t_token	*token;
 	t_cmd	*cmd;
@@ -83,6 +101,10 @@ void	handle_here_doc(t_cmd *cmds, t_macro *macro)
 				{
 					fd = read_here_doc(token, macro);
 					free_string(&token->value);
+					if (fd == -1)
+					{
+						return (-1);
+					}
 					token->value = ft_itoa(fd);
 				}
 				token = token->next;
@@ -90,4 +112,5 @@ void	handle_here_doc(t_cmd *cmds, t_macro *macro)
 		}
 		cmd = cmd->next;
 	}
+	return (0);
 }
