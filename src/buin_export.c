@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:04:44 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/09/06 22:53:49 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/06 23:55:02 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,7 @@ static void	update_or_add_env(char *clean_value, t_macro *macro)
 static void	process_argument(char *arg, t_macro *macro, int *exit_flag)
 {
 	if (validate_and_clean_argument(arg, exit_flag) == -1)
-	{
-		macro->exit_code = 2;
 		return ;
-	}
 	update_or_add_env(arg, macro);
 }
 
