@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:04:49 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/09/02 07:34:54 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/06 23:54:15 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,30 +22,42 @@ static void	remove_env_var(char **env, int index)
 	}
 }
 
+static void	check_invalid(char *arg, int *status)
+{
+	if (arg[0] == '-')
+	{
+		ft_putstr_fd("minishell: unset: `", STDERR_FILENO);
+		ft_putstr_fd(arg, STDERR_FILENO);
+		ft_putendl_fd("': invalid option", STDERR_FILENO);
+		*status = 2;
+	}
+}
+
 int	ft_unset2(char **args, t_macro *macro)
 {
-	int	i;
-	int	j;
+	int	ijk[3];
 	int	len_env;
 
-	i = 1;
-	while (args[i])
+	ijk[0] = 0;
+	ijk[2] = 0;
+	while (args[++ijk[0]])
 	{
-		j = 0;
-		while (macro->env[j])
+		if (ijk[0] ==1)
+			check_invalid(args[1], &ijk[2]);
+		ijk[1] = 0;
+		while (macro->env[ijk[1]])
 		{
-			len_env = ft_strchr_i(macro->env[j], '=');
+			len_env = ft_strchr_i(macro->env[ijk[1]], '=');
 			if (len_env == -1)
-				len_env = ft_strlen(macro->env[j]);
-			if ((ft_strncmp(args[i], macro->env[j], len_env) == 0
-					&& len_env == (int)ft_strlen(args[i])))
+				len_env = ft_strlen(macro->env[ijk[1]]);
+			if ((ft_strncmp(args[ijk[0]], macro->env[ijk[1]], len_env) == 0
+					&& len_env == (int)ft_strlen(args[ijk[0]])))
 			{
-				remove_env_var(macro->env, j);
+				remove_env_var(macro->env, ijk[1]);
 				break ;
 			}
-			j++;
+			ijk[1]++;
 		}
-		i++;
 	}
-	return (0);
+	return (ijk[2]);
 }
