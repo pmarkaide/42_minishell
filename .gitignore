@@ -1,7 +1,10 @@
-minishell
 *workspace*
 *working*
 *test*
+local.supp
+minishell
+infile
+outfile
 
 # Prerequisites
 *.d
@@ -55,4 +58,3 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
-local.supp
