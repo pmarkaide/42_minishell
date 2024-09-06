@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 21:38:08 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/09/06 23:56:15 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/06 23:58:45 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	print_export_var(char *var, char *value)
 int	validate_and_clean_argument(char *arg, int *exit_flag)
 {
 	int	name_flag;
-	
+
 	name_flag = check_export(arg);
 	if (name_flag != 0)
 	{

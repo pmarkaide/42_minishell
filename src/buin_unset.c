@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:04:49 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/09/06 23:54:15 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/06 23:59:52 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	ft_unset2(char **args, t_macro *macro)
 	ijk[2] = 0;
 	while (args[++ijk[0]])
 	{
-		if (ijk[0] ==1)
+		if (ijk[0] == 1)
 			check_invalid(args[1], &ijk[2]);
 		ijk[1] = 0;
 		while (macro->env[ijk[1]])

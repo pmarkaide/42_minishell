@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:04:40 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/09/06 23:57:35 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/06 23:58:30 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int	validate_numeric_argument(char *arg)
 	return (0);
 }
 
-static int is_number(char *arg)
+static int	is_number(char *arg)
 {
 	int	i;
 
@@ -71,7 +71,7 @@ static int	check_args(char **args, t_macro *macro, int argc)
 	}
 	if (argc > 2 && is_number(args[1]) == 0)
 	{
-		print_msgs(args[1]);	
+		print_msgs(args[1]);
 		macro->exit_flag = 70;
 		return (2);
 	}
