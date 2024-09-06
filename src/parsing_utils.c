@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 10:42:44 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/06 09:10:41 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/06 13:31:15 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ static int	read_here_doc(t_token *token, t_macro *macro)
 			g_exit = 0;
 			macro->exit_code = 130;
 			macro->here_doc_flag = 1;
-			free_string(&del);
 			close(pipe_fd[1]);
 			free_string(&line);
 			free_string(&del);
