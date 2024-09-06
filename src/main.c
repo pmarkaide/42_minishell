@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 14:49:38 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/06 09:08:47 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/06 22:40:00 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,10 @@ static void	run_shell(t_macro *macro)
 			continue ;
 		}
 		execute_commands(macro);
-		if (macro->exit_flag == 69)
+		if (macro->exit_flag == 69 || macro->exit_flag == 70)
 		{
-			ft_putstr_fd("exit\n", STDOUT_FILENO);
+			if (macro->exit_flag == 69)
+				ft_putstr_fd("exit\n", STDOUT_FILENO);
 			break ;
 		}
 	}

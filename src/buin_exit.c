@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:04:40 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/09/03 23:20:54 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/06 22:39:14 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,22 @@ static int	validate_numeric_argument(char *arg)
 	return (0);
 }
 
+static int is_number(char *arg)
+{
+	int	i;
+
+	i = 0;
+	if (arg[i] == '+' || arg[i] == '-')
+		i++;
+	while (arg[i] != '\0')
+	{
+		if (ft_isdigit(arg[i]) == 0)
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 int	ft_exit2(char **args, t_macro *macro)
 {
 	int	argc;
@@ -40,10 +56,38 @@ int	ft_exit2(char **args, t_macro *macro)
 	argc = 0;
 	while (args[argc])
 		argc++;
-	if (argc > 2)
+	if (argc > 2 && is_number(args[1]) == 1)
 	{
+		ft_putstr_fd("exit\n", STDERR_FILENO);
 		ft_putendl_fd("minishell: exit: too many arguments", STDERR_FILENO);
 		return (1);
+	}
+	if (argc > 1 && args[1][0] == '\0')
+	{
+		ft_putstr_fd("exit\n", STDERR_FILENO);
+		ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
+		ft_putstr_fd(args[1], STDERR_FILENO);
+		ft_putendl_fd(": numeric argument required", STDERR_FILENO);
+		macro->exit_flag = 70;
+		return (2);
+	}
+	if (argc > 2 && is_number(args[1]) == 0)
+	{
+		ft_putstr_fd("exit\n", STDERR_FILENO);
+		ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
+		ft_putstr_fd(args[1], STDERR_FILENO);
+		ft_putendl_fd(": numeric argument required", STDERR_FILENO);
+		macro->exit_flag = 70;
+		return (2);
+	}
+	if (argc == 2 && is_number(args[1]) == 0)
+	{
+		ft_putstr_fd("exit\n", STDERR_FILENO);
+		ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
+		ft_putstr_fd(args[1], STDERR_FILENO);
+		ft_putendl_fd(": numeric argument required", STDERR_FILENO);
+		macro->exit_flag = 70;
+		return (2);
 	}
 	if (argc == 1)
 	{
