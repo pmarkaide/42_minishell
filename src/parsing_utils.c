@@ -12,104 +12,136 @@
 
 #include "minishell.h"
 
-extern int	g_exit;
-
-void	close_here_doc_not_needed(t_token *tokens)
+static t_token	*parse_redir_tokens(t_token *tokens)
 {
 	t_token	*tmp;
-	t_token	*last;
-	int		fd;
+	t_token	*token;
+	t_token	*redir;
 
-	last = NULL;
 	tmp = tokens;
-	while (tmp && is_redir(tmp, "input"))
+	redir = NULL;
+	while (tmp && tmp->type != PIPE)
 	{
-		last = tmp;
+		if (is_redir(tmp, "input") || is_redir(tmp, "output"))
+		{
+			token = init_token();
+			if (!token)
+				return (NULL);
+			token->type = tmp->type;
+			token->value = ft_strdup(tmp->value);
+			if (!token->value)
+			{
+				free(token);
+				return (NULL);
+			}
+			token_add_back(&redir, token);
+		}
 		tmp = tmp->next;
 	}
+	return (redir);
+}
+
+static t_token	*parse_cmd_arg_tokens(t_token *tokens)
+{
+	t_token	*tmp;
+	t_token	*token;
+	t_token	*cmd_arg;
+
+	tmp = tokens;
+	cmd_arg = NULL;
+	while (tmp && tmp->type != PIPE)
+	{
+		if (tmp->type == CMD || tmp->type == BUILTIN || tmp->type == ARG)
+		{
+			token = init_token();
+			if (!token)
+				return (NULL);
+			token->type = tmp->type;
+			token->value = ft_strdup(tmp->value);
+			if (!token->value)
+			{
+				free(token);
+				return (NULL);
+			}
+			token_add_back(&cmd_arg, token);
+		}
+		tmp = tmp->next;
+	}
+	return (cmd_arg);
+}
+
+static t_cmd	*parse_tokens(t_token *tokens, int *n)
+{
+	t_cmd	*cmds;
+	t_cmd	*cmd;
+	t_token	*tmp;
+
+	cmds = NULL;
 	tmp = tokens;
 	while (tmp)
 	{
-		if (tmp->type == HERE_DOC && tmp != last)
-		{
-			fd = ft_atoi(tmp->value);
-			close_fd(fd);
-		}
+		cmd = init_cmd();
+		if (!cmd)
+			return (NULL);
+		cmd->n = (*n)++;
+		cmd->cmd_arg = parse_cmd_arg_tokens(tmp);
+		if (cmd->cmd_arg)
+			cmd->type = cmd->cmd_arg->type;
+		cmd->redir = parse_redir_tokens(tmp);
+		cmd_add_back(&cmds, cmd);
+		while (tmp && tmp->type != PIPE)
+			tmp = tmp->next;
+		if (tmp)
+			tmp = tmp->next;
+	}
+	return (cmds);
+}
+
+static char	parsing_error_check(t_token *tokens, t_macro *macro)
+{
+	char	c;
+	t_token	*tmp;
+
+	c = 0;
+	tmp = tokens;
+	if (tmp && tmp->type == PIPE)
+		c = '|';
+	while (tmp && tmp->next)
+	{
+		if (tmp->type == PIPE && tmp->next->type == PIPE)
+			c = '|';
 		tmp = tmp->next;
 	}
-}
-
-static int	read_here_doc(t_token *token, t_macro *macro)
-{
-	char	*line;
-	char	*del;
-	int		pipe_fd[2];
-
-	if (pipe(pipe_fd) == -1)
-		return (error_msg(macro, "pipe error\n", -1));
-	del = clean_quotes(token->value);
-	while (1)
+	if (tmp && tmp->type == PIPE)
+		c = '|';
+	if (c != 0)
 	{
-		signal(SIGINT, sigint_handler_here_doc);
-		line = readline("> ");
-		if (g_exit == SIGINT)
-		{
-			open("/dev/tty", O_RDONLY);
-			g_exit = 0;
-			macro->exit_code = 130;
-			macro->here_doc_flag = 1;
-			close_fd(pipe_fd[1]);
-			free_string(&line);
-			free_string(&del);
-			signal(SIGINT, sigint_handler_in_parent);
-			return (-1);
-		}
-		if (!line || ft_strcmp(line, del) == 0)
-		{
-			close_fd(pipe_fd[1]);
-			free_string(&line);
-			break ;
-		}
-		if (!ft_isquote(token->value[0]))
-			line = get_expanded_ins(line, macro);
-		write(pipe_fd[1], line, ft_strlen(line));
-		write(pipe_fd[1], "\n", 1);
-		free_string(&line);
+		ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
+		ft_putchar_fd(c, 2);
+		ft_putstr_fd("'\n", 2);
+		macro->exit_code = 2;
 	}
-	free_string(&del);
-	close_fd(pipe_fd[1]);
-	signal(SIGINT, sigint_handler_in_parent);
-	return (pipe_fd[0]);
+	return (c);
 }
 
-int	handle_here_doc(t_cmd *cmds, t_macro *macro)
+int	check_parsing_tokens(t_macro *macro, t_cmd **cmds, int *n)
 {
-	t_token	*token;
-	t_cmd	*cmd;
-	int		fd;
+	char	c;
 
-	cmd = cmds;
-	while (cmd)
+	*n = 1;
+	*cmds = NULL;
+	c = parsing_error_check(macro->tokens, macro);
+	if (c != 0)
 	{
-		if (cmd->redir)
-		{
-			token = cmd->redir;
-			while (token)
-			{
-				if (token->type == HERE_DOC)
-				{
-					fd = read_here_doc(token, macro);
-					free_string(&token->value);
-					if (fd == -1)
-					{
-						return (-1);
-					}
-					token->value = ft_itoa(fd);
-				}
-				token = token->next;
-			}
-		}
-		cmd = cmd->next;
+		free_ins(macro);
+		return (-1);
+	}
+	else
+		*cmds = parse_tokens(macro->tokens, n);
+	if (!*cmds)
+	{
+		free_ins(macro);
+		return (-1);
 	}
 	return (0);
 }

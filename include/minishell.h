@@ -127,7 +127,7 @@ t_token				*remove_empty_envir_tokens(t_macro *macro);
 int					parsing(t_macro *macro);
 
 /* parsing utils */
-int				handle_here_doc(t_cmd *cmds, t_macro *macro);
+int					handle_here_doc(t_cmd *cmds, t_macro *macro);
 void				close_here_doc_not_needed(t_token *tokens);
 
 /* execution */
@@ -237,7 +237,9 @@ void				handle_delimiter_after_dollar(char **clean, char *ins,
 void				handle_unexpected_case(char **clean, char *ins, size_t *i);
 void				sigint_handler_after_here_doc(int sig);
 void				sigint_handler_here_doc(int sig);
-
+int					check_parsing_tokens(t_macro *macro, t_cmd **cmds, int *n);
+int					process_lines(int pipe_fd[2], char *del, t_token *token,
+						t_macro *macro);
 /* error */
 int					error_msg(t_macro *macro, char *msg, int exit_code);
 void				exit_error(char *file, char *msg, t_macro *macro,
