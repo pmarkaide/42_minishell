@@ -6,31 +6,11 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:23:53 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/07 14:03:59 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/07 15:46:48 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	restore_fds(int saved_stdout, int saved_stdin)
-{
-	int	result;
-
-	result = 0;
-	if (dup2(saved_stdout, STDOUT_FILENO) == -1)
-	{
-		perror("dup2 :: restore_fds");
-		result = -1;
-	}
-	if (dup2(saved_stdin, STDIN_FILENO) == -1)
-	{
-		perror("dup2 :: restore_fds");
-		result = -1;
-	}
-	close(saved_stdout);
-	close(saved_stdin);
-	return (result);
-}
 
 static void	execute_child_process(t_macro *macro, int index)
 {
@@ -88,7 +68,6 @@ static int	execute_cmds(t_macro *macro)
 
 int	prepare_execution(t_macro *macro)
 {
-	macro->read_end = -1;
 	macro->pid = malloc(sizeof(pid_t) * macro->num_cmds);
 	if (macro->pid == NULL)
 	{
@@ -104,6 +83,7 @@ void	execution(t_macro *macro)
 	int	i;
 	int	status;
 
+	macro->read_end = -1;
 	if (macro->cmds == NULL)
 		return ;
 	if (macro->num_cmds == 1 && macro->cmds->type == BUILTIN)
