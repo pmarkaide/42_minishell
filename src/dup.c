@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 23:24:13 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/05 15:28:47 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/07 14:03:20 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,18 +54,17 @@ static int	dup_stdout(t_macro *macro, t_cmd *cmd)
 	{
 		if (dup2(fd, STDOUT_FILENO) < 0)
 		{
-			close(fd);
+			close_fd(fd);
 			return (-1);
 		}
-		close(fd);
+		close_fd(fd);
 	}
 	else if (cmd->n < macro->num_cmds)
 	{
 		if (dup2(macro->pipe_fd[1], STDOUT_FILENO) < 0)
 			return (-1);
 	}
-	if (macro->pipe_fd[1] != -1)
-		close(macro->pipe_fd[1]);
+	close_fd(macro->pipe_fd[1]);
 	return (0);
 }
 
@@ -78,20 +77,18 @@ static int	dup_stdin(t_macro *macro, t_cmd *cmd)
 	{
 		if (dup2(fd, STDIN_FILENO) < 0)
 		{
-			close(fd);
+			close_fd(fd);
 			return (-1);
 		}
-		close(fd);
+		close_fd(fd);
 	}
 	else if (cmd->n > 1)
 	{
 		if (dup2(macro->read_end, STDIN_FILENO) < 0)
 			return (-1);
-		close(macro->read_end);
-		macro->read_end = -1;
+		close_fd(macro->read_end);
 	}
-	if (macro->pipe_fd[0] != -1)
-		close(macro->pipe_fd[0]);
+	close_fd(macro->pipe_fd[0]);
 	return (0);
 }
 
