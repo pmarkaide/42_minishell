@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:35:57 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/07 15:46:19 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/07 16:24:13 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ void	search_executable(t_macro *macro, t_cmd *cmd)
 	{
 		ft_putstr_fd(exec, 2);
 		ft_putstr_fd(": command not found\n", 2);
-		macro->exit_code = 127;
 		free_macro(macro);
 		exit(127);
 	}
