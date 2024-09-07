@@ -6,26 +6,50 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 20:03:14 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/04 10:20:16 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/07 14:00:18 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void close_fd(int fd)
+{
+	if (fd != -1)
+		close(fd);
+	fd = -1;
+}
+
+static void close_all_heredoc(t_macro *macro)
+{
+	t_cmd	*cmd;
+	t_token	*redir;
+	int		fd;
+
+	cmd = macro->cmds;
+	while (cmd)
+	{
+		redir = cmd->redir;
+		while (redir)
+		{
+			if (redir->type == HERE_DOC)
+			{
+				fd = ft_atoi(redir->value);
+				close_fd(fd);
+			}
+			redir = redir->next;
+		}
+		cmd = cmd->next;
+	}
+}
+
+
 void	close_fds(t_macro *macro)
 {
-	if (macro->pipe_fd[0] != -1)
-	{
-		close(macro->pipe_fd[0]);
-		macro->pipe_fd[0] = -1;
-	}
-	if (macro->pipe_fd[1] != -1)
-	{
-		close(macro->pipe_fd[1]);
-		macro->pipe_fd[1] = -1;
-	}
+	close_fd(macro->pipe_fd[0]);
+	close_fd(macro->pipe_fd[1]);
 	if (macro->read_end > 0)
 		close(macro->read_end);
+	close_all_heredoc(macro);
 }
 
 int	wait_processes(pid_t pid)
