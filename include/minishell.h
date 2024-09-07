@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/06 14:42:09 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/07 14:01:19 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,7 @@ void				execute_builtin(t_macro *macro, char **cmd_array);
 /* execution utils */
 char				**build_cmd_args_array(t_token *cmd_args);
 int					wait_processes(pid_t pid);
+void 				close_fd(int fd);
 void				close_fds(t_macro *macro);
 
 /* validation */
