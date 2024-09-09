@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/09/09 11:57:08 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/09 12:52:39 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ static void	open_stin(t_macro *macro, int pipe_fd[2], char **del, char *line)
 	g_exit = 0;
 	macro->exit_code = 130;
 	macro->here_doc_flag = 1;
+	close_fd(&pipe_fd[0]);
 	close_fd(&pipe_fd[1]);
 	free_2_strings(&line, del);
 }
@@ -35,27 +36,26 @@ static void	open_stin(t_macro *macro, int pipe_fd[2], char **del, char *line)
 int	process_lines(int pipe_fd[2], char **del, t_token *token, t_macro *macro)
 {
 	char	*line;
+	char	*exp;
 
 	while (1)
 	{
-		signal(SIGINT, sigint_handler_here_doc);
 		line = readline("> ");
 		if (g_exit == SIGINT)
 		{
 			open_stin(macro, pipe_fd, del, line);
-			signal(SIGINT, sigint_handler_in_parent);
 			return (-1);
 		}
-		if (!line || ft_strcmp(line, *del) == 0)
 		if (!line || ft_strcmp(line, *del) == 0)
 		{
 			free_2_strings(&line, del);
 			break ;
 		}
 		if (!ft_isquote(token->value[0]))
-			line = get_expanded_ins(line, macro);
-		write(pipe_fd[1], line, ft_strlen(line));
+			exp = get_expanded_ins(line, macro);
+		write(pipe_fd[1], exp, ft_strlen(line));
 		write(pipe_fd[1], "\n", 1);
+		free_string(&exp);
 		free_string(&line);
 	}
 	return (0);
@@ -69,9 +69,12 @@ static int	read_here_doc(t_token *token, t_macro *macro)
 	if (pipe(pipe_fd) == -1)
 		return (error_msg(macro, "pipe error\n", -1));
 	del = clean_quotes(token->value);
+	signal(SIGINT, sigint_handler_here_doc);
 	if (process_lines(pipe_fd, &del, token, macro) == -1)
-	if (process_lines(pipe_fd, &del, token, macro) == -1)
+	{
+		signal(SIGINT, sigint_handler_in_parent);
 		return (-1);
+	}
 	close_fd(&pipe_fd[1]);
 	signal(SIGINT, sigint_handler_in_parent);
 	return (pipe_fd[0]);
