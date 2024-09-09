@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:52:58 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/03 23:46:06 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/09 12:40:40 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,5 +80,6 @@ char	*get_expanded_ins(char *ins, t_macro *macro)
 		if (!clean)
 			return (NULL);
 	}
+	free_string(&ins);
 	return (clean);
 }

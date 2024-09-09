@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/09/09 11:57:08 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/09 12:40:16 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ int	process_lines(int pipe_fd[2], char **del, t_token *token, t_macro *macro)
 			return (-1);
 		}
 		if (!line || ft_strcmp(line, *del) == 0)
-		if (!line || ft_strcmp(line, *del) == 0)
 		{
 			free_2_strings(&line, del);
 			break ;
@@ -70,8 +69,10 @@ static int	read_here_doc(t_token *token, t_macro *macro)
 		return (error_msg(macro, "pipe error\n", -1));
 	del = clean_quotes(token->value);
 	if (process_lines(pipe_fd, &del, token, macro) == -1)
-	if (process_lines(pipe_fd, &del, token, macro) == -1)
+	{
+		close_fd(&pipe_fd[0]);
 		return (-1);
+	}
 	close_fd(&pipe_fd[1]);
 	signal(SIGINT, sigint_handler_in_parent);
 	return (pipe_fd[0]);
