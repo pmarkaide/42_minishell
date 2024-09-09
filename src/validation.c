@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:35:57 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/07 16:24:13 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/09 08:36:46 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	validate_redirections(t_token *redir, t_macro *macro)
 				fd = open_file(tmp, macro);
 				if(fd == -1)
 					return (-1);
-				close_fd(fd);
+				close_fd(&fd);
 			}
 		}
 		tmp = tmp->next;

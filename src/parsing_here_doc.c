@@ -3,18 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_here_doc.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/06 13:48:50 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/09/06 14:47:20 by dbejar-s         ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2024/09/09 11:57:08 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "minishell.h"
 
 extern int	g_exit;
 
-static void	open_stin(t_macro *macro, int pipe_fd[2], char *del, char *line)
+static void	open_stin(t_macro *macro, int pipe_fd[2], char **del, char *line)
 {
 	int	fd;
 
@@ -27,11 +28,11 @@ static void	open_stin(t_macro *macro, int pipe_fd[2], char *del, char *line)
 	g_exit = 0;
 	macro->exit_code = 130;
 	macro->here_doc_flag = 1;
-	close(pipe_fd[1]);
-	free_2_strings(&line, &del);
+	close_fd(&pipe_fd[1]);
+	free_2_strings(&line, del);
 }
 
-int	process_lines(int pipe_fd[2], char *del, t_token *token, t_macro *macro)
+int	process_lines(int pipe_fd[2], char **del, t_token *token, t_macro *macro)
 {
 	char	*line;
 
@@ -45,10 +46,10 @@ int	process_lines(int pipe_fd[2], char *del, t_token *token, t_macro *macro)
 			signal(SIGINT, sigint_handler_in_parent);
 			return (-1);
 		}
-		if (!line || ft_strcmp(line, del) == 0)
+		if (!line || ft_strcmp(line, *del) == 0)
+		if (!line || ft_strcmp(line, *del) == 0)
 		{
-			close(pipe_fd[1]);
-			free_string(&line);
+			free_2_strings(&line, del);
 			break ;
 		}
 		if (!ft_isquote(token->value[0]))
@@ -68,10 +69,10 @@ static int	read_here_doc(t_token *token, t_macro *macro)
 	if (pipe(pipe_fd) == -1)
 		return (error_msg(macro, "pipe error\n", -1));
 	del = clean_quotes(token->value);
-	if (process_lines(pipe_fd, del, token, macro) == -1)
+	if (process_lines(pipe_fd, &del, token, macro) == -1)
+	if (process_lines(pipe_fd, &del, token, macro) == -1)
 		return (-1);
-	free_string(&del);
-	close(pipe_fd[1]);
+	close_fd(&pipe_fd[1]);
 	signal(SIGINT, sigint_handler_in_parent);
 	return (pipe_fd[0]);
 }
@@ -89,9 +90,9 @@ static int	process_cmd(t_cmd *cmd, t_macro *macro)
 			if (token->type == HERE_DOC)
 			{
 				fd = read_here_doc(token, macro);
-				free_string(&token->value);
 				if (fd == -1)
 					return (-1);
+				free_string(&token->value);
 				token->value = ft_itoa(fd);
 			}
 			token = token->next;

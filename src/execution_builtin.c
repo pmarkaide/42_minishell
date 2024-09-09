@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_builtin.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 09:15:15 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/04 13:41:56 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/09 11:34:45 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ int	execute_single_builtin(t_macro *macro)
 		return (prep_status);
 	execute_builtin(macro, cmd_array);
 	restore_fds(saved_stdout, saved_stdin);
+	close_fds(macro);
 	return (macro->exit_code);
 }
 
