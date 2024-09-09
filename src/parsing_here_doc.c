@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/09/09 11:50:28 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/09 11:57:08 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ static void	open_stin(t_macro *macro, int pipe_fd[2], char **del, char *line)
 }
 
 int	process_lines(int pipe_fd[2], char **del, t_token *token, t_macro *macro)
-int	process_lines(int pipe_fd[2], char **del, t_token *token, t_macro *macro)
 {
 	char	*line;
 
@@ -43,7 +42,7 @@ int	process_lines(int pipe_fd[2], char **del, t_token *token, t_macro *macro)
 		line = readline("> ");
 		if (g_exit == SIGINT)
 		{
-			open_stin(macro, pipe_fd, line);
+			open_stin(macro, pipe_fd, del, line);
 			signal(SIGINT, sigint_handler_in_parent);
 			return (-1);
 		}
