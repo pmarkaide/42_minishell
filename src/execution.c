@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:23:53 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/07 15:46:48 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/09 08:35:55 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static int	execute_cmds(t_macro *macro)
 		if (macro->read_end > 0)
 			close(macro->read_end);
 		macro->read_end = macro->pipe_fd[0];
-		close_fd(macro->pipe_fd[1]);
+		close_fd(&macro->pipe_fd[1]);
 		i++;
 	}
 	return (i);
