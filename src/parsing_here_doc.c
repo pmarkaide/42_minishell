@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_here_doc.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 13:48:50 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/09/06 14:47:20 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/09 09:43:16 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 extern int	g_exit;
 
-static void	open_stin(t_macro *macro, int pipe_fd[2], char *del, char *line)
+static void	open_stin(t_macro *macro, int pipe_fd[2], char *line)
 {
 	int	fd;
 
@@ -28,10 +28,10 @@ static void	open_stin(t_macro *macro, int pipe_fd[2], char *del, char *line)
 	macro->exit_code = 130;
 	macro->here_doc_flag = 1;
 	close(pipe_fd[1]);
-	free_2_strings(&line, &del);
+	free_string(&line);
 }
 
-int	process_lines(int pipe_fd[2], char *del, t_token *token, t_macro *macro)
+int	process_lines(int pipe_fd[2], char **del, t_token *token, t_macro *macro)
 {
 	char	*line;
 
@@ -41,11 +41,11 @@ int	process_lines(int pipe_fd[2], char *del, t_token *token, t_macro *macro)
 		line = readline("> ");
 		if (g_exit == SIGINT)
 		{
-			open_stin(macro, pipe_fd, del, line);
+			open_stin(macro, pipe_fd, line);
 			signal(SIGINT, sigint_handler_in_parent);
 			return (-1);
 		}
-		if (!line || ft_strcmp(line, del) == 0)
+		if (!line || ft_strcmp(line, *del) == 0)
 		{
 			close(pipe_fd[1]);
 			free_string(&line);
@@ -68,7 +68,7 @@ static int	read_here_doc(t_token *token, t_macro *macro)
 	if (pipe(pipe_fd) == -1)
 		return (error_msg(macro, "pipe error\n", -1));
 	del = clean_quotes(token->value);
-	if (process_lines(pipe_fd, del, token, macro) == -1)
+	if (process_lines(pipe_fd, &del, token, macro) == -1)
 		return (-1);
 	free_string(&del);
 	close(pipe_fd[1]);

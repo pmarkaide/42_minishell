@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/09 08:37:06 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/09 09:12:08 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,8 +238,7 @@ void				handle_unexpected_case(char **clean, char *ins, size_t *i);
 void				sigint_handler_after_here_doc(int sig);
 void				sigint_handler_here_doc(int sig);
 int					check_parsing_tokens(t_macro *macro, t_cmd **cmds, int *n);
-int					process_lines(int pipe_fd[2], char *del, t_token *token,
-						t_macro *macro);
+
 /* error */
 int					error_msg(t_macro *macro, char *msg, int exit_code);
 void				exit_error(char *file, char *msg, t_macro *macro,
