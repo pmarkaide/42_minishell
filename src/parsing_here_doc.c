@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 13:48:50 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/09/09 11:22:02 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/09 11:24:20 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void	open_stin(t_macro *macro, int pipe_fd[2], char **del, char *line)
 	free_2_strings(&line, del);
 }
 
-int	process_lines(int pipe_fd[2], char *del, t_token *token, t_macro *macro)
+int	process_lines(int pipe_fd[2], char **del, t_token *token, t_macro *macro)
 {
 	char	*line;
 
@@ -45,7 +45,7 @@ int	process_lines(int pipe_fd[2], char *del, t_token *token, t_macro *macro)
 			signal(SIGINT, sigint_handler_in_parent);
 			return (-1);
 		}
-		if (!line || ft_strcmp(line, del) == 0)
+		if (!line || ft_strcmp(line, *del) == 0)
 		{
 			close(pipe_fd[1]);
 			free_2_strings(&line, del);
@@ -68,7 +68,7 @@ static int	read_here_doc(t_token *token, t_macro *macro)
 	if (pipe(pipe_fd) == -1)
 		return (error_msg(macro, "pipe error\n", -1));
 	del = clean_quotes(token->value);
-	if (process_lines(pipe_fd, del, token, macro) == -1)
+	if (process_lines(pipe_fd, &del, token, macro) == -1)
 		return (-1);
 	close(pipe_fd[1]);
 	signal(SIGINT, sigint_handler_in_parent);
