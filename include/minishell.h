@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/09 11:23:41 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/09 11:50:48 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,6 +238,7 @@ void				handle_unexpected_case(char **clean, char *ins, size_t *i);
 void				sigint_handler_after_here_doc(int sig);
 void				sigint_handler_here_doc(int sig);
 int					check_parsing_tokens(t_macro *macro, t_cmd **cmds, int *n);
+
 
 /* error */
 int					error_msg(t_macro *macro, char *msg, int exit_code);
