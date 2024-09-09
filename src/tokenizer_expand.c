@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:45:23 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/09 11:55:35 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/09 12:49:56 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ t_token	*expand_token(t_token *token, t_macro *macro)
 	expanded = get_expanded_ins(token->value, macro);
 	if (!expanded || *expanded == '\0')
 		return (NULL);
-	fix_redirections(expanded);
 	fix_redirections(expanded);
 	if (ft_strchr("\"", token->value[0]))
 	{
