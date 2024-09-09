@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/09/09 12:40:16 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/09 12:44:22 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ static void	open_stin(t_macro *macro, int pipe_fd[2], char **del, char *line)
 	g_exit = 0;
 	macro->exit_code = 130;
 	macro->here_doc_flag = 1;
+	close_fd(&pipe_fd[0]);
 	close_fd(&pipe_fd[1]);
 	free_2_strings(&line, del);
 }
@@ -69,10 +70,7 @@ static int	read_here_doc(t_token *token, t_macro *macro)
 		return (error_msg(macro, "pipe error\n", -1));
 	del = clean_quotes(token->value);
 	if (process_lines(pipe_fd, &del, token, macro) == -1)
-	{
-		close_fd(&pipe_fd[0]);
 		return (-1);
-	}
 	close_fd(&pipe_fd[1]);
 	signal(SIGINT, sigint_handler_in_parent);
 	return (pipe_fd[0]);
