@@ -12,16 +12,16 @@
 
 #include "minishell.h"
 
-void close_fd(int *fd)
+void	close_fd(int *fd)
 {
-    if (*fd != -1)
-    {
-        close(*fd);
-        *fd = -1;
-    }
+	if (*fd != -1)
+	{
+		close(*fd);
+		*fd = -1;
+	}
 }
 
-static void close_all_heredoc(t_macro *macro)
+static void	close_all_heredoc(t_macro *macro)
 {
 	t_cmd	*cmd;
 	t_token	*redir;
@@ -43,7 +43,6 @@ static void close_all_heredoc(t_macro *macro)
 		cmd = cmd->next;
 	}
 }
-
 
 void	close_fds(t_macro *macro)
 {

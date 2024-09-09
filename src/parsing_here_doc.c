@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_here_doc.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/09/09 12:52:39 by pmarkaid         ###   ########.fr       */
+/*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
+/*   Updated: 2024/09/09 14:13:06 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "minishell.h"
 
@@ -36,7 +35,6 @@ static void	open_stin(t_macro *macro, int pipe_fd[2], char **del, char *line)
 int	process_lines(int pipe_fd[2], char **del, t_token *token, t_macro *macro)
 {
 	char	*line;
-	char	*exp;
 
 	while (1)
 	{
@@ -52,10 +50,9 @@ int	process_lines(int pipe_fd[2], char **del, t_token *token, t_macro *macro)
 			break ;
 		}
 		if (!ft_isquote(token->value[0]))
-			exp = get_expanded_ins(line, macro);
-		write(pipe_fd[1], exp, ft_strlen(line));
+			line = get_expanded_doc(line, macro);
+		write(pipe_fd[1], line, ft_strlen(line));
 		write(pipe_fd[1], "\n", 1);
-		free_string(&exp);
 		free_string(&line);
 	}
 	return (0);

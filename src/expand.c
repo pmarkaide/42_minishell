@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:52:58 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/09 12:49:21 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/09 14:12:50 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,5 +80,24 @@ char	*get_expanded_ins(char *ins, t_macro *macro)
 		if (!clean)
 			return (NULL);
 	}
+	return (clean);
+}
+
+char	*get_expanded_doc(char *ins, t_macro *macro)
+{
+	char	*clean;
+	size_t	i;
+
+	clean = ft_strdup("");
+	if (!clean)
+		return (NULL);
+	i = 0;
+	while (ins[i])
+	{
+		handle_cases(&clean, ins, &i, macro);
+		if (!clean)
+			return (NULL);
+	}
+	free_string(&ins);
 	return (clean);
 }

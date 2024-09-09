@@ -30,7 +30,7 @@ int	validate_redirections(t_token *redir, t_macro *macro)
 			else
 			{
 				fd = open_file(tmp, macro);
-				if(fd == -1)
+				if (fd == -1)
 					return (-1);
 				close_fd(&fd);
 			}
