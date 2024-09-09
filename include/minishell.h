@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/09 11:50:48 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/09 14:13:29 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,6 +238,7 @@ void				handle_unexpected_case(char **clean, char *ins, size_t *i);
 void				sigint_handler_after_here_doc(int sig);
 void				sigint_handler_here_doc(int sig);
 int					check_parsing_tokens(t_macro *macro, t_cmd **cmds, int *n);
+char				*get_expanded_doc(char *ins, t_macro *macro);
 
 /* error */
 int					error_msg(t_macro *macro, char *msg, int exit_code);
