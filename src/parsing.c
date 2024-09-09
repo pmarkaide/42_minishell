@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 09:53:20 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/06 14:29:19 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/09 11:14:26 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int	parsing(t_macro *macro)
 	macro->num_cmds = n - 1;
 	if (handle_here_doc(cmds, macro) == -1)
 	{
+		free_cmds(&cmds);
 		free_ins(macro);
 		return (-1);
 	}
