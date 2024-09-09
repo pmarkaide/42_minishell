@@ -140,7 +140,7 @@ void				execute_builtin(t_macro *macro, char **cmd_array);
 /* execution utils */
 char				**build_cmd_args_array(t_token *cmd_args);
 int					wait_processes(pid_t pid);
-void 				close_fd(int *fd);
+void				close_fd(int *fd);
 void				close_fds(t_macro *macro);
 
 /* validation */
@@ -238,7 +238,6 @@ void				handle_unexpected_case(char **clean, char *ins, size_t *i);
 void				sigint_handler_after_here_doc(int sig);
 void				sigint_handler_here_doc(int sig);
 int					check_parsing_tokens(t_macro *macro, t_cmd **cmds, int *n);
-
 
 /* error */
 int					error_msg(t_macro *macro, char *msg, int exit_code);
