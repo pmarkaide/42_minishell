@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 20:03:14 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/09 08:35:50 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/09 11:46:33 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ void close_fd(int *fd)
 {
     if (*fd != -1)
     {
-        close(*fd);
+        if(close(*fd) == -1)
+			ft_printf("closing fd failed\n");
         *fd = -1;
     }
 }
@@ -36,6 +37,7 @@ static void close_all_heredoc(t_macro *macro)
 			if (redir->type == HERE_DOC)
 			{
 				fd = ft_atoi(redir->value);
+				ft_printf("closing here_doc fd: %d\n", fd);
 				close_fd(&fd);
 			}
 			redir = redir->next;

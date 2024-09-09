@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 13:48:50 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/09/09 11:24:20 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/09 11:40:51 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	open_stin(t_macro *macro, int pipe_fd[2], char **del, char *line)
 	g_exit = 0;
 	macro->exit_code = 130;
 	macro->here_doc_flag = 1;
-	close(pipe_fd[1]);
+	close_fd(&pipe_fd[1]);
 	free_2_strings(&line, del);
 }
 
@@ -47,7 +47,6 @@ int	process_lines(int pipe_fd[2], char **del, t_token *token, t_macro *macro)
 		}
 		if (!line || ft_strcmp(line, *del) == 0)
 		{
-			close(pipe_fd[1]);
 			free_2_strings(&line, del);
 			break ;
 		}
@@ -70,7 +69,7 @@ static int	read_here_doc(t_token *token, t_macro *macro)
 	del = clean_quotes(token->value);
 	if (process_lines(pipe_fd, &del, token, macro) == -1)
 		return (-1);
-	close(pipe_fd[1]);
+	close_fd(&pipe_fd[1]);
 	signal(SIGINT, sigint_handler_in_parent);
 	return (pipe_fd[0]);
 }
@@ -88,9 +87,9 @@ static int	process_cmd(t_cmd *cmd, t_macro *macro)
 			if (token->type == HERE_DOC)
 			{
 				fd = read_here_doc(token, macro);
-				free_string(&token->value);
 				if (fd == -1)
 					return (-1);
+				free_string(&token->value);
 				token->value = ft_itoa(fd);
 			}
 			token = token->next;
