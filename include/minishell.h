@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/10 14:33:46 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/10 15:25:28 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,34 @@ char	*get_home_directory(t_macro *macro);
 char	*parse_arguments(char **args, t_macro *macro, char *home);
 int		change_directory(char *path, char *home);
 void	update_environment(t_macro *macro, char *oldpwd, char *path);
+
+/* buin_echo */
+int	ft_echo(char **args);
+
+/* buin_env */
+char	*grab_env(char *var, char **env, int n);
+char	**fix_env(char *var, char *value, char **env, int n);
+int		ft_env(t_macro *macro);
+
+/* buin_exit */
+int	ft_exit(char **args, t_macro *macro);
+
+/* buin_export_utils */
+int	validate_and_clean_argument(char *arg, int *exit_flag);
+void	export_argless(t_macro *macro);
+
+/* buin_export */
+int	ft_export(char **args, t_macro *macro);
+
+/* buin_pwd */
+char	*char_pwd(void);
+int	ft_pwd(t_macro *macro);
+
+/* buin_unset */
+int	ft_unset(char **args, t_macro *macro);
+
+/* dup */
+int	dup_file_descriptors(t_macro *macro, t_cmd *cmd);
 
 
 /* presyntax*/
@@ -198,12 +226,12 @@ char				*remove_path(char *cmd);
 t_macro				*init_macro(char **envp, char **argv);
 t_macro				*start_env(t_macro *macro, char **argv);
 char				*ft_getenv(char *var, char **env);
-int					ft_pwd2(t_macro *macro);
-int					ft_env2(t_macro *macro);
-int					ft_exit2(char **args, t_macro *macro);
-int					ft_unset2(char **args, t_macro *macro);
-int					ft_export2(char **args, t_macro *macro);
-int					ft_echo2(char **args);
+int					ft_pwd(t_macro *macro);
+int					ft_env(t_macro *macro);
+int					ft_exit(char **args, t_macro *macro);
+int					ft_unset(char **args, t_macro *macro);
+int					ft_export(char **args, t_macro *macro);
+int					ft_echo(char **args);
 int					ft_cd(char **args, t_macro *macro);
 char				*ft_strjoin3(const char *s1, const char *s2,
 						const char *s3);

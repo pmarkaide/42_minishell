@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   buin_pwd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:00:43 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/08/29 22:05:57 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/10 15:23:56 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*remove_path(char *cmd)
+static char	*remove_path(char *cmd)
 {
 	char	*pos;
 	char	*real_cmd;
@@ -24,7 +24,7 @@ char	*remove_path(char *cmd)
 	return (real_cmd);
 }
 
-int	ft_pwd2(t_macro *macro)
+int	ft_pwd(t_macro *macro)
 {
 	char	*path;
 
