@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/09 14:13:29 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/10 14:15:25 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,16 @@
 # define MINISHELL_H
 
 # include "../lib/libft/libft.h" /* libft library */
-# include <curses.h>             // tgetent, tgetflag, tgetnum, tgetstr,
 # include <dirent.h>             // opendir, readdir, closedir
 # include <errno.h>              /* for errno */
-# include <fcntl.h>              // open
-# include <limits.h>             /* for LONG_MAX, LONG_MIN */
 # include <readline/history.h>   // add_history
-# include <readline/readline.h>  // readline, rl_clear_history,rl_on_new_line
-# include <signal.h>             // signal, sigaction, sigemptyset,sigaddset
+# include <readline/readline.h>  // readline, rl_clear_history, rl_on_new_line
+# include <signal.h>             // signal, sigaction, sigemptyset, sigaddset
 # include <stdbool.h>            /* for true and false*/
-# include <stdio.h>              // printf, perror
 # include <stdlib.h>             // malloc, free, exit, getenv
-# include <string.h>             // strerror
-# include <sys/ioctl.h>          // ioctl
-# include <sys/stat.h>           // stat, lstat, fstat
 # include <sys/types.h>          // fork, wait, waitpid, wait3, wait4,stat
 # include <sys/wait.h>           // wait, waitpid, wait3, wait4
-# include <term.h>               // tgetent, tgetflag, tgetnum,tgetstr,tgoto
-# include <termios.h>            // tcsetattr, tcgetattr
-# include <unistd.h>             // read, write, access, open,close,fork
+# include <unistd.h>             // read, write, access, open, close,fork
 
 # define NO_FILE 1
 # define PERMISSION_DENIED 126
