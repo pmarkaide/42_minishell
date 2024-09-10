@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/10 14:15:25 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/10 14:33:46 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,13 @@ typedef struct s_macro
 	int				exit_flag;
 	int				here_doc_flag;
 }					t_macro;
+
+/* buin_cd_utils */
+char	*get_home_directory(t_macro *macro);
+char	*parse_arguments(char **args, t_macro *macro, char *home);
+int		change_directory(char *path, char *home);
+void	update_environment(t_macro *macro, char *oldpwd, char *path);
+
 
 /* presyntax*/
 int					syntax_error_check(t_macro *macro, char *ins);
@@ -185,8 +192,6 @@ int					ft_strchr_i(const char *s, int c);
 char				**ft_replace_matrix_row(char ***big, char **small, int n);
 void				ft_unset(t_macro *macro);
 int					var_in_env(char *argv, char **env, int ij[2]);
-int					select_and_run_builtin(char *cmd, char **args,
-						t_macro *macro);
 char				*grab_env(char *var, char **env, int n);
 char				**fix_env(char *var, char *value, char **env, int n);
 char				*remove_path(char *cmd);
@@ -199,7 +204,7 @@ int					ft_exit2(char **args, t_macro *macro);
 int					ft_unset2(char **args, t_macro *macro);
 int					ft_export2(char **args, t_macro *macro);
 int					ft_echo2(char **args);
-int					ft_cd2(char **args, t_macro *macro);
+int					ft_cd(char **args, t_macro *macro);
 char				*ft_strjoin3(const char *s1, const char *s2,
 						const char *s3);
 char				*free_2_strings(char **str1, char **str2);

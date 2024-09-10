@@ -6,11 +6,30 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 09:15:15 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/09 11:34:45 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/10 14:33:46 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static int	select_and_run_builtin(char *cmd, char **args, t_macro *macro)
+{
+	if (ft_strncmp(cmd, "echo", 4) == 0)
+		return (ft_echo2(args));
+	if (ft_strncmp(cmd, "cd", 2) == 0)
+		return (ft_cd(args, macro));
+	if (ft_strncmp(cmd, "pwd", 3) == 0)
+		return (ft_pwd2(macro));
+	if (ft_strncmp(cmd, "export", 6) == 0)
+		return (ft_export2(args, macro));
+	if (ft_strncmp(cmd, "unset", 5) == 0)
+		return (ft_unset2(args, macro));
+	if (ft_strncmp(cmd, "env", 3) == 0)
+		return (ft_env2(macro));
+	if (ft_strncmp(cmd, "exit", 4) == 0)
+		return (ft_exit2(args, macro));
+	return (0);
+}
 
 static int	restore_fds(int saved_stdout, int saved_stdin)
 {

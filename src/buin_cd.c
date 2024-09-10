@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   buin_cd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:04:29 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/09/03 23:08:03 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/10 14:33:46 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int	count_args(char **args)
 	return (i);
 }
 
-int	ft_cd2(char **args, t_macro *macro)
+int	ft_cd(char **args, t_macro *macro)
 {
 	char	*home;
 	char	*path;

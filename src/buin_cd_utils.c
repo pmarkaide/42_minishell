@@ -3,14 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   buin_cd_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 13:15:25 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/09/03 23:06:00 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/10 14:32:25 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	check_save_env(char *var, t_macro *macro, int size)
+{
+	char	*tmp;
+
+	tmp = grab_env(var, macro->env, size);
+	if (tmp)
+		macro->env = fix_env(var, macro->m_pwd, macro->env, size);
+	free(tmp);
+}
 
 char	*get_home_directory(t_macro *macro)
 {
@@ -77,16 +87,6 @@ int	change_directory(char *path, char *home)
 		return (1);
 	}
 	return (0);
-}
-
-void	check_save_env(char *var, t_macro *macro, int size)
-{
-	char	*tmp;
-
-	tmp = grab_env(var, macro->env, size);
-	if (tmp)
-		macro->env = fix_env(var, macro->m_pwd, macro->env, size);
-	free(tmp);
 }
 
 void	update_environment(t_macro *macro, char *oldpwd, char *path)
