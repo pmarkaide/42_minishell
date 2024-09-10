@@ -6,7 +6,7 @@
 #    By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/01 15:11:43 by pmarkaid          #+#    #+#              #
-#    Updated: 2024/09/07 16:08:37 by pmarkaid         ###   ########.fr        #
+#    Updated: 2024/09/10 10:15:07 by pmarkaid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -72,7 +72,6 @@ CC = cc
 CFLAGS = -Wall -Werror -Wextra -g
 DEBUG_FLAGS = -Wall -Werror -Wextra -fsanitize=address
 
-# External Libraries
 LIBS = -lreadline
 
 all: makelibft $(NAME)
