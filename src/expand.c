@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:52:58 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/09 14:12:50 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/10 15:46:04 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	handle_envir(char **clean, char *ins, size_t *i, t_macro *macro)
+static void	handle_envir(char **clean, char *ins, size_t *i, t_macro *macro)
 {
 	size_t	start;
 	size_t	len;
@@ -33,7 +33,7 @@ void	handle_envir(char **clean, char *ins, size_t *i, t_macro *macro)
 	*i = start;
 }
 
-void	handle_exit_code(char **clean, size_t *i, t_macro *macro)
+static void	handle_exit_code(char **clean, size_t *i, t_macro *macro)
 {
 	char	*substr;
 

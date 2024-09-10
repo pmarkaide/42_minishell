@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 08:50:33 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/09/03 17:32:48 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/10 15:55:54 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**ft_replace_matrix_row(char ***whole, char **minus, int n)
+static char	**ft_replace_matrix_row(char ***whole, char **minus, int n)
 {
 	char	**aux;
 	int		i[3];
@@ -36,6 +36,16 @@ char	**ft_replace_matrix_row(char ***whole, char **minus, int n)
 	ft_free_matrix(whole);
 	*whole = aux;
 	return (*whole);
+}
+
+static int	ft_matrixlen(char **matrix)
+{
+	int	i;
+
+	i = 0;
+	while (matrix && matrix[i])
+		i++;
+	return (i);
 }
 
 char	**ft_add_row(char **input, char *to_add)
@@ -65,33 +75,6 @@ char	**ft_add_row(char **input, char *to_add)
 	result[i] = ft_strdup(to_add);
 	ft_free_matrix(&input);
 	return (result);
-}
-
-void	ft_free_matrix(char ***matrix)
-{
-	int	i;
-
-	if (matrix && *matrix)
-	{
-		i = 0;
-		while ((*matrix)[i])
-		{
-			free((*matrix)[i]);
-			i++;
-		}
-		free(*matrix);
-		*matrix = NULL;
-	}
-}
-
-int	ft_matrixlen(char **matrix)
-{
-	int	i;
-
-	i = 0;
-	while (matrix && matrix[i])
-		i++;
-	return (i);
 }
 
 char	**copy_env(char **envp)

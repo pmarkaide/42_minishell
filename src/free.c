@@ -6,11 +6,28 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 13:02:09 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/07 16:22:48 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/10 15:54:56 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	ft_free_matrix(char ***matrix)
+{
+	int	i;
+
+	if (matrix && *matrix)
+	{
+		i = 0;
+		while ((*matrix)[i])
+		{
+			free((*matrix)[i]);
+			i++;
+		}
+		free(*matrix);
+		*matrix = NULL;
+	}
+}
 
 t_token	*free_tokens(t_token **tokens)
 {

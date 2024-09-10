@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/10 15:25:28 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/10 15:55:34 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,85 @@ int	ft_unset(char **args, t_macro *macro);
 
 /* dup */
 int	dup_file_descriptors(t_macro *macro, t_cmd *cmd);
+
+/* env */
+int	ft_strchr_i(const char *s, int c);
+char	*ft_getenv(char *var, char **env);
+
+/* error */
+int	error_msg(t_macro *macro, char *file, int exit_code);
+void	exit_error(char *file, char *msg, t_macro *macro, int exit_code);
+void	exit_free(t_macro *macro);
+
+/* execution_builtin */
+int	execute_single_builtin(t_macro *macro);
+void	execute_builtin(t_macro *macro, char **cmd_array);
+
+/* execution_utils */
+void	close_fd(int *fd);
+void	close_fds(t_macro *macro);
+int	wait_processes(pid_t pid);
+char	**build_cmd_args_array(t_token *cmd_args);
+
+/* execution */
+void	execution(t_macro *macro);
+
+/* expand_cases */
+void	handle_normal_char(char **clean, char *ins, size_t *i);
+void	handle_quoted_literal(char **clean, char *ins, size_t *i);
+void	handle_unexpected_case(char **clean, char *ins, size_t *i);
+
+/* expand_utils */
+bool	envir_must_be_expanded(char *str, int index);
+bool	is_in_quote(char *str, int index);
+bool	inside_double_quotes(const char *str, int index);
+
+/* expand */
+char	*get_expanded_ins(char *ins, t_macro *macro);
+char	*get_expanded_doc(char *ins, t_macro *macro);
+
+/* free_utils */
+char	*free_2_strings(char **str1, char **str2);
+char	*free_array(char ***array);
+char	*free_string(char **str);
+
+/* free */
+t_token	*free_tokens(t_token **tokens);
+t_cmd	*free_cmds(t_cmd **cmds);
+t_macro	*free_ins(t_macro *macro);
+t_macro	*free_macro(t_macro *macro);
+void	ft_free_matrix(char ***matrix);
+
+
+/* general_utils */
+bool	type_is_redirection(t_type type);
+char	*ft_strjoin3(const char *s1, const char *s2, const char *s3);
+t_macro	*init_macro(char **envp, char **argv);
+
+/* init_cmd */
+t_cmd	*init_cmd(void);
+void	cmd_add_back(t_cmd **cmds, t_cmd *new);
+t_cmd	*last_cmd(t_cmd *cmd);
+
+/* init_token */
+t_token	*init_token(void);
+void	token_add_back(t_token **tokens, t_token *new);
+t_token	*remove_token(t_token **tokens, t_token *token);
+t_token	*last_token(t_token *token);
+int	tokens_size(t_token *tokens);
+
+/* main_path */
+char	*create_path(t_macro *macro);
+
+/* main_utils */
+char	**ft_add_row(char **input, char *to_add);
+char	**copy_env(char **envp);
+
+
+/* tokenizer */
+int	tokenizer(t_macro *macro);
+
+
 
 
 /* presyntax*/
