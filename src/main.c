@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 14:49:38 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/07 14:45:58 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/10 22:32:25 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,18 @@ static char	*read_line(t_macro *macro)
 		signal(SIGINT, sigint_handler_after_here_doc);
 		macro->here_doc_flag = 0;
 	}
-	line = readline(path);
+	if (isatty(fileno(stdin)))
+		line = readline(path);
+	else
+	{
+		line = get_next_line(fileno(stdin));
+        if (line)
+    	{
+            char *trimmed_line = ft_strtrim(line, "\n");
+            free(line);
+            line = trimmed_line;
+        }
+	}
 	signal(SIGINT, sigint_handler_in_parent);
 	if (g_exit == SIGINT)
 	{

@@ -6,7 +6,7 @@
 /*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/09 14:13:06 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/10 22:33:44 by dbejar-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,18 @@ int	process_lines(int pipe_fd[2], char **del, t_token *token, t_macro *macro)
 
 	while (1)
 	{
-		line = readline("> ");
+		if (isatty(fileno(stdin)))
+			line = readline("> ");
+		else
+		{
+			line = get_next_line(fileno(stdin));
+        	if (line)
+    		{
+            	char *trimmed_line = ft_strtrim(line, "\n");
+            	free(line);
+            	line = trimmed_line;
+        	}
+		}
 		if (g_exit == SIGINT)
 		{
 			open_stin(macro, pipe_fd, del, line);
