@@ -6,14 +6,13 @@
 #    By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/01 15:11:43 by pmarkaid          #+#    #+#              #
-#    Updated: 2024/09/10 14:20:44 by pmarkaid         ###   ########.fr        #
+#    Updated: 2024/09/14 20:26:10 by pmarkaid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 SRCS_FILES =                              \
-    builtins.c                            \
     buin_cd.c                             \
     buin_cd_utils.c                       \
     buin_echo.c                           \

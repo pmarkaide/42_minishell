@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/10 15:55:34 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/14 20:25:37 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,128 +79,137 @@ typedef struct s_macro
 }					t_macro;
 
 /* buin_cd_utils */
-char	*get_home_directory(t_macro *macro);
-char	*parse_arguments(char **args, t_macro *macro, char *home);
-int		change_directory(char *path, char *home);
-void	update_environment(t_macro *macro, char *oldpwd, char *path);
+char				*get_home_directory(t_macro *macro);
+char				*parse_arguments(char **args, t_macro *macro, char *home);
+int					change_directory(char *path, char *home);
+void				update_environment(t_macro *macro, char *oldpwd, char *path);
 
 /* buin_echo */
-int	ft_echo(char **args);
+int					ft_echo(char **args);
 
 /* buin_env */
-char	*grab_env(char *var, char **env, int n);
-char	**fix_env(char *var, char *value, char **env, int n);
-int		ft_env(t_macro *macro);
+char				*grab_env(char *var, char **env, int n);
+char				**fix_env(char *var, char *value, char **env, int n);
+int					ft_env(t_macro *macro);
 
 /* buin_exit */
-int	ft_exit(char **args, t_macro *macro);
+int					ft_exit(char **args, t_macro *macro);
 
 /* buin_export_utils */
-int	validate_and_clean_argument(char *arg, int *exit_flag);
-void	export_argless(t_macro *macro);
+int					validate_and_clean_argument(char *arg, int *exit_flag);
+void				export_argless(t_macro *macro);
 
 /* buin_export */
-int	ft_export(char **args, t_macro *macro);
+int					ft_export(char **args, t_macro *macro);
 
 /* buin_pwd */
-char	*char_pwd(void);
-int	ft_pwd(t_macro *macro);
+char				*char_pwd(void);
+int					ft_pwd(t_macro *macro);
 
 /* buin_unset */
-int	ft_unset(char **args, t_macro *macro);
+int					ft_unset(char **args, t_macro *macro);
 
 /* dup */
-int	dup_file_descriptors(t_macro *macro, t_cmd *cmd);
+int					dup_file_descriptors(t_macro *macro, t_cmd *cmd);
 
 /* env */
-int	ft_strchr_i(const char *s, int c);
-char	*ft_getenv(char *var, char **env);
+int					ft_strchr_i(const char *s, int c);
+char				*ft_getenv(char *var, char **env);
 
 /* error */
-int	error_msg(t_macro *macro, char *file, int exit_code);
-void	exit_error(char *file, char *msg, t_macro *macro, int exit_code);
-void	exit_free(t_macro *macro);
+int					error_msg(t_macro *macro, char *file, int exit_code);
+void				exit_error(char *file, char *msg, t_macro *macro, int exit_code);
+void				exit_free(t_macro *macro);
 
 /* execution_builtin */
-int	execute_single_builtin(t_macro *macro);
-void	execute_builtin(t_macro *macro, char **cmd_array);
+int					execute_single_builtin(t_macro *macro);
+void				execute_builtin(t_macro *macro, char **cmd_array);
 
 /* execution_utils */
-void	close_fd(int *fd);
-void	close_fds(t_macro *macro);
-int	wait_processes(pid_t pid);
-char	**build_cmd_args_array(t_token *cmd_args);
+void				close_fd(int *fd);
+void				close_fds(t_macro *macro);
+int					wait_processes(pid_t pid);
+char				**build_cmd_args_array(t_token *cmd_args);
 
 /* execution */
-void	execution(t_macro *macro);
+void				execution(t_macro *macro);
 
 /* expand_cases */
-void	handle_normal_char(char **clean, char *ins, size_t *i);
-void	handle_quoted_literal(char **clean, char *ins, size_t *i);
-void	handle_unexpected_case(char **clean, char *ins, size_t *i);
+void				handle_normal_char(char **clean, char *ins, size_t *i);
+void				handle_quoted_literal(char **clean, char *ins, size_t *i);
+void				handle_unexpected_case(char **clean, char *ins, size_t *i);
 
 /* expand_utils */
-bool	envir_must_be_expanded(char *str, int index);
-bool	is_in_quote(char *str, int index);
-bool	inside_double_quotes(const char *str, int index);
+bool				envir_must_be_expanded(char *str, int index);
+bool				is_in_quote(char *str, int index);
+bool				inside_double_quotes(const char *str, int index);
 
 /* expand */
-char	*get_expanded_ins(char *ins, t_macro *macro);
-char	*get_expanded_doc(char *ins, t_macro *macro);
+char				*get_expanded_ins(char *ins, t_macro *macro);
+char				*get_expanded_doc(char *ins, t_macro *macro);
 
 /* free_utils */
-char	*free_2_strings(char **str1, char **str2);
-char	*free_array(char ***array);
-char	*free_string(char **str);
+char				*free_2_strings(char **str1, char **str2);
+char				*free_array(char ***array);
+char				*free_string(char **str);
 
 /* free */
-t_token	*free_tokens(t_token **tokens);
-t_cmd	*free_cmds(t_cmd **cmds);
-t_macro	*free_ins(t_macro *macro);
-t_macro	*free_macro(t_macro *macro);
-void	ft_free_matrix(char ***matrix);
-
+t_token				*free_tokens(t_token **tokens);
+t_cmd				*free_cmds(t_cmd **cmds);
+t_macro				*free_ins(t_macro *macro);
+t_macro				*free_macro(t_macro *macro);
+void				ft_free_matrix(char ***matrix);
 
 /* general_utils */
-bool	type_is_redirection(t_type type);
-char	*ft_strjoin3(const char *s1, const char *s2, const char *s3);
-t_macro	*init_macro(char **envp, char **argv);
+bool				type_is_redirection(t_type type);
+char				*ft_strjoin3(const char *s1, const char *s2, const char *s3);
+t_macro				*init_macro(char **envp, char **argv);
 
 /* init_cmd */
-t_cmd	*init_cmd(void);
-void	cmd_add_back(t_cmd **cmds, t_cmd *new);
-t_cmd	*last_cmd(t_cmd *cmd);
+t_cmd				*init_cmd(void);
+void				cmd_add_back(t_cmd **cmds, t_cmd *new);
+t_cmd				*last_cmd(t_cmd *cmd);
 
 /* init_token */
-t_token	*init_token(void);
-void	token_add_back(t_token **tokens, t_token *new);
-t_token	*remove_token(t_token **tokens, t_token *token);
-t_token	*last_token(t_token *token);
-int	tokens_size(t_token *tokens);
+t_token				*init_token(void);
+void				token_add_back(t_token **tokens, t_token *new);
+t_token				*remove_token(t_token **tokens, t_token *token);
+t_token				*last_token(t_token *token);
+int					tokens_size(t_token *tokens);
 
 /* main_path */
-char	*create_path(t_macro *macro);
+char				*create_path(t_macro *macro);
 
 /* main_utils */
-char	**ft_add_row(char **input, char *to_add);
-char	**copy_env(char **envp);
+char				**ft_add_row(char **input, char *to_add);
+char				**copy_env(char **envp);
 
+/* parsing_here_doc */
+int					process_cmd(t_cmd *cmd, t_macro *macro);
 
-/* tokenizer */
-int	tokenizer(t_macro *macro);
+/* parsing_utils  */
+char				parsing_error_check(t_token *tokens, t_macro *macro);
+t_cmd				*parse_tokens(t_token *tokens, int *n);
 
+/* parsing */
+int					parsing(t_macro *macro);
 
-
-
-/* presyntax*/
+/* presyntax */
 int					syntax_error_check(t_macro *macro, char *ins);
 
-/* tokenizer */
-int					tokenizer(t_macro *macro);
+/* signals */
+void				sigint_handler_in_child(int sig);
+void				sigint_handler_in_parent(int sig);
+void				sigint_handler_after_here_doc(int sig);
+void				sigint_handler_here_doc(int sig);
+void				sigquit_handler_in_child(int sig);
+
+/* split_args */
 t_list				*split_args_by_quotes(char *ins);
 
 /* tokenizer_expand */
 t_token				*expand_arg_tokens(t_macro *macro);
+t_token				*remove_empty_envir_tokens(t_macro *macro);
 void				ensure_at_least_one_cmd(t_token **tokens);
 
 /* tokenizer_retokenize */
@@ -208,145 +217,28 @@ t_token				*handle_retokenize(char *expanded, t_token *token,
 						t_macro *macro);
 
 /* tokenizer_utils */
-bool				is_builtin(t_token *token);
-bool				is_redir(t_token *token, char *redir_type);
 void				fix_redirections(char *ins);
-int					clean_token_quotes(t_token *tokens);
+bool				is_redir(t_token *token, char *redir_type);
+bool				is_builtin(t_token *token);
 char				*clean_quotes(char *str);
+int					clean_token_quotes(t_token *tokens);
 
-/* list_utils */
-t_token				*init_token(void);
-void				token_add_back(t_token **tokens, t_token *new);
-t_token				*last_token(t_token *token);
-void				print_tokens(t_token *tokens);
-t_cmd				*init_cmd(void);
-void				cmd_add_back(t_cmd **cmds, t_cmd *new);
-t_cmd				*last_cmd(t_cmd *cmd);
-void				print_cmds(t_cmd *cmds);
-char				*enum_to_char(t_type type);
-int					tokens_size(t_token *tokens);
-t_token				*remove_token(t_token **tokens, t_token *token);
-t_token				*remove_empty_envir_tokens(t_macro *macro);
+/* tokenizer */
+int					tokenizer(t_macro *macro);
 
-/* parsing */
-int					parsing(t_macro *macro);
-
-/* parsing utils */
-int					handle_here_doc(t_cmd *cmds, t_macro *macro);
-void				close_here_doc_not_needed(t_token *tokens);
-
-/* execution */
-void				execution(t_macro *macro);
-
-/* execution builtin */
-int					execute_single_builtin(t_macro *macro);
-void				execute_builtin(t_macro *macro, char **cmd_array);
-
-/* execution utils */
-char				**build_cmd_args_array(t_token *cmd_args);
-int					wait_processes(pid_t pid);
-void				close_fd(int *fd);
-void				close_fds(t_macro *macro);
-
-/* validation */
-void				validation(t_macro *macro, t_cmd *cmd);
-int					validate_redirections(t_token *redir, t_macro *macro);
-void				validate_access(char *exec, t_macro *macro);
-void				search_executable(t_macro *macro, t_cmd *cmd);
-
-/* validation utils */
+/* validation_utils */
+int					open_file(t_token *token, t_macro *macro);
 bool				is_directory(const char *path);
 char				**parse_paths(char **env);
-char				*get_executable_path(char **paths, char *executable,
-						t_macro *macro);
-int					open_file(t_token *token, t_macro *macro);
+char				*get_executable_path(char **paths, char *executable, t_macro *macro);
 
-/* expand */
-char				*get_expanded_ins(char *ins, t_macro *macro);
+/* validation */
+int					validate_redirections(t_token *redir, t_macro *macro);
+void				validate_access(char *exec, t_macro *macro);
+void				validation(t_macro *macro, t_cmd *cmd);
 
-/* expand utils */
-void				handle_delimiter_after_dollar(char **clean, char *ins,
-						size_t *i);
-void				handle_unexpected_case(char **clean, char *ins, size_t *i);
-bool				type_is_redirection(t_type type);
-
-/* dup */
-int					dup_file_descriptors(t_macro *macro, t_cmd *cmd);
-
-/* clean utils*/
-bool				envir_must_be_expanded(char *ins, int index);
-bool				is_in_quote(char *str, int index);
-
-/* free */
-char				*free_string(char **str);
-char				*free_array(char ***array);
-t_token				*free_tokens(t_token **tokens);
-t_macro				*free_ins(t_macro *macro);
-t_macro				*free_macro(t_macro *macro);
-t_cmd				*free_cmds(t_cmd **cmds);
-
-/* others */
-void				sigint_handler_in_parent(int sig);
-void				sigquit_handler_in_child(int sig);
-void				sigint_handler_in_child(int sig);
-char				*char_pwd(void);
-char				**copy_env(char **envp);
-void				ft_free_matrix(char ***m);
-int					ft_matrixlen(char **m);
-char				**ft_add_row(char **in, char *newstr);
-void				ft_export_do(t_macro *macro, char *name, char *value);
-int					ft_strchr_i(const char *s, int c);
-char				**ft_replace_matrix_row(char ***big, char **small, int n);
-void				ft_unset(t_macro *macro);
-int					var_in_env(char *argv, char **env, int ij[2]);
-char				*grab_env(char *var, char **env, int n);
-char				**fix_env(char *var, char *value, char **env, int n);
-char				*remove_path(char *cmd);
-t_macro				*init_macro(char **envp, char **argv);
-t_macro				*start_env(t_macro *macro, char **argv);
-char				*ft_getenv(char *var, char **env);
-int					ft_pwd(t_macro *macro);
-int					ft_env(t_macro *macro);
-int					ft_exit(char **args, t_macro *macro);
-int					ft_unset(char **args, t_macro *macro);
-int					ft_export(char **args, t_macro *macro);
-int					ft_echo(char **args);
-int					ft_cd(char **args, t_macro *macro);
-char				*ft_strjoin3(const char *s1, const char *s2,
-						const char *s3);
-char				*free_2_strings(char **str1, char **str2);
-char				*get_home_directory(t_macro *macro);
-char				*parse_arguments(char **args, t_macro *macro, char *home);
-int					change_directory(char *path, char *home);
-void				check_save_env(char *var, t_macro *macro, int size);
-void				update_environment(t_macro *macro, char *oldpwd,
-						char *path);
-void				print_export_var(char *var, char *value);
-void				export_argless(t_macro *macro);
-int					check_export(char *arg);
-t_macro				*init_macro(char **envp, char **argv);
-char				*grab_home(t_macro *macro);
-t_macro				*start_env(t_macro *macro, char **argv);
-int					in_root(char *path);
-int					in_home(t_macro *macro);
-char				*upper_than_home(t_macro *macro);
-char				*create_path(t_macro *macro);
-int					validate_and_clean_argument(char *arg, int *exit_flag);
-bool				inside_double_quotes(const char *str, int index);
-void				handle_normal_char(char **clean, char *ins, size_t *i);
-void				handle_quoted_literal(char **clean, char *ins, size_t *i);
-void				handle_delimiter_after_dollar(char **clean, char *ins,
-						size_t *i);
-void				handle_unexpected_case(char **clean, char *ins, size_t *i);
-void				sigint_handler_after_here_doc(int sig);
-void				sigint_handler_here_doc(int sig);
-int					check_parsing_tokens(t_macro *macro, t_cmd **cmds, int *n);
-char				*get_expanded_doc(char *ins, t_macro *macro);
-
-/* error */
-int					error_msg(t_macro *macro, char *msg, int exit_code);
-void				exit_error(char *file, char *msg, t_macro *macro,
-						int exit_code);
-void				exit_free(t_macro *macro);
+/* zz_print_utils*/
+void				print_tokens(t_token *tokens);
+void				print_cmds(t_cmd *cmds);
 
 #endif /* MINISHELL_H */

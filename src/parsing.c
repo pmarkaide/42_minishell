@@ -3,39 +3,49 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 09:53:20 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/09 11:14:26 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/14 20:13:16 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	close_here_doc_not_needed(t_token *tokens)
+static int	check_parsing_tokens(t_macro *macro, t_cmd **cmds, int *n)
 {
-	t_token	*tmp;
-	t_token	*last;
-	int		fd;
+	char	c;
 
-	last = NULL;
-	tmp = tokens;
-	while (tmp && is_redir(tmp, "input"))
+	*n = 1;
+	*cmds = NULL;
+	c = parsing_error_check(macro->tokens, macro);
+	if (c != 0)
 	{
-		last = tmp;
-		tmp = tmp->next;
+		free_ins(macro);
+		return (-1);
 	}
-	tmp = tokens;
-	while (tmp)
+	else
+		*cmds = parse_tokens(macro->tokens, n);
+	if (!*cmds)
 	{
-		if (tmp->type == HERE_DOC && tmp != last)
-		{
-			fd = ft_atoi(tmp->value);
-			if (fd != -1)
-				close(fd);
-		}
-		tmp = tmp->next;
+		free_ins(macro);
+		return (-1);
 	}
+	return (0);
+}
+
+static int	handle_here_doc(t_cmd *cmds, t_macro *macro)
+{
+	t_cmd	*cmd;
+
+	cmd = cmds;
+	while (cmd)
+	{
+		if (process_cmd(cmd, macro) == -1)
+			return (-1);
+		cmd = cmd->next;
+	}
+	return (0);
 }
 
 int	parsing(t_macro *macro)

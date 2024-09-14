@@ -6,13 +6,13 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 13:43:00 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/09/10 15:49:51 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/14 20:24:52 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-extern int	g_exit;
+extern int		g_exit;
 
 static char	*grab_home(t_macro *macro)
 {
@@ -51,6 +51,7 @@ static t_macro	*start_env(t_macro *macro, char **argv)
 	free(str);
 	return (macro);
 }
+
 bool	type_is_redirection(t_type type)
 {
 	if (type == INRED || type == OUTRED || type == APPEND || type == HERE_DOC)
