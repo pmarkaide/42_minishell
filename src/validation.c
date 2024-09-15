@@ -6,11 +6,37 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 22:35:57 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/09 08:36:46 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/14 20:21:39 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	close_here_doc_not_needed(t_token *tokens)
+{
+	t_token	*tmp;
+	t_token	*last;
+	int		fd;
+
+	last = NULL;
+	tmp = tokens;
+	while (tmp && is_redir(tmp, "input"))
+	{
+		last = tmp;
+		tmp = tmp->next;
+	}
+	tmp = tokens;
+	while (tmp)
+	{
+		if (tmp->type == HERE_DOC && tmp != last)
+		{
+			fd = ft_atoi(tmp->value);
+			if (fd != -1)
+				close(fd);
+		}
+		tmp = tmp->next;
+	}
+}
 
 int	validate_redirections(t_token *redir, t_macro *macro)
 {
@@ -57,7 +83,7 @@ void	validate_access(char *exec, t_macro *macro)
 	exit_error(exec, "No such file or directory", macro, 127);
 }
 
-void	search_executable(t_macro *macro, t_cmd *cmd)
+static void	search_executable(t_macro *macro, t_cmd *cmd)
 {
 	char	**paths;
 	char	*full_path;

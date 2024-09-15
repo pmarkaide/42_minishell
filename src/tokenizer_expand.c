@@ -6,13 +6,13 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 17:45:23 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/09 12:49:56 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/14 20:16:30 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*handle_literal_string(t_token *token, char *expanded)
+static char	*handle_literal_string(t_token *token, char *expanded)
 {
 	char	*copy;
 
@@ -23,7 +23,7 @@ char	*handle_literal_string(t_token *token, char *expanded)
 	return (copy);
 }
 
-t_token	*expand_token(t_token *token, t_macro *macro)
+static t_token	*expand_token(t_token *token, t_macro *macro)
 {
 	char	*expanded;
 	t_token	*new_token;

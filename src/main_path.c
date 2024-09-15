@@ -6,20 +6,20 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 22:10:13 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/09/01 21:53:44 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/10 15:53:18 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	in_root(char *path)
+static int	in_root(char *path)
 {
 	if (ft_strcmp(path, "/") == 0)
 		return (1);
 	return (0);
 }
 
-int	in_home(t_macro *macro)
+static int	in_home(t_macro *macro)
 {
 	char	*home;
 
@@ -35,7 +35,7 @@ int	in_home(t_macro *macro)
 	return (0);
 }
 
-char	*upper_than_home(t_macro *macro)
+static char	*upper_than_home(t_macro *macro)
 {
 	char	*home;
 	char	*path;

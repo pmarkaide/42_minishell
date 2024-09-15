@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   buin_unset.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:04:49 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/09/06 23:59:52 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/10 15:24:24 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void	check_invalid(char *arg, int *status)
 	}
 }
 
-int	ft_unset2(char **args, t_macro *macro)
+int	ft_unset(char **args, t_macro *macro)
 {
 	int	ijk[3];
 	int	len_env;

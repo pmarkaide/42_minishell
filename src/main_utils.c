@@ -3,39 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   main_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 08:50:33 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/09/03 17:32:48 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/15 20:56:38 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**ft_replace_matrix_row(char ***whole, char **minus, int n)
+static int	ft_matrixlen(char **matrix)
 {
-	char	**aux;
-	int		i[3];
+	int	i;
 
-	i[0] = -1;
-	i[1] = -1;
-	i[2] = -1;
-	if (!whole || !*whole || n < 0 || n >= ft_matrixlen(*whole))
-		return (NULL);
-	aux = ft_calloc(ft_matrixlen(*whole) + ft_matrixlen(minus), sizeof(char *));
-	while (aux && whole[0][++i[0]])
-	{
-		if (i[0] != n)
-			aux[++i[2]] = ft_strdup(whole[0][i[0]]);
-		else
-		{
-			while (minus && minus[++i[1]])
-				aux[++i[2]] = ft_strdup(minus[i[1]]);
-		}
-	}
-	ft_free_matrix(whole);
-	*whole = aux;
-	return (*whole);
+	i = 0;
+	while (matrix && matrix[i])
+		i++;
+	return (i);
 }
 
 char	**ft_add_row(char **input, char *to_add)
@@ -65,33 +49,6 @@ char	**ft_add_row(char **input, char *to_add)
 	result[i] = ft_strdup(to_add);
 	ft_free_matrix(&input);
 	return (result);
-}
-
-void	ft_free_matrix(char ***matrix)
-{
-	int	i;
-
-	if (matrix && *matrix)
-	{
-		i = 0;
-		while ((*matrix)[i])
-		{
-			free((*matrix)[i]);
-			i++;
-		}
-		free(*matrix);
-		*matrix = NULL;
-	}
-}
-
-int	ft_matrixlen(char **matrix)
-{
-	int	i;
-
-	i = 0;
-	while (matrix && matrix[i])
-		i++;
-	return (i);
 }
 
 char	**copy_env(char **envp)

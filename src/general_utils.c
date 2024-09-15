@@ -3,38 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   general_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 13:43:00 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/09/06 01:34:43 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/14 20:24:52 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-extern int	g_exit;
+extern int		g_exit;
 
-char	*ft_strjoin3(const char *s1, const char *s2, const char *s3)
+static char	*grab_home(t_macro *macro)
 {
-	int		total_len;
-	char	*res;
+	char	*home;
 
-	if (!s1 || !s2 || !s3)
-		return (NULL);
-	total_len = 0;
-	total_len += ft_strlen(s1);
-	total_len += ft_strlen(s2);
-	total_len += ft_strlen(s3);
-	res = (char *)ft_calloc(sizeof(char), (total_len + 1));
-	if (!res)
-		return (NULL);
-	ft_strcpy(res, s1);
-	ft_strcat(res, s2);
-	ft_strcat(res, s3);
-	return (res);
+	home = grab_env("HOME", macro->env, 4);
+	if (home == NULL)
+		home = ft_strdup("/home/");
+	return (home);
 }
 
-t_macro	*start_env(t_macro *macro, char **argv)
+static t_macro	*start_env(t_macro *macro, char **argv)
 {
 	char	*num;
 	char	*str;
@@ -62,14 +52,31 @@ t_macro	*start_env(t_macro *macro, char **argv)
 	return (macro);
 }
 
-char	*grab_home(t_macro *macro)
+bool	type_is_redirection(t_type type)
 {
-	char	*home;
+	if (type == INRED || type == OUTRED || type == APPEND || type == HERE_DOC)
+		return (true);
+	return (false);
+}
 
-	home = grab_env("HOME", macro->env, 4);
-	if (home == NULL)
-		home = ft_strdup("/home/");
-	return (home);
+char	*ft_strjoin3(const char *s1, const char *s2, const char *s3)
+{
+	int		total_len;
+	char	*res;
+
+	if (!s1 || !s2 || !s3)
+		return (NULL);
+	total_len = 0;
+	total_len += ft_strlen(s1);
+	total_len += ft_strlen(s2);
+	total_len += ft_strlen(s3);
+	res = (char *)ft_calloc(sizeof(char), (total_len + 1));
+	if (!res)
+		return (NULL);
+	ft_strcpy(res, s1);
+	ft_strcat(res, s2);
+	ft_strcat(res, s3);
+	return (res);
 }
 
 t_macro	*init_macro(char **envp, char **argv)
