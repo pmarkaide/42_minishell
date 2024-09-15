@@ -6,23 +6,11 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:00:43 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/09/14 20:26:51 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/14 20:27:23 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static char	*remove_path(char *cmd)
-{
-	char	*pos;
-	char	*real_cmd;
-
-	pos = ft_strrchr(cmd, '/');
-	if (pos == NULL)
-		return (cmd);
-	real_cmd = ft_substr(pos + 1, 0, ft_strlen(pos + 1));
-	return (real_cmd);
-}
 
 int	ft_pwd(t_macro *macro)
 {

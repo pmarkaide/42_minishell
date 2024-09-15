@@ -6,37 +6,11 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 08:50:33 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/09/10 15:55:54 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/15 20:56:38 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static char	**ft_replace_matrix_row(char ***whole, char **minus, int n)
-{
-	char	**aux;
-	int		i[3];
-
-	i[0] = -1;
-	i[1] = -1;
-	i[2] = -1;
-	if (!whole || !*whole || n < 0 || n >= ft_matrixlen(*whole))
-		return (NULL);
-	aux = ft_calloc(ft_matrixlen(*whole) + ft_matrixlen(minus), sizeof(char *));
-	while (aux && whole[0][++i[0]])
-	{
-		if (i[0] != n)
-			aux[++i[2]] = ft_strdup(whole[0][i[0]]);
-		else
-		{
-			while (minus && minus[++i[1]])
-				aux[++i[2]] = ft_strdup(minus[i[1]]);
-		}
-	}
-	ft_free_matrix(whole);
-	*whole = aux;
-	return (*whole);
-}
 
 static int	ft_matrixlen(char **matrix)
 {

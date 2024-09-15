@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/14 20:25:37 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/15 20:55:35 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,11 @@ typedef struct s_macro
 char				*get_home_directory(t_macro *macro);
 char				*parse_arguments(char **args, t_macro *macro, char *home);
 int					change_directory(char *path, char *home);
-void				update_environment(t_macro *macro, char *oldpwd, char *path);
+void				update_environment(t_macro *macro, char *oldpwd,
+						char *path);
+
+/* buin_cd */
+int					ft_cd(char **args, t_macro *macro);
 
 /* buin_echo */
 int					ft_echo(char **args);
@@ -118,7 +122,8 @@ char				*ft_getenv(char *var, char **env);
 
 /* error */
 int					error_msg(t_macro *macro, char *file, int exit_code);
-void				exit_error(char *file, char *msg, t_macro *macro, int exit_code);
+void				exit_error(char *file, char *msg, t_macro *macro,
+						int exit_code);
 void				exit_free(t_macro *macro);
 
 /* execution_builtin */
@@ -138,6 +143,8 @@ void				execution(t_macro *macro);
 void				handle_normal_char(char **clean, char *ins, size_t *i);
 void				handle_quoted_literal(char **clean, char *ins, size_t *i);
 void				handle_unexpected_case(char **clean, char *ins, size_t *i);
+void				handle_delimiter_after_dollar(char **clean, char *ins,
+						size_t *i);
 
 /* expand_utils */
 bool				envir_must_be_expanded(char *str, int index);
@@ -162,7 +169,8 @@ void				ft_free_matrix(char ***matrix);
 
 /* general_utils */
 bool				type_is_redirection(t_type type);
-char				*ft_strjoin3(const char *s1, const char *s2, const char *s3);
+char				*ft_strjoin3(const char *s1, const char *s2,
+						const char *s3);
 t_macro				*init_macro(char **envp, char **argv);
 
 /* init_cmd */
@@ -230,7 +238,8 @@ int					tokenizer(t_macro *macro);
 int					open_file(t_token *token, t_macro *macro);
 bool				is_directory(const char *path);
 char				**parse_paths(char **env);
-char				*get_executable_path(char **paths, char *executable, t_macro *macro);
+char				*get_executable_path(char **paths, char *executable,
+						t_macro *macro);
 
 /* validation */
 int					validate_redirections(t_token *redir, t_macro *macro);
