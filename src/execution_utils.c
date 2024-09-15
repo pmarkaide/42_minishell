@@ -6,20 +6,11 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 20:03:14 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/09 12:05:54 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/10 15:30:58 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	close_fd(int *fd)
-{
-	if (*fd != -1)
-	{
-		close(*fd);
-		*fd = -1;
-	}
-}
 
 static void	close_all_heredoc(t_macro *macro)
 {
@@ -41,6 +32,15 @@ static void	close_all_heredoc(t_macro *macro)
 			redir = redir->next;
 		}
 		cmd = cmd->next;
+	}
+}
+
+void	close_fd(int *fd)
+{
+	if (*fd != -1)
+	{
+		close(*fd);
+		*fd = -1;
 	}
 }
 

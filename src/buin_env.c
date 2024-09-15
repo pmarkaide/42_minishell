@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:04:37 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/09/03 09:27:09 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/10 15:11:10 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char	**fix_env(char *var, char *value, char **env, int n)
 	return (env);
 }
 
-int	ft_env2(t_macro *macro)
+int	ft_env(t_macro *macro)
 {
 	int	i;
 

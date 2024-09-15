@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_here_doc.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:11:45 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/10 22:33:44 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/15 21:03:32 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "minishell.h"
 
@@ -32,7 +33,8 @@ static void	open_stin(t_macro *macro, int pipe_fd[2], char **del, char *line)
 	free_2_strings(&line, del);
 }
 
-int	process_lines(int pipe_fd[2], char **del, t_token *token, t_macro *macro)
+static int	process_lines(int pipe_fd[2], char **del, t_token *token,
+		t_macro *macro)
 {
 	char	*line;
 
@@ -88,7 +90,7 @@ static int	read_here_doc(t_token *token, t_macro *macro)
 	return (pipe_fd[0]);
 }
 
-static int	process_cmd(t_cmd *cmd, t_macro *macro)
+int	process_cmd(t_cmd *cmd, t_macro *macro)
 {
 	t_token	*token;
 	int		fd;
@@ -108,20 +110,6 @@ static int	process_cmd(t_cmd *cmd, t_macro *macro)
 			}
 			token = token->next;
 		}
-	}
-	return (0);
-}
-
-int	handle_here_doc(t_cmd *cmds, t_macro *macro)
-{
-	t_cmd	*cmd;
-
-	cmd = cmds;
-	while (cmd)
-	{
-		if (process_cmd(cmd, macro) == -1)
-			return (-1);
-		cmd = cmd->next;
 	}
 	return (0);
 }

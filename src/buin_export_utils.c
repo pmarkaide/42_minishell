@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   buin_export_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 21:38:08 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/09/06 23:58:45 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/10 15:17:29 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,33 @@ static void	handle_invalid_identifier(char *arg, int *exit_flag, int name_flag)
 	}
 }
 
-void	print_export_var(char *var, char *value)
+static void	print_export_var(char *var, char *value)
 {
 	ft_putstr_fd("declare -x ", STDOUT_FILENO);
 	ft_putstr_fd(var, STDOUT_FILENO);
 	ft_putstr_fd("=\"", STDOUT_FILENO);
 	ft_putstr_fd(value, STDOUT_FILENO);
 	ft_putstr_fd("\"\n", STDOUT_FILENO);
+}
+
+static int	check_export(char *arg)
+{
+	int	i;
+	int	len;
+
+	i = 0;
+	if (arg[i] == '-')
+		return (2);
+	if (arg[i] != '_' && !ft_isalpha(arg[i]))
+		return (1);
+	len = ft_strchr_i(arg, '=');
+	while (arg[i] && arg[i] != '=' && (i < len || len == -1))
+	{
+		if (!ft_isalnum(arg[i]) && arg[i] != '_')
+			return (1);
+		i++;
+	}
+	return (0);
 }
 
 int	validate_and_clean_argument(char *arg, int *exit_flag)
@@ -79,24 +99,4 @@ void	export_argless(t_macro *macro)
 		}
 		i++;
 	}
-}
-
-int	check_export(char *arg)
-{
-	int	i;
-	int	len;
-
-	i = 0;
-	if (arg[i] == '-')
-		return (2);
-	if (arg[i] != '_' && !ft_isalpha(arg[i]))
-		return (1);
-	len = ft_strchr_i(arg, '=');
-	while (arg[i] && arg[i] != '=' && (i < len || len == -1))
-	{
-		if (!ft_isalnum(arg[i]) && arg[i] != '_')
-			return (1);
-		i++;
-	}
-	return (0);
 }

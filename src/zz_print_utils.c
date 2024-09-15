@@ -6,13 +6,13 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 13:02:41 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/02 18:28:44 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/14 20:23:12 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*enum_to_char(t_type type)
+static char	*enum_to_char(t_type type)
 {
 	if (type == STRING)
 		return ("STRING");

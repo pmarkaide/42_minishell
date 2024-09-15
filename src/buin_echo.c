@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   buin_echo.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:04:32 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/09/04 18:11:39 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/10 15:10:02 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static void	print_echo(char **args, int i, int n_flag)
 		ft_putchar_fd('\n', STDOUT_FILENO);
 }
 
-int	ft_echo2(char **args)
+int	ft_echo(char **args)
 {
 	int	i;
 	int	n_flag;

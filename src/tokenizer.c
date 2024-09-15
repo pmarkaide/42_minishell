@@ -6,7 +6,7 @@
 /*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 21:24:44 by pmarkaid          #+#    #+#             */
-/*   Updated: 2024/09/02 21:45:27 by pmarkaid         ###   ########.fr       */
+/*   Updated: 2024/09/10 15:41:35 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static t_token	*identify_redirection_tokens(char *lexeme)
 	return (token);
 }
 
-t_token	*identify_tokens(t_list *lexemes)
+static t_token	*identify_tokens(t_list *lexemes)
 {
 	t_token	*tokens;
 	t_token	*token;

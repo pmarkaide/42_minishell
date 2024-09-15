@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   buin_exit.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:04:40 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/09/06 23:58:30 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/10 15:14:14 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ static int	check_args(char **args, t_macro *macro, int argc)
 	return (0);
 }
 
-int	ft_exit2(char **args, t_macro *macro)
+int	ft_exit(char **args, t_macro *macro)
 {
 	int	argc;
 	int	code;

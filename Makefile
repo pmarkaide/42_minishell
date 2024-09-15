@@ -6,53 +6,52 @@
 #    By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/01 15:11:43 by pmarkaid          #+#    #+#              #
-#    Updated: 2024/09/10 10:15:07 by pmarkaid         ###   ########.fr        #
+#    Updated: 2024/09/15 21:04:10 by pmarkaid         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-SRCS_FILES = \
-	main.c \
-	presyntax.c \
-	tokenizer.c \
-	list_cmd.c \
-	tokenizer_utils.c \
-	free.c \
-	parsing.c	\
-	parsing_utils.c \
-	env.c 	\
-	main_utils.c 	\
-	signals.c 	\
-	builtins.c 	\
-	validation.c \
-	validation_utils.c \
-	execution.c \
-	execution_utils.c \
-	execution_builtin.c \
-	error.c \
-	dup.c \
-	expand.c \
-	expand_utils.c \
-	expand_cases.c \
-	split_args.c \
-	buin_cd.c \
-	buin_echo.c \
-	buin_env.c \
-	buin_exit.c \
-	buin_export.c \
-	buin_pwd.c \
-	buin_unset.c \
-	tokenizer_expand.c \
-	tokenizer_retokenize.c \
-	general_utils.c \
-	buin_cd_utils.c \
-	free_utils.c \
-	buin_export_utils.c \
-	main_path.c \
-	list_token.c \
-	zz_print_utils.c \
-	parsing_here_doc.c
+SRCS_FILES =                              \
+    buin_cd.c                             \
+    buin_cd_utils.c                       \
+    buin_echo.c                           \
+    buin_env.c                            \
+    buin_exit.c                           \
+    buin_export.c                         \
+    buin_export_utils.c                   \
+    buin_pwd.c                            \
+    buin_unset.c                          \
+    dup.c                                 \
+    env.c                                 \
+    error.c                               \
+    execution.c                           \
+    execution_builtin.c                   \
+    execution_utils.c                     \
+    expand.c                              \
+    expand_cases.c                        \
+    expand_utils.c                        \
+    free.c                                \
+    free_utils.c                          \
+    general_utils.c                       \
+    list_cmd.c                            \
+    list_token.c                          \
+    main.c                                \
+    main_path.c                           \
+    main_utils.c                          \
+    parsing.c                             \
+    parsing_here_doc.c                    \
+    parsing_utils.c                       \
+    presyntax.c                           \
+    signals.c                             \
+    split_args.c                          \
+    tokenizer.c                           \
+    tokenizer_expand.c                    \
+    tokenizer_retokenize.c                \
+    tokenizer_utils.c                     \
+    validation.c                          \
+    validation_utils.c                    \
+    zz_print_utils.c
 
 SRC_DIR = src/
 SRCS = $(addprefix $(SRC_DIR), $(SRCS_FILES))
@@ -68,6 +67,8 @@ TEST_SRCS = $(wildcard tests/*.c)
 TEST_OBJS = $(TEST_SRCS:.c=.o)
 TEST_NAME = tests_runner
 
+LIBS = -lreadline
+
 CC = cc 
 CFLAGS = -Wall -Werror -Wextra -g
 DEBUG_FLAGS = -Wall -Werror -Wextra -fsanitize=address
@@ -77,7 +78,7 @@ LIBS = -lreadline
 all: makelibft $(NAME)
 
 makelibft:
-	@make -C $(LIBFT_DIR) > /dev/null
+	make -C $(LIBFT_DIR)
 
 %.o: %.c
 	$(CC) $(CFLAGS) $(LIBFT_INCLUDE) $(INCLUDE) -c $< -o $@
@@ -97,10 +98,8 @@ clean:
 	rm -f $(OBJS) $(TEST_OBJS)
 
 fclean: clean
-	rm -f $(NAME)
-	rm -f $(LIBFT)
-	rm -f $(TEST_NAME)
+	rm -f $(NAME) $(LIBFT) $(TEST_NAME)
 
 re: fclean all
 
-.PHONY: all makelibft clean fclean re tests
+.PHONY: all makelibft clean fclean re debug tests

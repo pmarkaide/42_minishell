@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   buin_export.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbejar-s <dbejar-s@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: pmarkaid <pmarkaid@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 09:04:44 by dbejar-s          #+#    #+#             */
-/*   Updated: 2024/09/06 23:55:02 by dbejar-s         ###   ########.fr       */
+/*   Updated: 2024/09/10 15:22:08 by pmarkaid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ static void	process_argument(char *arg, t_macro *macro, int *exit_flag)
 	update_or_add_env(arg, macro);
 }
 
-int	ft_export2(char **args, t_macro *macro)
+int	ft_export(char **args, t_macro *macro)
 {
 	int	i;
 	int	argc;
